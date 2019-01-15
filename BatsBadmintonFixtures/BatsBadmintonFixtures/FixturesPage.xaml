@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BatsBadmintonFixtures.ViewModels"
+             x:Class="BatsBadmintonFixtures.FixturesPage">
+    <ContentPage.BindingContext>
+        <viewmodel:FixturesViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="1" Grid.Row="0" 
+                    Text="Refresh" IsEnabled="{Binding IsNotBusy}" 
+                    Command="{Binding GetUpcomingFixturesCommand}"/>
+            <ListView Grid.ColumnSpan="2" Grid.Row="1" 
+                      IsGroupingEnabled="True"
+                      ItemsSource="{Binding Fixtures}">
+                
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
