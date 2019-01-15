@@ -6,7 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-BatsBadmintonFixtures/BatsBadmintonFixtures/Congig/
+Config/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
