@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BatsBadmintonFixtures.ViewModels;
+using BatsBadmintonFixtures.Config;
 using Xamarin.Forms;
 using Xunit;
 using Newtonsoft.Json;
@@ -17,15 +18,13 @@ namespace BatsBadmintonFixtures.Tests
         {
             // Arrange
             string username = "appadmin";
-            string password = "adminpassword";
-            LoginViewModel lvm = new LoginViewModel();
-            
+            string password = "adminpassword";            
 
             string expected = "{\"type\":\"login-request\",\"username\":\"appadmin\"," +
                                                                           "\"password\":\"adminpassword\"}";
 
             // Actual
-            string actual = lvm.GetPOSTJson(username, password);
+            string actual = Utilities.GetPOSTJson(username, password);
             // Assert
 
             Assert.Equal(expected, actual);

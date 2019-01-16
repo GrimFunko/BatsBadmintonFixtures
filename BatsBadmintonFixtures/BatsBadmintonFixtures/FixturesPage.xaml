@@ -21,8 +21,45 @@
                     Command="{Binding GetUpcomingFixturesCommand}"/>
             <ListView Grid.ColumnSpan="2" Grid.Row="1" 
                       IsGroupingEnabled="True"
-                      ItemsSource="{Binding Fixtures}">
-                
+                      GroupDisplayBinding="{Binding Longname}"
+                      GroupShortNameBinding="{Binding ShortName}"
+                      ItemsSource="{Binding GroupedUpcomingFixtures}">
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding LongName}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Text="{Binding League}"
+                                       Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0"/>
+                                <Label Text="{Binding BatsTeam}"
+                                       Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                <Label Text="{Binding FixtureTeams}"
+                                       Grid.Column="1" Grid.Row="2"/>
+                                <Label Text="{Binding Time}"
+                                       Grid.Column="2" Grid.Row="2"/>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </Grid>
     </ContentPage.Content>

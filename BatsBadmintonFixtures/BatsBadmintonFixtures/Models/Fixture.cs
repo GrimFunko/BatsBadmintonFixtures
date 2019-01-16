@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+using MvvmHelpers;
 using Newtonsoft.Json;
 
 namespace BatsBadmintonFixtures.Models
@@ -28,10 +29,19 @@ namespace BatsBadmintonFixtures.Models
 
         [JsonProperty("time")]
         public string Time { get; set; }
+
+        public string FixtureTeams { get { return Venue + " vs " + TeamVs; } }
+
     }
 
     public partial class Fixture
     { 
         public static Fixture[] FromJson(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);      
+    }
+
+    public class GroupedFixtures : ObservableRangeCollection<Fixture>
+    {
+        public string LongName { get; set; }
+        public string ShortName { get; set; }
     }
 }

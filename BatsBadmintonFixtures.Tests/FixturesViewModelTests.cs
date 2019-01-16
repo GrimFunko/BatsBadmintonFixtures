@@ -8,6 +8,7 @@ using System.IO;
 using Xunit;
 using Xamarin.Forms;
 using Newtonsoft.Json;
+using MvvmHelpers;
 
 using BatsBadmintonFixtures.ViewModels;
 using BatsBadmintonFixtures.Models;
@@ -93,5 +94,50 @@ namespace BatsBadmintonFixtures.Tests
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void SortIntoDateGroups_JanShouldHoldJanuaryFixtures()
+        {
+            var fvm = new FixturesViewModel();
+            GroupedFixtures expected = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
+            expected.Add(fixtures[0]);
+
+            var actual = fvm.SortIntoDateGroups(fixtures);
+
+            Assert.Contains(expected, actual); 
+        }
+
+        [Fact]
+        public void AddFixturesToDateGroup_ShouldAddFixtures()
+        {
+            var fvm = new FixturesViewModel();
+            var actual = fvm.AddFixturesToDateGroup(fixtures);
+
+            Assert.Equal(3, actual.Count());
+        }
+
+        [Fact]
+        public void AddFixturesToDateGroup_ShouldIncludeCorrectFixtureGroups()
+        {
+            var fvm = new FixturesViewModel();
+            List<GroupedFixtures> groupedList = new List<GroupedFixtures>();
+            var Jan = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
+            var Feb = new GroupedFixtures() { LongName = "February", ShortName = "Feb" };
+            var Mar = new GroupedFixtures() { LongName = "March", ShortName = "Mar" };
+
+            Jan.Add(fixtures[0]);
+            Feb.Add(fixtures[1]);
+            Feb.Add(fixtures[2]);
+            Mar.Add(fixtures[3]);
+            Mar.Add(fixtures[4]);
+
+            groupedList.Add(Jan);
+            groupedList.Add(Feb);
+            groupedList.Add(Mar);
+
+            var expected = groupedList; 
+            var actual = fvm.AddFixturesToDateGroup(fixtures);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

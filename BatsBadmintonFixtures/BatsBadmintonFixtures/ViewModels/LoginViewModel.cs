@@ -50,61 +50,45 @@ namespace BatsBadmintonFixtures.ViewModels
 
             IsBusy = true;
 
+            bool success = false;
             try
             {
-                HttpClientHandler clientHandler = new HttpClientHandler
-                {
-                    AllowAutoRedirect = true,
-                    UseCookies = true,
-                    CookieContainer = new CookieContainer()
-                };
-                var client = new HttpClient(clientHandler);
-                ConfigurationData cd = new ConfigurationData();
-                client.DefaultRequestHeaders.Authorization = 
-                    new System.Net.Http.Headers.AuthenticationHeaderValue(cd.AuthHeaderType, cd.AuthHeaderPassword);
-               
-                var loginResponse = await client.PostAsync("https://project-api.lukeglasgow.co.uk/",
-                                                            new StringContent(GetPOSTJson(Username,Password),Encoding.UTF8, "application/json")
-                                                          );
+                var client = Utilities.GetClient();
+
+                             
+                var loginResponse = 
+                    await client.PostAsync(client.BaseAddress, new StringContent(Utilities.GetPOSTJson(Username,Password),
+                                                                                 Encoding.UTF8, 
+                                                                                 "application/json"));
                 var json = await loginResponse.Content.ReadAsStringAsync();
 
                 var response = LoginResponse.FromJson(json);
-               
-                if (response.Valid)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Successful login!", $"Welcome, {Username}.", "OK");
-                    Application.Current.MainPage = new FixturesPage();
-                }
-                else
-                {
+
+                if (!response.Valid)
                     await Application.Current.MainPage.DisplayAlert("Login failed.", "Your login details are incorrect.", "OK");
-                }
+                else
+                    success = true;
 
             }
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Something went wrong",
                                     ex.Message, "OK");
-                
             }
             finally
             {
                 IsBusy = false;
             }
 
-        }
-
-        public string GetPOSTJson(string _Username, string _Password)
-        {
-            object bodyObject = new
+            if (success)
             {
-                type = "login-request",
-                username = _Username,
-                password = _Password
-            };
-            string json = JsonConvert.SerializeObject(bodyObject);
+                success = false;
+                await Application.Current.MainPage.DisplayAlert("Successful login!", $"Welcome, {Username}.", "OK");
+                Application.Current.MainPage = new FixturesPage();
+            }
 
-            return json;
         }
+
+
     }
 }

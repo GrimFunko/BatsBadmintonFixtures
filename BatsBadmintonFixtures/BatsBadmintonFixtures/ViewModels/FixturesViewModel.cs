@@ -19,13 +19,27 @@ namespace BatsBadmintonFixtures.ViewModels
 {
     public class FixturesViewModel : BaseViewModel
     {
-        public ObservableRangeCollection<Fixture> GroupedUpcomingFixtures { get; }
+        public ObservableRangeCollection<GroupedFixtures> GroupedUpcomingFixtures { get; set; }
         public ICommand GetUpcomingFixturesCommand { get; }
 
         public FixturesViewModel()
         {
             Title = "Fixtures";
-            GroupedUpcomingFixtures = new ObservableRangeCollection<Fixture>();
+            GroupedUpcomingFixtures = new ObservableRangeCollection<GroupedFixtures>();
+
+            var Jan = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
+            var Feb = new GroupedFixtures() { LongName = "February", ShortName = "Feb" };
+            var Mar = new GroupedFixtures() { LongName = "March", ShortName = "Mar" };
+            var Apr = new GroupedFixtures() { LongName = "April", ShortName = "Apr" };
+            var May = new GroupedFixtures() { LongName = "May", ShortName = "May" };
+            var Jun = new GroupedFixtures() { LongName = "June", ShortName = "Jun" };
+            var Jul = new GroupedFixtures() { LongName = "July", ShortName = "Jul" };
+            var Aug = new GroupedFixtures() { LongName = "August", ShortName = "Aug" };
+            var Sep = new GroupedFixtures() { LongName = "Spetember", ShortName = "Sep" };
+            var Oct = new GroupedFixtures() { LongName = "October", ShortName = "Oct" };
+            var Nov = new GroupedFixtures() { LongName = "November", ShortName = "Nov" };
+            var Dec = new GroupedFixtures() { LongName = "December", ShortName = "Dec" };
+
             GetUpcomingFixturesCommand = new Command(async () => await GetUpcomingFixtures());
         }
 
@@ -34,12 +48,37 @@ namespace BatsBadmintonFixtures.ViewModels
             if (IsBusy) 
                 return;
             IsBusy = true;
-            
 
-            await Application.Current.MainPage.DisplayAlert("Hello!", "This is a message.", "OK");
+            try
+            {
+                Debug.WriteLine("try statement entered");
+                var client = Utilities.GetClient();
 
+                var fixturesResponse = await client.PostAsync(client.BaseAddress, new StringContent(Utilities.GetPOSTJson(),
+                                                                                                    Encoding.UTF8,
+                                                                                                    "application.json"));
+                Debug.WriteLine("/n Response status code: " + (int)fixturesResponse.StatusCode);
+                var json = await fixturesResponse.Content.ReadAsStringAsync();
+                Debug.WriteLine(json);
+
+                var all = Fixture.FromJson(json);
+                var something = SortIntoDateGroups(all);
+                Debug.WriteLine("/n ORC is setup and ready to replace /n");
+                GroupedUpcomingFixtures.ReplaceRange(something);
+                Debug.WriteLine("/n Not sure why its not working at this point.. /n");
+                //GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
+            }
+            catch(Exception Ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Something went wrong!", Ex.Message, "OK");
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
-
+        
 
         public List<string> GetListOfDistinctDates(Fixture[] fixtures)
         {
@@ -55,5 +94,118 @@ namespace BatsBadmintonFixtures.ViewModels
 
             return distinctDates;
         }
+
+        public ObservableRangeCollection<GroupedFixtures> SortIntoDateGroups(Fixture[] fixtures)
+        {
+            List<GroupedFixtures> groupedList = AddFixturesToDateGroup(fixtures);
+            foreach(GroupedFixtures fix in groupedList)
+            {
+                if (fix.Count > 0)
+                    GroupedUpcomingFixtures.Add(fix);
+            }
+            Debug.WriteLine("/n Returning ORC<GroupedFixtures> /n");
+            return GroupedUpcomingFixtures;
+        }
+
+        public List<GroupedFixtures> AddFixturesToDateGroup(Fixture[] fixtures)
+        {
+            List<GroupedFixtures> groupedList = new List<GroupedFixtures>();
+            var Jan = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
+            var Feb = new GroupedFixtures() { LongName = "February", ShortName = "Feb" };
+            var Mar = new GroupedFixtures() { LongName = "March", ShortName = "Mar" };
+            var Apr = new GroupedFixtures() { LongName = "April", ShortName = "Apr" };
+            var May = new GroupedFixtures() { LongName = "May", ShortName = "May" };
+            var Jun = new GroupedFixtures() { LongName = "June", ShortName = "Jun" };
+            var Jul = new GroupedFixtures() { LongName = "July", ShortName = "Jul" };
+            var Aug = new GroupedFixtures() { LongName = "August", ShortName = "Aug" };
+            var Sep = new GroupedFixtures() { LongName = "Spetember", ShortName = "Sep" };
+            var Oct = new GroupedFixtures() { LongName = "October", ShortName = "Oct" };
+            var Nov = new GroupedFixtures() { LongName = "November", ShortName = "Nov" };
+            var Dec = new GroupedFixtures() { LongName = "December", ShortName = "Dec" };
+
+            Debug.WriteLine("/n Grouped titles created /n");
+
+            for (int i = 0; i < fixtures.Length; i++)
+            {
+                if (fixtures[i].Date.Contains("-01-"))
+                {
+                    Jan.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-02-"))
+                {
+                    Feb.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-03-"))
+                {
+                    Mar.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-04-"))
+                {
+                    Apr.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-05-"))
+                {
+                    May.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-06-"))
+                {
+                    Jun.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-07-"))
+                {
+                    Jul.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-08-"))
+                {
+                    Aug.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-09-"))
+                {
+                    Sep.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-10-"))
+                {
+                    Oct.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-11-"))
+                {
+                    Nov.Add(fixtures[i]);
+                }
+                if (fixtures[i].Date.Contains("-12-"))
+                {
+                    Dec.Add(fixtures[i]);
+                }
+            }
+
+            if (Jan.Count > 0)
+                groupedList.Add(Jan);
+            if (Feb.Count > 0)
+                groupedList.Add(Feb);
+            if (Mar.Count > 0)
+                groupedList.Add(Mar);
+            if (Apr.Count > 0)
+                groupedList.Add(Apr);
+            if (May.Count > 0)
+                groupedList.Add(May);
+            if (Jun.Count > 0)
+                groupedList.Add(Jun);
+            if (Jul.Count > 0)
+                groupedList.Add(Jul);
+            if (Aug.Count > 0)
+                groupedList.Add(Aug);
+            if (Sep.Count > 0)
+                groupedList.Add(Sep);
+            if (Oct.Count > 0)
+                groupedList.Add(Oct);
+            if (Nov.Count > 0)
+                groupedList.Add(Nov);
+            if (Dec.Count > 0)
+                groupedList.Add(Dec);
+            Debug.WriteLine("/n GroupedList populated /n");
+            return groupedList;
+        }
+
+
     }
 }
+
