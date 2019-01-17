@@ -12,6 +12,7 @@ using MvvmHelpers;
 
 using BatsBadmintonFixtures.ViewModels;
 using BatsBadmintonFixtures.Models;
+using BatsBadmintonFixtures.Config;
 
 namespace BatsBadmintonFixtures.Tests
 { 
@@ -95,7 +96,7 @@ namespace BatsBadmintonFixtures.Tests
         }
 
         [Fact]
-        public void SortIntoDateGroups_JanShouldHoldJanuaryFixtures()
+        public void SortIntoDateGroups_RangeCollectionShouldContainJan()
         {
             var fvm = new FixturesViewModel();
             GroupedFixtures expected = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
@@ -104,6 +105,16 @@ namespace BatsBadmintonFixtures.Tests
             var actual = fvm.SortIntoDateGroups(fixtures);
 
             Assert.Contains(expected, actual); 
+        }
+
+        [Fact]
+        public void SortIntoDateGroups_GroupedfixturesCountShouldBeNonZero()
+        {
+            var fvm = new FixturesViewModel();
+
+            var actual = fvm.SortIntoDateGroups(fixtures);
+
+            Assert.Equal(3, actual.Count);
         }
 
         [Fact]
@@ -136,6 +147,19 @@ namespace BatsBadmintonFixtures.Tests
 
             var expected = groupedList; 
             var actual = fvm.AddFixturesToDateGroup(fixtures);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetPostJson_ShouldReturnCorectlyFormattedString()
+        {
+
+            string expected = "{\"type\":\"fixtures-request\"}";
+
+            // Actual
+            string actual = Utilities.GetPOSTJson();
+            // Assert
 
             Assert.Equal(expected, actual);
         }

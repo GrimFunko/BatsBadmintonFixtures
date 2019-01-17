@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Luke Glasgow</Authors>
+    <RepositoryUrl>https://github.com/GrimFunko/BatsBadmintonFixtures</RepositoryUrl>
+    <RepositoryType />
+    <ApplicationIcon>BatsLogoIcon512.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

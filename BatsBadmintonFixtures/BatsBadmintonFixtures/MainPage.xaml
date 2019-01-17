@@ -33,6 +33,7 @@
             <Label Text="Password:"/>
             <Entry x:Name="PasswordEntry" IsPassword="True" Text="{Binding Password, Mode=TwoWay}"/>
             <Button x:Name="Login" Text="Login" Command="{Binding LoginCommand}"/>
+            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </Grid>
 </ContentPage>

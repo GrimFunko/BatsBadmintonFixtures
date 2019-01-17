@@ -33,7 +33,7 @@ namespace BatsBadmintonFixtures.ViewModels
         public string Username
         {
             get { return _username; }
-            set { SetProperty<string>(ref _username, value, Username,() => OnPropertyChanged(Username)); }
+            set { _username = value; }
         }
 
         private string _password = "";
@@ -61,7 +61,6 @@ namespace BatsBadmintonFixtures.ViewModels
                                                                                  Encoding.UTF8, 
                                                                                  "application/json"));
                 var json = await loginResponse.Content.ReadAsStringAsync();
-
                 var response = LoginResponse.FromJson(json);
 
                 if (!response.Valid)

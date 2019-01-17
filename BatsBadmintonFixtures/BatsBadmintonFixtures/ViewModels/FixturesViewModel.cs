@@ -22,6 +22,13 @@ namespace BatsBadmintonFixtures.ViewModels
         public ObservableRangeCollection<GroupedFixtures> GroupedUpcomingFixtures { get; set; }
         public ICommand GetUpcomingFixturesCommand { get; }
 
+        private bool _isFeedNeeded = true;
+        public bool IsFeedNeeded
+        {
+            get { return _isFeedNeeded; }
+            set { SetProperty<bool>(ref _isFeedNeeded, value, "IsFeedNeeded", () => OnPropertyChanged("IsFeedNeeded")); }
+        }
+
         public FixturesViewModel()
         {
             Title = "Fixtures";
@@ -48,30 +55,23 @@ namespace BatsBadmintonFixtures.ViewModels
             if (IsBusy) 
                 return;
             IsBusy = true;
-
+            
             try
             {
-                Debug.WriteLine("try statement entered");
                 var client = Utilities.GetClient();
-
                 var fixturesResponse = await client.PostAsync(client.BaseAddress, new StringContent(Utilities.GetPOSTJson(),
                                                                                                     Encoding.UTF8,
-                                                                                                    "application.json"));
-                Debug.WriteLine("/n Response status code: " + (int)fixturesResponse.StatusCode);
+                                                                                                    "application/json"));
                 var json = await fixturesResponse.Content.ReadAsStringAsync();
-                Debug.WriteLine(json);
 
                 var all = Fixture.FromJson(json);
-                var something = SortIntoDateGroups(all);
-                Debug.WriteLine("/n ORC is setup and ready to replace /n");
-                GroupedUpcomingFixtures.ReplaceRange(something);
-                Debug.WriteLine("/n Not sure why its not working at this point.. /n");
-                //GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
+
+                GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
+                IsFeedNeeded = false;
             }
             catch(Exception Ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Something went wrong!", Ex.Message, "OK");
-
             }
             finally
             {
@@ -95,16 +95,17 @@ namespace BatsBadmintonFixtures.ViewModels
             return distinctDates;
         }
 
-        public ObservableRangeCollection<GroupedFixtures> SortIntoDateGroups(Fixture[] fixtures)
+        public bool CheckForFeedNeeded()
+        {
+            return GroupedUpcomingFixtures.Count > 0 ? false : true;
+        }
+          
+
+        public List<GroupedFixtures> SortIntoDateGroups(Fixture[] fixtures)
         {
             List<GroupedFixtures> groupedList = AddFixturesToDateGroup(fixtures);
-            foreach(GroupedFixtures fix in groupedList)
-            {
-                if (fix.Count > 0)
-                    GroupedUpcomingFixtures.Add(fix);
-            }
-            Debug.WriteLine("/n Returning ORC<GroupedFixtures> /n");
-            return GroupedUpcomingFixtures;
+            
+            return groupedList;
         }
 
         public List<GroupedFixtures> AddFixturesToDateGroup(Fixture[] fixtures)
@@ -123,64 +124,74 @@ namespace BatsBadmintonFixtures.ViewModels
             var Nov = new GroupedFixtures() { LongName = "November", ShortName = "Nov" };
             var Dec = new GroupedFixtures() { LongName = "December", ShortName = "Dec" };
 
-            Debug.WriteLine("/n Grouped titles created /n");
-
             for (int i = 0; i < fixtures.Length; i++)
             {
                 if (fixtures[i].Date.Contains("-01-"))
                 {
                     Jan.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-02-"))
                 {
                     Feb.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-03-"))
                 {
                     Mar.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-04-"))
                 {
                     Apr.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-05-"))
                 {
                     May.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-06-"))
                 {
                     Jun.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-07-"))
                 {
                     Jul.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-08-"))
                 {
                     Aug.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-09-"))
                 {
                     Sep.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-10-"))
                 {
                     Oct.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-11-"))
                 {
                     Nov.Add(fixtures[i]);
+                    continue;
                 }
                 if (fixtures[i].Date.Contains("-12-"))
                 {
                     Dec.Add(fixtures[i]);
+                    continue;
                 }
             }
 
             if (Jan.Count > 0)
                 groupedList.Add(Jan);
             if (Feb.Count > 0)
-                groupedList.Add(Feb);
+                groupedList.Add(Feb);                
             if (Mar.Count > 0)
                 groupedList.Add(Mar);
             if (Apr.Count > 0)
@@ -201,7 +212,7 @@ namespace BatsBadmintonFixtures.ViewModels
                 groupedList.Add(Nov);
             if (Dec.Count > 0)
                 groupedList.Add(Dec);
-            Debug.WriteLine("/n GroupedList populated /n");
+
             return groupedList;
         }
 

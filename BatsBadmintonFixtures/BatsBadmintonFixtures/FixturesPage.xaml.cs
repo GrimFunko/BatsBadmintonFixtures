@@ -15,6 +15,7 @@ namespace BatsBadmintonFixtures
 		public FixturesPage ()
 		{
 			InitializeComponent ();
+
 		}
 	}
 }

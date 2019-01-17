@@ -27,7 +27,7 @@ namespace BatsBadmintonFixtures.Config
         {
             object bodyObject = new
             {
-                type = "fixture-request"
+                type = "fixtures-request"
             };
             string json = JsonConvert.SerializeObject(bodyObject);
 
