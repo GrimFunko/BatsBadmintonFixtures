@@ -34,19 +34,6 @@ namespace BatsBadmintonFixtures.ViewModels
             Title = "Fixtures";
             GroupedUpcomingFixtures = new ObservableRangeCollection<GroupedFixtures>();
 
-            var Jan = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
-            var Feb = new GroupedFixtures() { LongName = "February", ShortName = "Feb" };
-            var Mar = new GroupedFixtures() { LongName = "March", ShortName = "Mar" };
-            var Apr = new GroupedFixtures() { LongName = "April", ShortName = "Apr" };
-            var May = new GroupedFixtures() { LongName = "May", ShortName = "May" };
-            var Jun = new GroupedFixtures() { LongName = "June", ShortName = "Jun" };
-            var Jul = new GroupedFixtures() { LongName = "July", ShortName = "Jul" };
-            var Aug = new GroupedFixtures() { LongName = "August", ShortName = "Aug" };
-            var Sep = new GroupedFixtures() { LongName = "Spetember", ShortName = "Sep" };
-            var Oct = new GroupedFixtures() { LongName = "October", ShortName = "Oct" };
-            var Nov = new GroupedFixtures() { LongName = "November", ShortName = "Nov" };
-            var Dec = new GroupedFixtures() { LongName = "December", ShortName = "Dec" };
-
             GetUpcomingFixturesCommand = new Command(async () => await GetUpcomingFixtures());
         }
 

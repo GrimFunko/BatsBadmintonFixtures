@@ -9,7 +9,7 @@ using Android.OS;
 
 namespace BatsBadmintonFixtures.Droid
 {
-    [Activity(Label = "BatsBadmintonFixtures", Icon = "@drawable/BatsLogoIcon512", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "Bats Fixtures", Icon = "@drawable/BatsLogoIcon512", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

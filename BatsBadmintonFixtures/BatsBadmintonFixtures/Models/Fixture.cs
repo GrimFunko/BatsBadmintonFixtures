@@ -32,11 +32,21 @@ namespace BatsBadmintonFixtures.Models
 
         public string FixtureTeams { get { return Venue + " vs " + TeamVs; } }
 
+        public string MyDate { get { return FormatDateProp(Date); } }
+
     }
 
     public partial class Fixture
     { 
-        public static Fixture[] FromJson(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);      
+        public static Fixture[] FromJson(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);     
+        
+        private string FormatDateProp(string date)
+        {
+            char[] splitPat = new char[] { '-' };
+            string[] dateComponents = date.Split(splitPat);
+            string myDate = $"{dateComponents[2]}/{dateComponents[1]}";
+            return myDate;
+        }
     }
 
     public class GroupedFixtures : ObservableRangeCollection<Fixture>
