@@ -12,6 +12,8 @@ namespace BatsBadmintonFixtures.Config
     //TODO Create body objects in configuration data for git ignoring
     public static class Utilities
     {
+        public static HttpClient ApiClient { get; set; }
+
         public static string GetPOSTJson(string _Username, string _Password)
         {
             object bodyObject = new
@@ -36,7 +38,7 @@ namespace BatsBadmintonFixtures.Config
             return json;
         }
 
-        public static HttpClient GetClient()
+        public static void InitialiseClient()
         {
             ConfigurationData cd = new ConfigurationData();
 
@@ -46,13 +48,12 @@ namespace BatsBadmintonFixtures.Config
                 UseCookies = true,
                 CookieContainer = new CookieContainer()
             };
-            HttpClient client = new HttpClient(clientHandler);
-            client.BaseAddress = cd.BaseAddress;
+            ApiClient = new HttpClient(clientHandler);
+            ApiClient.BaseAddress = cd.BaseAddress;
 
-            client.DefaultRequestHeaders.Authorization =
+            ApiClient.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue(cd.AuthHeaderType,cd.AuthHeaderPassword);
-
-            return client;
+            
         }
 
     }

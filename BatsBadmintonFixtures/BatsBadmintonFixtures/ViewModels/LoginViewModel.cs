@@ -54,20 +54,22 @@ namespace BatsBadmintonFixtures.ViewModels
             try
             {
                 //TODO Use static client, wrap HttpResponse in a using statement for disposal
-                var client = Utilities.GetClient();
 
-                             
-                var loginResponse = 
-                    await client.PostAsync(client.BaseAddress, new StringContent(Utilities.GetPOSTJson(Username,Password),
-                                                                                 Encoding.UTF8, 
-                                                                                 "application/json"));
-                var json = await loginResponse.Content.ReadAsStringAsync();
-                var response = LoginResponse.FromJson(json);
+                // using  
+                using (var loginResponse =
+                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, new StringContent(Utilities.GetPOSTJson(Username, Password),
+                                                                                 Encoding.UTF8,
+                                                                                 "application/json")))
+                {
+                    var json = await loginResponse.Content.ReadAsStringAsync();
+                    var response = LoginResponse.FromJson(json);
 
-                if (!response.Valid)
-                    await Application.Current.MainPage.DisplayAlert("Login failed.", "Your login details are incorrect.", "OK");
-                else
-                    success = true;
+                    if (!response.Valid)
+                        await Application.Current.MainPage.DisplayAlert("Login failed.", "Your login details are incorrect.", "OK");
+                    else
+                        success = true;
+
+                }
 
             }
             catch (Exception ex)

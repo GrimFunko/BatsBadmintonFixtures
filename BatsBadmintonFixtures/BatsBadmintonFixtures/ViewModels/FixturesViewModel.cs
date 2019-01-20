@@ -45,16 +45,21 @@ namespace BatsBadmintonFixtures.ViewModels
             
             try
             {
-                var client = Utilities.GetClient();
-                var fixturesResponse = await client.PostAsync(client.BaseAddress, new StringContent(Utilities.GetPOSTJson(),
-                                                                                                    Encoding.UTF8,
-                                                                                                    "application/json"));
-                var json = await fixturesResponse.Content.ReadAsStringAsync();
+                // using
+                using (var fixturesResponse = 
+                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, 
+                                                        new StringContent(Utilities.GetPOSTJson(),
+                                                                          Encoding.UTF8,
+                                                                          "application/json")))
+                {
+                    var json = await fixturesResponse.Content.ReadAsStringAsync();
 
-                var all = Fixture.FromJson(json);
+                    var all = Fixture.FromJson(json);
 
-                GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
-                IsFeedNeeded = false;
+                    GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
+                    IsFeedNeeded = false;
+                }
+                    
             }
             catch(Exception Ex)
             {

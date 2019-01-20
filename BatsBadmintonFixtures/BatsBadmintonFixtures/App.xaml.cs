@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using BatsBadmintonFixtures.Config;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BatsBadmintonFixtures
@@ -10,7 +11,7 @@ namespace BatsBadmintonFixtures
         public App()
         {
             InitializeComponent();
-
+            Utilities.InitialiseClient();
             MainPage = new MainPage();
         }
 
