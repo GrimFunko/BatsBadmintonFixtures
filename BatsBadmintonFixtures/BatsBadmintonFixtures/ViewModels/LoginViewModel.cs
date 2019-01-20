@@ -53,6 +53,7 @@ namespace BatsBadmintonFixtures.ViewModels
             bool success = false;
             try
             {
+                //TODO Use static client, wrap HttpResponse in a using statement for disposal
                 var client = Utilities.GetClient();
 
                              
