@@ -12,7 +12,12 @@ namespace BatsBadmintonFixtures
         {
             InitializeComponent();
             Utilities.InitialiseClient();
-            MainPage = new MainPage();
+            bool isLoggedIn = Current.Properties.ContainsKey("IsLoggedIn") ? Convert.ToBoolean(Current.Properties["IsLoggedIn"]) : false;
+            if (!isLoggedIn)
+                MainPage = new MainPage();
+            else
+                MainPage = new FixturesPage();
+            
         }
 
         protected override void OnStart()

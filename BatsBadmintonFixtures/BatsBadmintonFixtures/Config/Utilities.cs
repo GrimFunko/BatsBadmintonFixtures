@@ -8,8 +8,6 @@ using Newtonsoft.Json;
 
 namespace BatsBadmintonFixtures.Config
 {
-    //TODO Change HttpClient to static property with initialise function called at application start
-    //TODO Create body objects in configuration data for git ignoring
     public static class Utilities
     {
         public static HttpClient ApiClient { get; set; }

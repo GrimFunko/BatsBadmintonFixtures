@@ -53,13 +53,11 @@ namespace BatsBadmintonFixtures.ViewModels
             bool success = false;
             try
             {
-                //TODO Use static client, wrap HttpResponse in a using statement for disposal
-
-                // using  
                 using (var loginResponse =
-                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, new StringContent(Utilities.GetPOSTJson(Username, Password),
-                                                                                 Encoding.UTF8,
-                                                                                 "application/json")))
+                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, 
+                                                        new StringContent(Utilities.GetPOSTJson(Username, Password),
+                                                                          Encoding.UTF8,
+                                                                          "application/json")))
                 {
                     var json = await loginResponse.Content.ReadAsStringAsync();
                     var response = LoginResponse.FromJson(json);
@@ -67,7 +65,10 @@ namespace BatsBadmintonFixtures.ViewModels
                     if (!response.Valid)
                         await Application.Current.MainPage.DisplayAlert("Login failed.", "Your login details are incorrect.", "OK");
                     else
+                    {
                         success = true;
+                        Application.Current.Properties["UserAccessLevel"] = response.AccessLevel;
+                    }
 
                 }
 
@@ -86,6 +87,7 @@ namespace BatsBadmintonFixtures.ViewModels
             {
                 success = false;
                 await Application.Current.MainPage.DisplayAlert("Successful login!", $"Welcome, {Username}.", "OK");
+                Application.Current.Properties["IsLoggedIn"] = Boolean.TrueString;
                 Application.Current.MainPage = new FixturesPage();
             }
 

@@ -45,7 +45,6 @@ namespace BatsBadmintonFixtures.ViewModels
             
             try
             {
-                // using
                 using (var fixturesResponse = 
                     await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, 
                                                         new StringContent(Utilities.GetPOSTJson(),
