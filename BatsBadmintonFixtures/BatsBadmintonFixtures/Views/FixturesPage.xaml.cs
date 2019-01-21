@@ -15,7 +15,14 @@ namespace BatsBadmintonFixtures
 		public FixturesPage ()
 		{
 			InitializeComponent ();
-
+            
 		}
+        
+        private void ViewSelectedFixture(object sender, SelectedItemChangedEventArgs e)
+        {
+            Navigation.PushAsync(new FixtureDetailPage());
+                  
+        } 
+        
 	}
 }

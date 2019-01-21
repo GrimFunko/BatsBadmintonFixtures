@@ -16,7 +16,7 @@ namespace BatsBadmintonFixtures
             if (!isLoggedIn)
                 MainPage = new MainPage();
             else
-                MainPage = new FixturesPage();
+                MainPage = new HomePage();
             
         }
 
