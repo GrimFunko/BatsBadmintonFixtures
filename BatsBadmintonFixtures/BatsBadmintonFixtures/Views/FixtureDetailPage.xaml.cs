@@ -7,15 +7,22 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+
+
 namespace BatsBadmintonFixtures
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FixtureDetailPage : ContentPage
 	{
+        private object _selectedItem;
+        public object SelectedItem { get { return _selectedItem; } set {_selectedItem = value; } }
+
         // TODO Build and implement the rest of the fixture details page
-		public FixtureDetailPage ()
+        public FixtureDetailPage (object item)
 		{
-			InitializeComponent ();
+            SelectedItem = item;
+            BindingContext = SelectedItem;
+            InitializeComponent ();
 		}
 	}
 }

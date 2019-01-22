@@ -28,7 +28,7 @@ namespace BatsBadmintonFixtures.ViewModels
             get { return _isFeedNeeded; }
             set { SetProperty<bool>(ref _isFeedNeeded, value, "IsFeedNeeded", () => OnPropertyChanged("IsFeedNeeded")); }
         }
-
+     
         public FixturesViewModel()
         {
             Title = "Fixtures";

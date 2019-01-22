@@ -6,23 +6,29 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using BatsBadmintonFixtures.ViewModels;
 
 namespace BatsBadmintonFixtures
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FixturesPage : ContentPage
 	{
+        ListView listView;
 		public FixturesPage ()
 		{
 			InitializeComponent ();
-            
+            listView = _listView;
 		}
         
-        private void ViewSelectedFixture(object sender, SelectedItemChangedEventArgs e)
+        public void _ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Navigation.PushAsync(new FixtureDetailPage());
-                  
-        } 
+            var item = listView.SelectedItem;
+            if (item != null)
+            {
+                Navigation.PushAsync(new FixtureDetailPage(item));
+                listView.SelectedItem = null;
+            }
+        }
         
 	}
 }

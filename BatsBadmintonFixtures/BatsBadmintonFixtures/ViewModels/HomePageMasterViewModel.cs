@@ -19,13 +19,14 @@ namespace BatsBadmintonFixtures.ViewModels
     class HomePageMasterViewModel : BaseViewModel
     {
         public ICommand LogoutCommand { get; }
-        
+        public ObservableRangeCollection<HomePageMenuItem> MenuItems { get; set; }
+
         public HomePageMasterViewModel()
         {
             LogoutCommand = new Command(() => Logout());
         }
 
-
+        // TODO Clear cache on logout
         public void Logout()
         {
             Application.Current.Properties["IsLoggedIn"] = Boolean.FalseString;

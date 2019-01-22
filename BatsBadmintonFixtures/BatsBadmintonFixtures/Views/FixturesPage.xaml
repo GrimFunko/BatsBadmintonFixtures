@@ -13,7 +13,7 @@
                     Text="Get Feed" IsEnabled="{Binding IsNotBusy}" 
                     Command="{Binding GetUpcomingFixturesCommand}"/>
             <ListView x:Name="_listView"
-                      SelectedItem="ViewSelectedFixture"
+                      ItemSelected="_ItemSelected"
                       SeparatorColor="Black"
                       IsGroupingEnabled="True"
                       IsPullToRefreshEnabled="False"

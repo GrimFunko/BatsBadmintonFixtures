@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using BatsBadmintonFixtures.ViewModels;
+
 namespace BatsBadmintonFixtures
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -25,23 +27,6 @@ namespace BatsBadmintonFixtures
             ListView = MenuItemsListView;
         }
 
-        // TODO Decide whether to keep view model nested, or run with the seperate class script
-        
-        public class HomePageMasterViewModel : INotifyPropertyChanged
-        {
-            public ObservableCollection<HomePageMenuItem> MenuItems { get; set; }
 
-         
-            #region INotifyPropertyChanged Implementation
-            public event PropertyChangedEventHandler PropertyChanged;
-            void OnPropertyChanged([CallerMemberName] string propertyName = "")
-            {
-                if (PropertyChanged == null)
-                    return;
-
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-            #endregion
-        }
     }
 }

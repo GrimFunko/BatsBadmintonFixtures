@@ -42,10 +42,8 @@ namespace BatsBadmintonFixtures.Models
         
         private string FormatDateProp(string date)
         {
-            char[] splitPat = new char[] { '-' };
-            string[] dateComponents = date.Split(splitPat);
-            string myDate = $"{dateComponents[2]}/{dateComponents[1]}";
-            return myDate;
+            string[] dateComponents = date.Split(new char[] { '-' });
+            return $"{dateComponents[2]}/{dateComponents[1]}";
         }
     }
 

@@ -16,6 +16,7 @@ namespace BatsBadmintonFixtures
         {
             InitializeComponent();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
+            Detail = new NavigationPage(new FixturesPage());
         }
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -27,7 +28,9 @@ namespace BatsBadmintonFixtures
             var page = (Page)Activator.CreateInstance(item.TargetType);
             page.Title = item.Title;
 
-            Detail = new NavigationPage(page);
+            if (Detail != page)
+                Detail = new NavigationPage(page);
+
             IsPresented = false;
 
             MasterPage.ListView.SelectedItem = null;
