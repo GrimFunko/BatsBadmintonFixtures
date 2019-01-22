@@ -14,7 +14,7 @@ namespace BatsBadmintonFixtures
             Utilities.InitialiseClient();
             bool isLoggedIn = Current.Properties.ContainsKey("IsLoggedIn") ? Convert.ToBoolean(Current.Properties["IsLoggedIn"]) : false;
             if (!isLoggedIn)
-                MainPage = new MainPage();
+                MainPage = new LoginPage();
             else
                 MainPage = new HomePage();
             

@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace BatsBadmintonFixtures
 {
-    public partial class MainPage : ContentPage
+    public partial class LoginPage : ContentPage
     {
-        public MainPage()
+        public LoginPage()
         {
             InitializeComponent();
         }

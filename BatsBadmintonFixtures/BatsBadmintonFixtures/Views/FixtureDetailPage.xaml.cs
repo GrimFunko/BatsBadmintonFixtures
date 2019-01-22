@@ -12,6 +12,7 @@ namespace BatsBadmintonFixtures
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FixtureDetailPage : ContentPage
 	{
+        // TODO Build and implement the rest of the fixture details page
 		public FixtureDetailPage ()
 		{
 			InitializeComponent ();

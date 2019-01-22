@@ -62,10 +62,8 @@ namespace BatsBadmintonFixtures.ViewModels
                     var json = await loginResponse.Content.ReadAsStringAsync();
                     var response = LoginResponse.FromJson(json);
 
-                    if (!response.Valid)
-                        await Application.Current.MainPage.DisplayAlert("Login failed.", "Your login details are incorrect.", "OK");
-                    else
-                    {
+                    if (response.Valid)
+                    { 
                         success = true;
                         Application.Current.Properties["UserAccessLevel"] = response.AccessLevel;
                     }
@@ -88,8 +86,10 @@ namespace BatsBadmintonFixtures.ViewModels
                 success = false;
                 await Application.Current.MainPage.DisplayAlert("Successful login!", $"Welcome, {Username}.", "OK");
                 Application.Current.Properties["IsLoggedIn"] = Boolean.TrueString;
-                Application.Current.MainPage = new FixturesPage();
+                Application.Current.MainPage = new HomePage();
             }
+            else
+                await Application.Current.MainPage.DisplayAlert("Login failed.", "Your login details are incorrect.", "OK");
 
         }
 

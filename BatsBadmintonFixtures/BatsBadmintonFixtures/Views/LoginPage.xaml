@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:BatsBadmintonFixtures"
              xmlns:viewmodel="clr-namespace:BatsBadmintonFixtures.ViewModels"
-             x:Class="BatsBadmintonFixtures.MainPage"
+             x:Class="BatsBadmintonFixtures.LoginPage"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <viewmodel:LoginViewModel/>

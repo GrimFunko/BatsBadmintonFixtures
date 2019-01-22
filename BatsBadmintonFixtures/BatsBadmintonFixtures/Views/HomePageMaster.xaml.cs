@@ -25,6 +25,8 @@ namespace BatsBadmintonFixtures
             ListView = MenuItemsListView;
         }
 
+        // TODO Decide whether to keep view model nested, or run with the seperate class script
+        
         public class HomePageMasterViewModel : INotifyPropertyChanged
         {
             public ObservableCollection<HomePageMenuItem> MenuItems { get; set; }
