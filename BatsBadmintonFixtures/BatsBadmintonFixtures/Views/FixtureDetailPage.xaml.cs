@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-
+using BatsBadmintonFixtures.ViewModels;
+using BatsBadmintonFixtures.Models;
 
 namespace BatsBadmintonFixtures
 {
@@ -23,6 +24,7 @@ namespace BatsBadmintonFixtures
             SelectedItem = item;
             BindingContext = SelectedItem;
             InitializeComponent ();
+            
 		}
 	}
 }

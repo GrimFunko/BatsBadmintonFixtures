@@ -32,7 +32,7 @@ namespace BatsBadmintonFixtures.Models
 
         public string FixtureTeams { get { return Venue + " vs " + TeamVs; } }
 
-        public string MyDate { get { return FormatDateProp(Date); } }
+        public string FixtureListDateFormat { get { return FormatDateProp(Date); } }
 
     }
 
@@ -41,9 +41,10 @@ namespace BatsBadmintonFixtures.Models
         public static Fixture[] FromJson(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);     
         
         private string FormatDateProp(string date)
-        {
+        {             
             string[] dateComponents = date.Split(new char[] { '-' });
-            return $"{dateComponents[2]}/{dateComponents[1]}";
+            DateTime dt = new DateTime(Convert.ToInt16(dateComponents[0]), Convert.ToInt16(dateComponents[1]), Convert.ToInt16(dateComponents[2]));
+            return $"{dt.DayOfWeek} {dateComponents[2]}/{dateComponents[1]}";
         }
     }
 

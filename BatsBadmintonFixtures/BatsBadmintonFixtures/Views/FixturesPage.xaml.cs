@@ -22,6 +22,7 @@ namespace BatsBadmintonFixtures
         
         public void _ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            //TODO finish implementing mvvm
             var item = listView.SelectedItem;
             if (item != null)
             {

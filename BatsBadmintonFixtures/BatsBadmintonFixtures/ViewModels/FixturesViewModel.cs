@@ -22,6 +22,15 @@ namespace BatsBadmintonFixtures.ViewModels
         public ObservableRangeCollection<GroupedFixtures> GroupedUpcomingFixtures { get; set; }
         public ICommand GetUpcomingFixturesCommand { get; }
 
+        private object _selectedFixture;
+
+        public object SelectedFixture
+        {
+            get { return _selectedFixture; }
+            set { SetProperty<object>(ref _selectedFixture, value, "SelectedFixture", () => OnPropertyChanged("SelectedFixture")); }
+        }
+
+
         private bool _isFeedNeeded = true;
         public bool IsFeedNeeded
         {
@@ -54,7 +63,7 @@ namespace BatsBadmintonFixtures.ViewModels
                     var json = await fixturesResponse.Content.ReadAsStringAsync();
 
                     var all = Fixture.FromJson(json);
-
+                    
                     GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
                     IsFeedNeeded = false;
                 }
@@ -92,14 +101,14 @@ namespace BatsBadmintonFixtures.ViewModels
         }
           
 
-        public List<GroupedFixtures> SortIntoDateGroups(Fixture[] fixtures)
+        public List<GroupedFixtures> FormatFixturesArrayIntoDateGroups(Fixture[] fixtures)
         {
-            List<GroupedFixtures> groupedList = AddFixturesToDateGroup(fixtures);
+            List<GroupedFixtures> groupedList = SortIntoDateGroups(fixtures);
             
             return groupedList;
         }
 
-        public List<GroupedFixtures> AddFixturesToDateGroup(Fixture[] fixtures)
+        public List<GroupedFixtures> SortIntoDateGroups(Fixture[] fixtures)
         {
             List<GroupedFixtures> groupedList = new List<GroupedFixtures>();
             var Jan = new GroupedFixtures() { LongName = "January", ShortName = "Jan" };
@@ -206,6 +215,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
             return groupedList;
         }
+
 
 
     }
