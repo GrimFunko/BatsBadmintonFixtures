@@ -22,11 +22,13 @@ namespace BatsBadmintonFixtures.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         public ICommand LoginCommand { get; }
+        public ICommand RegisterCommand { get; }
 
         public LoginViewModel()
         {
             Title = "Bats Login";
             LoginCommand = new Command(async () => await CheckLoginAttempt());
+            RegisterCommand = new Command(() => Application.Current.MainPage = new RegistrationPage());
         }
 
         private string _username = "";
@@ -53,19 +55,22 @@ namespace BatsBadmintonFixtures.ViewModels
             bool success = false;
             try
             {
+                var post = Utilities.GetJsonString(new { type = "login-request", username = Username, password = Password });
                 using (var loginResponse =
-                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, 
-                                                        new StringContent(Utilities.GetPOSTJson(Username, Password),
-                                                                          Encoding.UTF8,
-                                                                          "application/json")))
+                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/user/login", 
+                                                        new StringContent(post,Encoding.UTF8,"application/json")))
                 {
                     var json = await loginResponse.Content.ReadAsStringAsync();
                     var response = LoginResponse.FromJson(json);
 
-                    if (response.Valid)
+                    if (response.ApiKey != null)
                     { 
                         success = true;
                         Application.Current.Properties["UserAccessLevel"] = response.AccessLevel;
+                        Application.Current.Properties["ApiKey"] = response.ApiKey;
+                        Application.Current.Properties["CurrentUserId"] = response.UserID;
+
+                        Utilities.ApiClient.DefaultRequestHeaders.Add("apikey", response.ApiKey);
                     }
 
                 }

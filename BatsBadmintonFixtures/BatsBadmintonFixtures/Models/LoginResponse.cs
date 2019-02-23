@@ -7,12 +7,14 @@ namespace BatsBadmintonFixtures.Models
 {
     public partial class LoginResponse
     {
-        [JsonProperty("valid")]
-        public bool Valid { get; set; }
+        [JsonProperty("user_id")]
+        public string UserID { get; set; }
 
-        [JsonProperty("access level")]
+        [JsonProperty("access_level")]
         public string AccessLevel { get; set; }
 
+        [JsonProperty("key")]
+        public string ApiKey { get; set; }
     }
 
     public partial class LoginResponse

@@ -54,11 +54,8 @@ namespace BatsBadmintonFixtures.ViewModels
             
             try
             {
-                using (var fixturesResponse = 
-                    await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress, 
-                                                        new StringContent(Utilities.GetPOSTJson(),
-                                                                          Encoding.UTF8,
-                                                                          "application/json")))
+                using (var fixturesResponse =
+                    await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/fixtures")) 
                 {
                     var json = await fixturesResponse.Content.ReadAsStringAsync();
 

@@ -12,28 +12,9 @@ namespace BatsBadmintonFixtures.Config
     {
         public static HttpClient ApiClient { get; set; }
 
-        public static string GetPOSTJson(string _Username, string _Password)
+        public static string GetJsonString(object obj)
         {
-            object bodyObject = new
-            {
-                type = "login-request",
-                username = _Username,
-                password = _Password
-            };
-            string json = JsonConvert.SerializeObject(bodyObject);
-
-            return json;
-        }
-
-        public static string GetPOSTJson()
-        {
-            object bodyObject = new
-            {
-                type = "fixtures-request"
-            };
-            string json = JsonConvert.SerializeObject(bodyObject);
-
-            return json;
+            return JsonConvert.SerializeObject(obj);
         }
 
         public static void InitialiseClient()
@@ -42,15 +23,12 @@ namespace BatsBadmintonFixtures.Config
 
             HttpClientHandler clientHandler = new HttpClientHandler()
             {
-                AllowAutoRedirect = true,
+                AllowAutoRedirect = false,
                 UseCookies = true,
                 CookieContainer = new CookieContainer()
             };
             ApiClient = new HttpClient(clientHandler);
             ApiClient.BaseAddress = cd.BaseAddress;
-
-            ApiClient.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue(cd.AuthHeaderType,cd.AuthHeaderPassword);
             
         }
 

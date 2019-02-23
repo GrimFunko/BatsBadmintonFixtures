@@ -121,7 +121,7 @@ namespace BatsBadmintonFixtures.Tests
         public void AddFixturesToDateGroup_ShouldAddFixtures()
         {
             var fvm = new FixturesViewModel();
-            var actual = fvm.AddFixturesToDateGroup(fixtures);
+            var actual = fvm.SortIntoDateGroups(fixtures);
 
             Assert.Equal(3, actual.Count());
         }
@@ -146,7 +146,7 @@ namespace BatsBadmintonFixtures.Tests
             groupedList.Add(Mar);
 
             var expected = groupedList; 
-            var actual = fvm.AddFixturesToDateGroup(fixtures);
+            var actual = fvm.SortIntoDateGroups(fixtures);
 
             Assert.Equal(expected, actual);
         }
