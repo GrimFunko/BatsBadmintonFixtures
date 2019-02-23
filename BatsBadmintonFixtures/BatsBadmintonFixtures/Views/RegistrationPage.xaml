@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:BatsBadmintonFixtures"
+             xmlns:viewmodel="clr-namespace:BatsBadmintonFixtures.ViewModels"
+             x:Class="BatsBadmintonFixtures.RegistrationPage"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <viewmodel:RegistrationViewModel/>
+    </ContentPage.BindingContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="Subtitle" 
+               Text="Registration 1 of 2" FontSize="25" TextColor="Black" HorizontalTextAlignment="Center"
+               Grid.Column="1" Grid.Row="1" />
+
+        <StackLayout x:Name="formPage1" IsVisible="{Binding Page1}" Grid.Column="1" Grid.Row="2">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="Username" FontSize="Medium"/>
+                <Label Text="*" TextColor="Red"/>
+                <Label Text="6-24 characters (a-z, 0-9)" FontSize="Micro" VerticalTextAlignment="End"/>
+            </StackLayout>
+            <Entry x:Name="usernameField" 
+                   Placeholder="e.g. LoveShuttles69" Text="{Binding Username}" 
+                   FontSize="Small" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="Password" FontSize="Medium"/>
+                <Label Text="*" TextColor="Red"/>
+                <Label Text="6-54 characters (a-z, 0-9, specials)" FontSize="Micro" VerticalTextAlignment="End"/>
+            </StackLayout>
+            <Entry x:Name="passwordField" 
+                   Placeholder="choose a password" IsPassword="True" Text="{Binding Password}" 
+                   FontSize="Small"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="Confirm password" FontSize="Medium"/>
+                <Label Text="*" TextColor="Red"/>
+            </StackLayout>
+            <Entry x:Name="confPasswordField" 
+                   Placeholder="retype your password" IsPassword="True" Text="{Binding ConfirmPassword}" 
+                   FontSize="Small"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="Email" FontSize="Medium"/>
+                <Label Text="*" TextColor="Red"/>
+            </StackLayout>
+            <Entry x:Name="emailField" 
+                   Placeholder="e.g. johnsmith@email.org" Text="{Binding Email}" 
+                   FontSize="Small" Keyboard="Email"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+                <Button Text="Next" x:Name="nextButton"/>
+            </StackLayout>
+        </StackLayout>
+        
+        <StackLayout x:Name="formPage2" IsVisible="{Binding Page2}" Grid.Column="1" Grid.Row="2">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="First name(s)" FontSize="Medium"/>
+                <Label Text="*" TextColor="Red"/>
+            </StackLayout>
+            <Entry x:Name ="firstNameField"
+                   Placeholder="John" Text="{Binding FirstName}" 
+                   FontSize="Small" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Label Text="Surname" FontSize="Medium"/>
+                <Label Text="*" TextColor="Red"/>
+            </StackLayout>
+            <Entry x:Name="surnameField" 
+                   Placeholder="Smith" Text="{Binding Surname}" 
+                   FontSize="Small" />
+         
+            <Label Text="Contact number(s)" FontSize="Medium"/>
+            <Entry x:Name="contactTelField" 
+                   Placeholder="primary contact number e.g. mobile" Text="{Binding Telephone1}"
+                   FontSize="Small" Keyboard="Telephone"/>
+            <Button x:Name="extraNumber" 
+                    Text="add another number" 
+                    BackgroundColor="Transparent"/>
+            <Entry x:Name="tel2" 
+                   Placeholder="extra contact number e.g. work, home" Text="{Binding Telephone2}" 
+                   FontSize="Small" Keyboard="Telephone"/>
+            <Label Text="Facebook profile link" FontSize="Medium"/>
+            <Entry x:Name="facebookField" 
+                   Placeholder="e.g. johnsmith.10" Text="{Binding FBLink}"
+                   FontSize="Small" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button x:Name="previousButton" 
+                        Text="Previous" />
+                <Button Text="Submit" Command="{Binding SubmitCommand}" />
+            </StackLayout>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+        </StackLayout>
+
+
+    </Grid>
+    
+</ContentPage>
