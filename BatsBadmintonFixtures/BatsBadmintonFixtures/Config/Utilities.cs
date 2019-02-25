@@ -24,8 +24,6 @@ namespace BatsBadmintonFixtures.Config
             HttpClientHandler clientHandler = new HttpClientHandler()
             {
                 AllowAutoRedirect = false,
-                UseCookies = true,
-                CookieContainer = new CookieContainer()
             };
             ApiClient = new HttpClient(clientHandler);
             ApiClient.BaseAddress = cd.BaseAddress;

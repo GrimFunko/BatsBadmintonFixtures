@@ -23,13 +23,24 @@ namespace BatsBadmintonFixtures.ViewModels
     {
         public ICommand LoginCommand { get; }
         public ICommand RegisterCommand { get; }
+        public ICommand RememberCommand { get; }
 
         public LoginViewModel()
         {
             Title = "Bats Login";
             LoginCommand = new Command(async () => await CheckLoginAttempt());
             RegisterCommand = new Command(() => Application.Current.MainPage = new RegistrationPage());
+            RememberCommand = new Command(async () => await RememberDetailsPressed());
+
+            if(Application.Current.Properties.ContainsKey("loginDetails"))
+            {           
+                var loginDeets = Application.Current.Properties ["loginDetails"] as Dictionary<string,string>;
+                Username = loginDeets["username"];
+                Password = loginDeets["password"];
+            }
         }
+
+        private bool Remember = false;
 
         private string _username = "";
         public string Username
@@ -53,6 +64,10 @@ namespace BatsBadmintonFixtures.ViewModels
             IsBusy = true;
 
             bool success = false;
+
+            if (Remember)
+                SaveLoginDetails();
+
             try
             {
                 var post = Utilities.GetJsonString(new { type = "login-request", username = Username, password = Password });
@@ -70,7 +85,7 @@ namespace BatsBadmintonFixtures.ViewModels
                         Application.Current.Properties["ApiKey"] = response.ApiKey;
                         Application.Current.Properties["CurrentUserId"] = response.UserID;
 
-                        Utilities.ApiClient.DefaultRequestHeaders.Add("apikey", response.ApiKey);
+                        Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", response.ApiKey);
                     }
 
                 }
@@ -98,6 +113,22 @@ namespace BatsBadmintonFixtures.ViewModels
 
         }
 
+        private void SaveLoginDetails()
+        {
+            Dictionary<string, string> loginDetails = new Dictionary<string, string>();
+            loginDetails.Add("username", Username);
+            loginDetails.Add("password", Password);
+
+            Application.Current.Properties.Add("loginDetails", loginDetails);
+
+        }
+
+        private async Task RememberDetailsPressed()
+        {
+            Remember = true;
+
+            await Application.Current.MainPage.DisplayAlert("Remember login details", "Your details will be stored upon login", "OK");
+        }
 
     }
 }

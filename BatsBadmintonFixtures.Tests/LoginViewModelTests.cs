@@ -17,14 +17,16 @@ namespace BatsBadmintonFixtures.Tests
 		public void GetPostJson_ShouldReturnCorectlyFormattedString()
         {
             // Arrange
-            string username = "appadmin";
-            string password = "adminpassword";            
+            string _username = "appadmin";
+            string _password = "adminpassword";            
 
             string expected = "{\"type\":\"login-request\",\"username\":\"appadmin\"," +
                                                                           "\"password\":\"adminpassword\"}";
 
+            object obj = new { type = "login-request", username = _username, password = _password };
+
             // Actual
-            string actual = Utilities.GetPOSTJson(username, password);
+            string actual = Utilities.GetJsonString(obj);
             // Assert
 
             Assert.Equal(expected, actual);

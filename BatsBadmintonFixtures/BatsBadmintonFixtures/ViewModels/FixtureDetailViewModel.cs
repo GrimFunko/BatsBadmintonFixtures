@@ -16,7 +16,7 @@ using BatsBadmintonFixtures.Models;
 
 namespace BatsBadmintonFixtures.ViewModels
 {
-    class FixtureDetailViewModel : BaseViewModel
+    public class FixtureDetailViewModel : BaseViewModel
     {
         public bool AdminPrivilige { get
             {
@@ -27,15 +27,84 @@ namespace BatsBadmintonFixtures.ViewModels
         }
         public ICommand OpenEditCommand { get; set; }
 
-        public FixtureDetailViewModel()
+        public FixtureDetailViewModel(object fixture)
         {
-            OpenEditCommand = new Command(() => OpenEditPage());
+            // grab (fixture)item.id, and fixture details of said fixture
+            SetProperties(fixture);
+            
+            OpenEditCommand = new Command(async () => await OpenEditPage());
         }
 
-
-        public void OpenEditPage()
+        #region Properties
+        private string _fixtureId;
+        public string FixtureId
         {
-            // TODO Open up edit page for fixture
+            get { return _fixtureId; }
+            set { _fixtureId = value; }
+        }
+
+        private string _league;
+        public string League
+        {
+            get { return _league; }
+            set { _league = value; }
+        }
+
+        private string _batsTeam;
+        public string BatsTeam
+        {
+            get { return _batsTeam; }
+            set { _batsTeam = value; }
+        }
+
+        private string _teamVs;
+        public string TeamVs
+        {
+            get { return _teamVs; }
+            set { _teamVs = value; }
+        }
+
+        private string _venue;
+        public string Venue
+        {
+            get { return _venue; }
+            set { _venue = value; }
+        }
+
+        private string _date;
+        public string Date
+        {
+            get { return _date; }
+            set { _date = value; }
+        }
+
+        private string _time;
+        public string Time
+        {
+            get { return _time; }
+            set { _time = value; }
+        }
+        #endregion
+
+        void SetProperties(object fixture)
+        {
+            IsBusy = true;
+
+            var prop = fixture.GetType().GetProperties();
+
+            FixtureId = (string)prop[0].GetValue(fixture);
+            League = (string)prop[1].GetValue(fixture);
+            BatsTeam = (string)prop[2].GetValue(fixture);
+            TeamVs = (string)prop[3].GetValue(fixture);
+            Venue = (string)prop[4].GetValue(fixture);
+            Date = (string)prop[9].GetValue(fixture);
+            Time = (string)prop[6].GetValue(fixture);
+
+            IsBusy = false;
+        }
+        public async Task OpenEditPage()
+        {
+            // TODO Open up edit page for fixtures
         }
     }
 }

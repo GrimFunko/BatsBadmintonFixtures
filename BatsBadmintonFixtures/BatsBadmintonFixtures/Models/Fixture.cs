@@ -10,7 +10,7 @@ namespace BatsBadmintonFixtures.Models
     public partial class Fixture
     {
         [JsonProperty("id")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         [JsonProperty("league")]
         public string League { get; set; }
@@ -30,6 +30,9 @@ namespace BatsBadmintonFixtures.Models
         [JsonProperty("time")]
         public string Time { get; set; }
 
+        [JsonProperty("message")]
+        public string Message { get; set; }
+
         public string FixtureTeams { get { return Venue + " vs " + TeamVs; } }
 
         public string FixtureListDateFormat { get { return FormatDateProp(Date); } }
@@ -38,7 +41,9 @@ namespace BatsBadmintonFixtures.Models
 
     public partial class Fixture
     { 
-        public static Fixture[] FromJson(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);     
+        public static Fixture[] FromJsonArray(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);
+
+        public static Fixture FromJson(string json) => JsonConvert.DeserializeObject<Fixture>(json);
         
         private string FormatDateProp(string date)
         {             

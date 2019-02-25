@@ -22,7 +22,7 @@ namespace BatsBadmintonFixtures.Tests
         Fixture[] fixtures =
         {
             new Fixture{
-                ID = 6,
+                ID = "aaaa-aaaa",
                 League = "Brighton Division 3",
                 BatsTeam = "Men's Combination",
                 TeamVs = "Chanctonbury",
@@ -32,7 +32,7 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = 7,
+                ID = "abbb-bbbb",
                 League = "Brighton Division 2",
                 BatsTeam = "Men's Combination",
                 TeamVs = "Chanctonbury",
@@ -42,7 +42,7 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = 10,
+                ID = "abbb-bbbc",
                 League = "Brighton Division 3",
                 BatsTeam = "Men's Combination",
                 TeamVs = "Chanctonbury",
@@ -52,7 +52,7 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = 11,
+                ID = "abbb-bbcc",
                 League = "Brighton Division 3",
                 BatsTeam = "Men's Combination",
                 TeamVs = "Chanctonbury",
@@ -62,7 +62,7 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = 20,
+                ID = "abbb-bccc",
                 League = "Brighton Division 1",
                 BatsTeam = "Mixed Doubles",
                 TeamVs = "Chanctonbury",
@@ -157,8 +157,9 @@ namespace BatsBadmintonFixtures.Tests
 
             string expected = "{\"type\":\"fixtures-request\"}";
 
+            object obj = new { type = "fixtures-request" };
             // Actual
-            string actual = Utilities.GetPOSTJson();
+            string actual = Utilities.GetJsonString(obj);
             // Assert
 
             Assert.Equal(expected, actual);

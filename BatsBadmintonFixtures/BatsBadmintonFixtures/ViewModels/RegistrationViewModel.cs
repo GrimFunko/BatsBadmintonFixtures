@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Diagnostics;
 using System.Windows.Input;
-
+using System.Net;
+using System.Net.Http;
 using System.ComponentModel;
+
 using MvvmHelpers;
 using Xamarin.Forms;
 using Newtonsoft.Json;
 
 using BatsBadmintonFixtures.Config;
 using BatsBadmintonFixtures.Models;
-using System.Threading.Tasks;
-using System.Net.Http;
+using System.IO;
 
 namespace BatsBadmintonFixtures.ViewModels
 {
@@ -32,63 +36,63 @@ namespace BatsBadmintonFixtures.ViewModels
 
 
         #region FormProperties
-        private string _username;
+        private string _username = "";
         public string Username
         {
             get { return _username; }
             set { _username = value; }
         }
 
-        private string _password;
+        private string _password = "";
         public string Password
         {
             get { return _password; }
             set { _password = value; }
         }
 
-        private string _confirmPassword;
+        private string _confirmPassword = "";
         public string ConfirmPassword
         {
             get { return _confirmPassword; }
             set { _confirmPassword = value; }
         }
 
-        private string _email;
+        private string _email = "";
         public string Email
         {
             get { return _email; }
             set { _email = value; }
         }
 
-        private string _firstName;
+        private string _firstName = "";
         public string FirstName
         {
             get { return _firstName; }
             set { _firstName = value; }
         }
 
-        private string _surname;
+        private string _surname = "";
         public string Surname
         {
             get { return _surname; }
             set { _surname = value; }
         }
 
-        private string _telephone1;
+        private string _telephone1 = "";
         public string Telephone1
         {
             get { return _telephone1; }
             set { _telephone1 = value; }
         }
 
-        private string _telephone2;
+        private string _telephone2 = "";
         public string Telephone2
         {
             get { return _telephone2; }
             set { _telephone2 = value; }
         }
 
-        private string _fbLink;
+        private string _fbLink = "";
         public string FBLink
         {
             get { return _fbLink; }
@@ -125,7 +129,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
             try
             {
-                object details = new
+                var post = Utilities.GetJsonString(new
                 {
                     type = "user-registration",
                     username = Username,
@@ -137,23 +141,26 @@ namespace BatsBadmintonFixtures.ViewModels
                     tel1 = Telephone1,
                     tel2 = Telephone2,
                     fbLink = FBLink
-                };
+                });
 
-                var post = Utilities.GetJsonString(details);
+                var strcon = new StringContent(post, Encoding.UTF8, "application/json");
+                
+                Debug.WriteLine(post);
 
                 using (var response = await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/user/register",
-                                                                        new StringContent(post, Encoding.UTF8, "application/json")))
+                                                                        strcon))
                 {
                     if (response.IsSuccessStatusCode)
                     {
+                        Debug.WriteLine("success message");
                         string json = await response.Content.ReadAsStringAsync();
                         var resp = RegistrationResponse.FromJson(json);
 
-                        await Application.Current.MainPage.DisplayAlert("Successfully submitted", resp.Message, "OK");
+                        await Application.Current.MainPage.DisplayAlert("Submitted", resp.Message, "OK");
                         success = true;
                     }
-                    else
-                        await Application.Current.MainPage.DisplayAlert("Something went wrong.", response.ReasonPhrase, "OK");
+                    else // Generalised server response model to show "message"
+                        await Application.Current.MainPage.DisplayAlert("Error!",(int)response.StatusCode + " " + response.ReasonPhrase, "OK");
                 }
 
             }

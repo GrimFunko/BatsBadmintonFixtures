@@ -31,6 +31,7 @@
             <Label Text="Sign in to BatsBadmintonHub" />
             <Entry x:Name="UsernameEntry" Placeholder="Username" Text="{Binding Username, Mode=TwoWay}"/>
             <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" Text="{Binding Password, Mode=TwoWay}"/>
+            <Button Text="Remember Me" Command="{Binding RememberCommand}" BackgroundColor="Transparent" TextColor="Gray"/>
             <Button x:Name="Login" Text="Login" Command="{Binding LoginCommand}"/>
             <Button Text="Not a member? Register now." BackgroundColor="Transparent" Command="{Binding RegisterCommand}"/>
             <ActivityIndicator IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>

@@ -21,10 +21,8 @@ namespace BatsBadmintonFixtures
         // TODO Build and implement the rest of the fixture details page
         public FixtureDetailPage (object item)
 		{
-            SelectedItem = item;
-            BindingContext = SelectedItem;
             InitializeComponent ();
-            
+            BindingContext = new FixtureDetailViewModel(item);
 		}
 	}
 }

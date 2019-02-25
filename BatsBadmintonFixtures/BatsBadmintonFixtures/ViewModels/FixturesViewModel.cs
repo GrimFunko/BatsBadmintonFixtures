@@ -11,6 +11,7 @@ using System.Net.Http;
 using MvvmHelpers;
 using Xamarin.Forms;
 using Newtonsoft.Json;
+using Microsoft.CSharp;
 
 using BatsBadmintonFixtures.Config;
 using BatsBadmintonFixtures.Models;
@@ -55,12 +56,29 @@ namespace BatsBadmintonFixtures.ViewModels
             try
             {
                 using (var fixturesResponse =
-                    await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/fixtures")) 
+                    await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/fixtures/")) 
                 {
                     var json = await fixturesResponse.Content.ReadAsStringAsync();
 
-                    var all = Fixture.FromJson(json);
-                    
+                    dynamic all;
+                    if (json.Contains('['))
+                        all = Fixture.FromJsonArray(json);
+                    else
+                        all = Fixture.FromJson(json);
+
+                    Type type = all?.GetType();
+
+                    if (type != typeof(Fixture[]))
+                    {
+
+                        if (all.Message != null)
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Something went wrong", all.Message, "OK");
+                            IsBusy = false;
+                        }
+                        return;
+                    }
+
                     GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
                     IsFeedNeeded = false;
                 }
