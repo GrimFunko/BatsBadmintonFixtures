@@ -16,8 +16,12 @@ namespace BatsBadmintonFixtures
             if (!isLoggedIn)
                 MainPage = new LoginPage();
             else
+            {
                 MainPage = new HomePage();
-            
+                if(Cache.Contains("ApiKey"))
+                    Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", (string)Cache.Get("ApiKey"));
+            }
+
         }
 
         protected override void OnStart()

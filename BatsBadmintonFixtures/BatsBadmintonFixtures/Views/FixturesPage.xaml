@@ -8,71 +8,76 @@
         <viewmodel:FixturesViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Button VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsFeedNeeded}"
+        <Grid>
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Button VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsFeedNeeded}"
                     Text="Get Feed" IsEnabled="{Binding IsNotBusy}" 
                     Command="{Binding GetUpcomingFixturesCommand}"/>
-            <ListView x:Name="_listView"
+                <ListView x:Name="_listView"
                       ItemSelected="_ItemSelected"
                       SelectedItem="{Binding SelectedFixture}"
                       SeparatorColor="Black"
                       IsGroupingEnabled="True"
-                      IsPullToRefreshEnabled="False"
+                      IsPullToRefreshEnabled="True"
                       IsRefreshing="{Binding IsBusy}"
-                      RefreshCommand="{Binding GetUpcomingFixturesCommand}"
+                      RefreshCommand="{Binding RefreshFeedCommand}"
                       HasUnevenRows="True"
                       GroupDisplayBinding="{Binding Longname}"
                       GroupShortNameBinding="{Binding ShortName}"
                       ItemsSource="{Binding GroupedUpcomingFixtures}">
-                <ListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <ViewCell Height="40">
-                            <Label Text="{Binding LongName}" 
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell Height="40">
+                                <Label Text="{Binding LongName}" 
                                    TextColor="#9b1141"
                                    FontAttributes="Bold" 
                                    FontSize="20" 
                                    VerticalTextAlignment="Center"/>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.GroupHeaderTemplate>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell Height="120">
-                            <Grid CompressedLayout.IsHeadless="True" RowSpacing="0" Margin="0, 0, 0, 10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="0.7*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="1.3*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="10"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Label Text="{Binding FixtureListDateFormat}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"/>
-                                <Label Text="{Binding League}" HorizontalTextAlignment="Center"
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell Height="120">
+                                <Grid CompressedLayout.IsHeadless="True" RowSpacing="0" Margin="0, 0, 0, 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="0.7*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1.3*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="10"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Text="{Binding FixtureListDateFormat}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"/>
+                                    <Label Text="{Binding League}" HorizontalTextAlignment="Center"
                                        Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1"/>
-                                <Label Text="{Binding BatsTeam}" FontSize="25" HorizontalTextAlignment="Center"
+                                    <Label Text="{Binding BatsTeam}" FontSize="25" HorizontalTextAlignment="Center"
                                        TextColor="Black"
                                        Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="2"/>
-                                <Label Text="{Binding Venue}" HorizontalTextAlignment="End" FontAttributes="Bold"
+                                    <Label Text="{Binding Venue}" HorizontalTextAlignment="End" FontAttributes="Bold"
                                        Grid.Column="1" Grid.Row="3"/>
-                                <Label Text="Vs." HorizontalTextAlignment="Center"
+                                    <Label Text="Vs." HorizontalTextAlignment="Center"
                                        Grid.Column="2" Grid.Row="3"/>
-                                <Label Text="{Binding TeamVs}" HorizontalTextAlignment="Start"
+                                    <Label Text="{Binding TeamVs}" HorizontalTextAlignment="Start"
                                        Grid.Column="3" Grid.Row="3"/>
-                                <Label Text="{Binding Time}" HorizontalTextAlignment="Center"
+                                    <Label Text="{Binding Time}" HorizontalTextAlignment="Center"
                                        Grid.Column="4" Grid.Row="3"/>
 
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

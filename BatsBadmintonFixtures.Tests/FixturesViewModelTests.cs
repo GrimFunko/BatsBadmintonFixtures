@@ -164,5 +164,54 @@ namespace BatsBadmintonFixtures.Tests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void RemoveOldFixtures_ShouldRemoveCorrectly()
+        {
+            Fixture[] expected = new Fixture[]
+            {
+                new Fixture
+                {
+                    ID = "abbb-bbcc",
+                    League = "Brighton Division 3",
+                    BatsTeam = "Men's Combination",
+                    TeamVs = "Chanctonbury",
+                    Venue = "Home",
+                    Date = "2019-03-23",
+                    Time = "20:00:00"
+                },
+                new Fixture
+                {
+                    ID = "abbb-bccc",
+                    League = "Brighton Division 1",
+                    BatsTeam = "Mixed Doubles",
+                    TeamVs = "Chanctonbury",
+                    Venue = "Home",
+                    Date = "2019-03-25",
+                    Time = "20:00:00"
+                }
+            };
+
+            var fvm = new FixturesViewModel();
+            var actual = fvm.RemoveOldFixtures(fixtures);
+
+            Assert.Equal(2, actual.Length);
+            //Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CacheAvailable_ShouldCorrectlyIdentifyIfCacheIsAvailable()
+        {
+            var fvm = new FixturesViewModel();
+            Application.Current.Properties.Add("Fixture", string.Empty);
+            Application.Current.Properties.Add("fixCacheDate", DateTime.Now);
+
+            bool expected = true;
+
+            var actual = fvm.CacheAvailable();
+
+            Assert.Equal(expected, actual);
+
+        }
     }
 }

@@ -18,10 +18,11 @@ using BatsBadmintonFixtures.Models;
 
 namespace BatsBadmintonFixtures.ViewModels
 {
-    public class FixturesViewModel : BaseViewModel
+    public class FixturesViewModel : BaseViewModel, ICacheable
     {
         public ObservableRangeCollection<GroupedFixtures> GroupedUpcomingFixtures { get; set; }
         public ICommand GetUpcomingFixturesCommand { get; }
+        public ICommand RefreshFeedCommand { get; }
 
         private object _selectedFixture;
 
@@ -38,62 +39,72 @@ namespace BatsBadmintonFixtures.ViewModels
             get { return _isFeedNeeded; }
             set { SetProperty<bool>(ref _isFeedNeeded, value, "IsFeedNeeded", () => OnPropertyChanged("IsFeedNeeded")); }
         }
-     
+
+        public string CacheItemName { get; set; }
+
         public FixturesViewModel()
         {
-            Title = "Fixtures";
+            Title = "Upcoming Fixtures";
+            CacheItemName = "Fixture";
             GroupedUpcomingFixtures = new ObservableRangeCollection<GroupedFixtures>();
+            if (CacheAvailable())
+                DisplayCache();
 
-            GetUpcomingFixturesCommand = new Command(async () => await GetUpcomingFixtures());
+            GetUpcomingFixturesCommand = new Command(async () => await GetUpcomingFixtures(false));
+            RefreshFeedCommand = new Command(async () => await GetUpcomingFixtures(true));
+
         }
 
-        async Task GetUpcomingFixtures()
+        // TODO Investigate IsRefreshing exhibiting always true behaviour
+        async Task GetUpcomingFixtures(bool refresh)
         {
-            if (IsBusy) 
+            if (IsBusy)
                 return;
             IsBusy = true;
-            
+
+            Fixture[] all;
+            string json = null;
+
             try
             {
-                using (var fixturesResponse =
-                    await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/fixtures/")) 
-                {
-                    var json = await fixturesResponse.Content.ReadAsStringAsync();
-
-                    dynamic all;
-                    if (json.Contains('['))
-                        all = Fixture.FromJsonArray(json);
-                    else
-                        all = Fixture.FromJson(json);
-
-                    Type type = all?.GetType();
-
-                    if (type != typeof(Fixture[]))
-                    {
-
-                        if (all.Message != null)
-                        {
-                            await Application.Current.MainPage.DisplayAlert("Something went wrong", all.Message, "OK");
-                            IsBusy = false;
-                        }
-                        return;
-                    }
-
-                    GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
-                    IsFeedNeeded = false;
-                }
-                    
+                json = await GetAPIData();
             }
-            catch(Exception Ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Something went wrong!", Ex.Message, "OK");
-            }
-            finally
+            catch (Exception ex)
             {
                 IsBusy = false;
+                await Application.Current.MainPage.DisplayAlert("Something went wrong!", ex.Message, "OK");
+                return;
             }
+
+            if (json == null)
+                return;
+
+            all = Fixture.FromJsonArray(json);
+
+            if (all[0].Message != null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Something went wrong!", all[0].Message, "OK");
+                IsBusy = false;
+                return;
+            }
+            SaveToCache(CacheItemName, json);
+
+            GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(all));
+            IsFeedNeeded = CheckForFeedNeeded();
+            IsBusy = false;
         }
-        
+
+        public void DisplayCache()
+        {
+            IsBusy = true;
+
+            var json = GetCache(CacheItemName);
+            var fixtures = Fixture.FromJsonArray(json);
+            GroupedUpcomingFixtures.ReplaceRange(SortIntoDateGroups(RemoveOldFixtures(fixtures)));
+
+            IsFeedNeeded = CheckForFeedNeeded();
+            IsBusy = false;
+        }
 
         public List<string> GetListOfDistinctDates(Fixture[] fixtures)
         {
@@ -115,14 +126,6 @@ namespace BatsBadmintonFixtures.ViewModels
             return GroupedUpcomingFixtures.Count > 0 ? false : true;
         }
           
-
-        public List<GroupedFixtures> FormatFixturesArrayIntoDateGroups(Fixture[] fixtures)
-        {
-            List<GroupedFixtures> groupedList = SortIntoDateGroups(fixtures);
-            
-            return groupedList;
-        }
-
         public List<GroupedFixtures> SortIntoDateGroups(Fixture[] fixtures)
         {
             List<GroupedFixtures> groupedList = new List<GroupedFixtures>();
@@ -231,8 +234,52 @@ namespace BatsBadmintonFixtures.ViewModels
             return groupedList;
         }
 
+        public void SaveToCache(string cacheName, string jsonItem)
+        {  
+            Cache.Save(cacheName, jsonItem);
+            Cache.Save("FixtureCacheDate", DateTime.Now.Date);
+        }
 
+        public string GetCache(string cacheName)
+        {
+            return (string) Cache.Get(cacheName);
+        }
 
+        private async Task<string> GetAPIData()
+        { 
+            using (var fixturesResponse =
+                await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/fixtures/"))
+            {
+                return await fixturesResponse.Content.ReadAsStringAsync();
+            }
+        }
+
+        public Fixture[] RemoveOldFixtures(Fixture[] fixArray)
+        {
+            var fixList = fixArray.ToList();
+            var date = DateTime.Now.Date;
+            foreach (Fixture fix in fixArray)
+            {
+                var fixDate = Convert.ToDateTime(fix.Date);
+                if (fixDate < date)
+                    fixList.Remove(fix);
+            }
+
+            return fixList.ToArray();
+        }
+
+        public bool CacheAvailable()
+        {
+            // check if cache is there and check the date, return bool satisfying availability
+            bool exists = Cache.Contains(CacheItemName);
+            bool inDate = Cache.Contains("FixtureCacheDate") && 
+                (Convert.ToDateTime(Cache.Get("FixtureCacheDate")) >= DateTime.Now.AddDays(-7));
+
+            if (exists && inDate)
+                return true;
+
+            return false;
+        }
     }
 }
 

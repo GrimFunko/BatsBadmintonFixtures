@@ -32,9 +32,9 @@ namespace BatsBadmintonFixtures.ViewModels
             RegisterCommand = new Command(() => Application.Current.MainPage = new RegistrationPage());
             RememberCommand = new Command(async () => await RememberDetailsPressed());
 
-            if(Application.Current.Properties.ContainsKey("loginDetails"))
+            if(Cache.Contains("LoginDetails"))
             {           
-                var loginDeets = Application.Current.Properties ["loginDetails"] as Dictionary<string,string>;
+                var loginDeets = Cache.Get("LoginDetails") as Dictionary<string,string>;
                 Username = loginDeets["username"];
                 Password = loginDeets["password"];
             }
@@ -81,11 +81,12 @@ namespace BatsBadmintonFixtures.ViewModels
                     if (response.ApiKey != null)
                     { 
                         success = true;
-                        Application.Current.Properties["UserAccessLevel"] = response.AccessLevel;
-                        Application.Current.Properties["ApiKey"] = response.ApiKey;
-                        Application.Current.Properties["CurrentUserId"] = response.UserID;
+                        Cache.Save("UserAccessLevel", response.AccessLevel);
+                        Cache.Save("ApiKey", response.ApiKey);
+                        Cache.Save("CurrentUserId", response.UserID);
 
-                        Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", response.ApiKey);
+                       Utilities.ApiClient.DefaultRequestHeaders.Clear();
+                       Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", response.ApiKey);
                     }
 
                 }
@@ -105,7 +106,7 @@ namespace BatsBadmintonFixtures.ViewModels
             {
                 success = false;
                 await Application.Current.MainPage.DisplayAlert("Successful login!", $"Welcome, {Username}.", "OK");
-                Application.Current.Properties["IsLoggedIn"] = Boolean.TrueString;
+                Cache.Save("IsLoggedIn", Boolean.TrueString);
                 Application.Current.MainPage = new HomePage();
             }
             else
@@ -119,7 +120,7 @@ namespace BatsBadmintonFixtures.ViewModels
             loginDetails.Add("username", Username);
             loginDetails.Add("password", Password);
 
-            Application.Current.Properties.Add("loginDetails", loginDetails);
+            Cache.Save("loginDetails", loginDetails);
 
         }
 
