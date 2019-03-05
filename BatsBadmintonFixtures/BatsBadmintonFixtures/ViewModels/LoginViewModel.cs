@@ -120,7 +120,7 @@ namespace BatsBadmintonFixtures.ViewModels
             loginDetails.Add("username", Username);
             loginDetails.Add("password", Password);
 
-            Cache.Save("loginDetails", loginDetails);
+            Cache.Save("LoginDetails", loginDetails);
 
         }
 

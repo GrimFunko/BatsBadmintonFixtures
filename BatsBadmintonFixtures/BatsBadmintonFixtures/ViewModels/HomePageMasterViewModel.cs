@@ -29,7 +29,8 @@ namespace BatsBadmintonFixtures.ViewModels
         // TODO Clear cache on logout
         public void Logout()
         {
-            Application.Current.Properties["IsLoggedIn"] = Boolean.FalseString;
+            Cache.RemoveAll();
+            Cache.Save("IsLoggedIn", false);
             Application.Current.MainPage = new LoginPage();
         }
     }

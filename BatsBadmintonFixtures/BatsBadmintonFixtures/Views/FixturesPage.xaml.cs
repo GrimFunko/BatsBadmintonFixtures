@@ -30,6 +30,10 @@ namespace BatsBadmintonFixtures
                 listView.SelectedItem = null;
             }
         }
-        
-	}
+
+        private void _listView_Refreshing(object sender, EventArgs e)
+        {
+            listView.IsRefreshing = false;
+        }
+    }
 }

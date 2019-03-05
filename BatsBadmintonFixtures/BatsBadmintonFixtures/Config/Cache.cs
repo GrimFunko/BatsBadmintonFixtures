@@ -8,8 +8,6 @@ namespace BatsBadmintonFixtures.Config
 {
     public static class Cache
     {
-        
-
         public static bool Contains(string itemName)
         {
             return Application.Current.Properties.ContainsKey(itemName);
@@ -25,9 +23,18 @@ namespace BatsBadmintonFixtures.Config
             return Application.Current.Properties[itemName];
         }
 
+        // Removes all cached items, except for remembered login details
         public static void RemoveAll()
         {
-            // TODO Implement remove cache feature, leaving remembered login details (?)
+            var login = Contains("LoginDetails") ? Get("LoginDetails") : null;
+            Application.Current.Properties.Clear();
+            if (login != null)
+                Save("LoginDetails", login);
+        }
+
+        public static void Remove(string itemName)
+        {
+            Application.Current.Properties[itemName] = null;
         }
 
     }
