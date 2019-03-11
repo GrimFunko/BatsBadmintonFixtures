@@ -13,7 +13,7 @@ namespace BatsBadmintonFixtures
             InitializeComponent();
             Utilities.InitialiseClient();
 
-            bool isLoggedIn = Current.Properties.ContainsKey("IsLoggedIn") ? Convert.ToBoolean(Current.Properties["IsLoggedIn"]) : false;
+            bool isLoggedIn = Cache.Contains("IsLoggedIn") ? (bool)Cache.Get("IsLoggedIn") : false;
             if (!isLoggedIn)
                 MainPage = new LoginPage();
             else
@@ -21,8 +21,9 @@ namespace BatsBadmintonFixtures
                 MainPage = new HomePage();
                 if(Cache.Contains("ApiKey"))
                     Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", (string)Cache.Get("ApiKey"));
+                if (Cache.Contains("UserAccessLevel"))
+                    CurrentUser.AccessLevel = (AccessLevels)Cache.Get("UserAccessLevel");
             }
-
         }
 
         protected override void OnStart()
@@ -33,6 +34,7 @@ namespace BatsBadmintonFixtures
         protected override void OnSleep()
         {
             // Handle when your app sleeps
+            SavePropertiesAsync();
         }
 
         protected override void OnResume()

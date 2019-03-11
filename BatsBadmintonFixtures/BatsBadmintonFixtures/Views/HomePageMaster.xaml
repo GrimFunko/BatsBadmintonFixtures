@@ -14,7 +14,7 @@
                   HasUnevenRows="true">
             <ListView.ItemsSource>
                 <x:Array Type="{x:Type local:HomePageMenuItem}">
-                    <local:HomePageMenuItem Title="Fixtures" TargetType="{x:Type local:FixturesPage}" />
+                    <local:HomePageMenuItem Title="Upcoming Fixtures" TargetType="{x:Type local:FixturesPage}" />
                 </x:Array>
             </ListView.ItemsSource>
             <ListView.Header>

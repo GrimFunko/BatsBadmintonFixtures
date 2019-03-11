@@ -26,9 +26,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
         public RegistrationViewModel()
         {
-            Title = "Bats registration";
-            //Page1 = true;
-            //Page2 = false;
+            Title = "Bats registration";      
             // send registration details command
             SubmitCommand = new Command(async () => await SubmitRegistrationDetails());
             CancelCommand = new Command(() => Application.Current.MainPage = new LoginPage());
@@ -99,23 +97,6 @@ namespace BatsBadmintonFixtures.ViewModels
             set { _fbLink = value; }
         }
 
-        //private bool _page1;
-
-        //public bool Page1
-        //{
-        //    get { return _page1; }
-        //    set { _page1 = value; }
-        //}
-
-        //private bool _page2;
-
-        //public bool Page2
-        //{
-        //    get { return _page2; }
-        //    set { _page2 = value; }
-        //}
-
-
         #endregion
 
         private async Task SubmitRegistrationDetails()
@@ -129,30 +110,16 @@ namespace BatsBadmintonFixtures.ViewModels
 
             try
             {
-                var post = Utilities.GetJsonString(new
-                {
-                    type = "user-registration",
-                    username = Username,
-                    password = Password,
-                    cpassword = ConfirmPassword,
-                    email = Email,
-                    first_name = FirstName,
-                    surname = Surname,
-                    tel1 = Telephone1,
-                    tel2 = Telephone2,
-                    fbLink = FBLink
-                });
+                User newUser = new User(Username,Email,Password,ConfirmPassword,FirstName,Surname,Telephone1,Telephone2,FBLink);
+                var post = Utilities.GetJsonString(newUser);
 
                 var strcon = new StringContent(post, Encoding.UTF8, "application/json");
-                
-                Debug.WriteLine(post);
-
+               
                 using (var response = await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/user/register",
                                                                         strcon))
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        Debug.WriteLine("success message");
                         string json = await response.Content.ReadAsStringAsync();
                         var resp = RegistrationResponse.FromJson(json);
 

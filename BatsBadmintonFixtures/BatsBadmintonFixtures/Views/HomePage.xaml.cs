@@ -17,6 +17,7 @@ namespace BatsBadmintonFixtures
             InitializeComponent();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
             Detail = new NavigationPage(new FixturesPage());
+            Detail.Title = "Upcoming Fixtures";
         }
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -26,10 +27,12 @@ namespace BatsBadmintonFixtures
                 return;
 
             var page = (Page)Activator.CreateInstance(item.TargetType);
-            page.Title = item.Title;
-
-            if (Detail != page)
+            
+            if (Detail.Title != page.Title)
+            {
                 Detail = new NavigationPage(page);
+                Detail.Title = page.Title;
+            }
 
             IsPresented = false;
 

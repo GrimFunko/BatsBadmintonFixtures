@@ -12,10 +12,7 @@ namespace BatsBadmintonFixtures.Config
     {
         public static HttpClient ApiClient { get; set; }
 
-        public static string GetJsonString(object obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
+        public static string GetJsonString(object obj) => JsonConvert.SerializeObject(obj);
 
         public static void InitialiseClient()
         {
@@ -29,6 +26,25 @@ namespace BatsBadmintonFixtures.Config
             ApiClient.BaseAddress = cd.BaseAddress;
             
         }
+    }
 
+    public enum AccessLevels
+    {
+        unauthorised = -1,
+        guest = 0,
+        player = 1,
+        captain = 2,
+        admin = 3
+    };
+
+    public static class CurrentUser
+    {
+        public static AccessLevels AccessLevel { get; set; }
+
+        public static string Username { get; set; }
+
+        public static string FirstName { get; set; }
+
+        public static string UserId { get; set; }
     }
 }

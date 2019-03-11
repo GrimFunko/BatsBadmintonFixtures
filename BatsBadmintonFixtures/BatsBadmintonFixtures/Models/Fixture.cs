@@ -37,6 +37,13 @@ namespace BatsBadmintonFixtures.Models
 
         public string FixtureListDateFormat { get { return FormatDateProp(Date); } }
 
+        public bool FullTeam { get
+            {
+                if (BatsTeam.Contains("Combination") || BatsTeam.Contains("Women"))
+                    return false;
+                return true;
+            } }
+
     }
 
     public partial class Fixture

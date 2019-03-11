@@ -23,6 +23,42 @@ namespace BatsBadmintonFixtures
 		{
             InitializeComponent ();
             BindingContext = new FixtureDetailViewModel(item);
+            if (EditHack.IsVisible)
+            {
+                ToolbarItems.Add(new ToolbarItem()
+                {
+                    Text = "Edit",
+                    Command = ((FixtureDetailViewModel)BindingContext).OpenEditCommand
+                });
+            }   
+                
+
+            var fix = item as Fixture;
+            var FullTeam = fix.FullTeam;
+
+            if (FullTeam)
+            {
+                CPairLabel.IsVisible = true;
+                CPos1.IsVisible = true;
+                CPos2.IsVisible = true;
+                CMem1.IsVisible = true;
+                CMem2.IsVisible = true;
+
+                Grid.SetRow(ResPairLabel, 6);
+                Grid.SetRow(ResPos1, 6);
+                Grid.SetRow(ResPos2, 7);
+                Grid.SetRow(ResMem1, 6);
+                Grid.SetRow(ResMem2, 7);
+            }
+            else
+            {
+                CPairLabel.IsVisible = false;
+                CPos1.IsVisible = false;
+                CPos2.IsVisible = false;
+                CMem1.IsVisible = false;
+                CMem2.IsVisible = false;
+            }
+            
 		}
 	}
 }

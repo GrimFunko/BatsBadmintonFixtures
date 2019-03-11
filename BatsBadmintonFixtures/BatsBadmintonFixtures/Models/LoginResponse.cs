@@ -8,7 +8,7 @@ namespace BatsBadmintonFixtures.Models
     public partial class LoginResponse
     {
         [JsonProperty("user_id")]
-        public string UserID { get; set; }
+        public string UserId { get; set; }
 
         [JsonProperty("access_level")]
         public string AccessLevel { get; set; }

@@ -27,7 +27,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
         public LoginViewModel()
         {
-            Title = "Bats Login";
+            Title = "Bat Hub Login";
             LoginCommand = new Command(async () => await CheckLoginAttempt());
             RegisterCommand = new Command(() => Application.Current.MainPage = new RegistrationPage());
             RememberCommand = new Command(async () => await RememberDetailsPressed());
@@ -81,12 +81,17 @@ namespace BatsBadmintonFixtures.ViewModels
                     if (response.ApiKey != null)
                     { 
                         success = true;
-                        Cache.Save("UserAccessLevel", response.AccessLevel);
-                        Cache.Save("ApiKey", response.ApiKey);
-                        Cache.Save("CurrentUserId", response.UserID);
 
-                       Utilities.ApiClient.DefaultRequestHeaders.Clear();
-                       Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", response.ApiKey);
+                        CurrentUser.AccessLevel = (AccessLevels)Enum.Parse(typeof(AccessLevels), response.AccessLevel);
+                        CurrentUser.UserId = response.UserId;
+                        CurrentUser.Username = Username;
+                       
+                        Cache.Save("UserAccessLevel", CurrentUser.AccessLevel);
+                        Cache.Save("CurrentUserId", CurrentUser.UserId);
+                        Cache.Save("ApiKey", response.ApiKey);  
+
+                        Utilities.ApiClient.DefaultRequestHeaders.Clear();
+                        Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", response.ApiKey);
                     }
 
                 }
@@ -94,8 +99,7 @@ namespace BatsBadmintonFixtures.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Something went wrong",
-                                    ex.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Something went wrong", ex.Message, "OK");
             }
             finally
             {
@@ -106,7 +110,7 @@ namespace BatsBadmintonFixtures.ViewModels
             {
                 success = false;
                 await Application.Current.MainPage.DisplayAlert("Successful login!", $"Welcome, {Username}.", "OK");
-                Cache.Save("IsLoggedIn", Boolean.TrueString);
+                Cache.Save("IsLoggedIn", true);
                 Application.Current.MainPage = new HomePage();
             }
             else
