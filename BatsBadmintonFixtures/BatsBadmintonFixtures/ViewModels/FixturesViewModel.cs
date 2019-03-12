@@ -55,7 +55,6 @@ namespace BatsBadmintonFixtures.ViewModels
 
         }
 
-        // TODO Investigate IsRefreshing exhibiting always true behaviour
         async Task GetUpcomingFixtures(bool refresh)
         {
             if (IsBusy)

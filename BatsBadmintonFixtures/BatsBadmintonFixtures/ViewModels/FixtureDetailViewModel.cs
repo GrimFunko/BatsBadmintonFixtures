@@ -18,7 +18,21 @@ namespace BatsBadmintonFixtures.ViewModels
 {
     public class FixtureDetailViewModel : BaseViewModel
     {
-        public bool CaptainAuthorised { get
+        public ICommand OpenEditCommand { get; set; }
+
+        public FixtureDetailViewModel(object fixture)
+        {
+            // grab (fixture)item.id, and fixture details of said fixture
+            SetProperties(fixture);
+            Title = Date;
+            
+            OpenEditCommand = new Command(async () => await OpenEditPage());
+        }
+
+        #region Properties
+        public bool CaptainAuthorised
+        {
+            get
             {
                 if (CurrentUser.AccessLevel >= AccessLevels.captain)
                     return true;
@@ -36,18 +50,6 @@ namespace BatsBadmintonFixtures.ViewModels
             }
         }
 
-        public ICommand OpenEditCommand { get; set; }
-
-        public FixtureDetailViewModel(object fixture)
-        {
-            // grab (fixture)item.id, and fixture details of said fixture
-            SetProperties(fixture);
-            Title = Date;
-            
-            OpenEditCommand = new Command(async () => await OpenEditPage());
-        }
-
-        #region Properties
         public bool IsHomeMatch
         {
             get {
@@ -115,7 +117,6 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             IsBusy = true;
 
-            var prop = fixture.GetType().GetProperties();
             var fix = fixture as Fixture;
 
             FixtureId = fix.ID;
@@ -132,7 +133,13 @@ namespace BatsBadmintonFixtures.ViewModels
 
         public async Task OpenEditPage()
         {
-            // TODO Open up edit page for fixtures
+
         }
     }
 }
+// TODO Open up edit page for fixture changes
+// TODO Get fixture players on page open
+// TODO Add, edit, remove fixture players
+// TODO Follow players to profile page
+
+
