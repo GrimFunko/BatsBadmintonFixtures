@@ -37,6 +37,10 @@ namespace BatsBadmintonFixtures.ViewModels
                 }
                 
             }
+            catch(Exception ex)
+            {
+
+            }
         }
     }
 }
