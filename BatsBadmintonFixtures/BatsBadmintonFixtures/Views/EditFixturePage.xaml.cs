@@ -15,6 +15,8 @@ namespace BatsBadmintonFixtures
 		public EditFixturePage (object fixture)
 		{
 			InitializeComponent ();
+
+            BindingContext = new EditFixturePage(fixture);
 		}
 
         

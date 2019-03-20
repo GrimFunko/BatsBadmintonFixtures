@@ -13,9 +13,6 @@
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
             </StackLayout>
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                <Button VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsFeedNeeded}"
-                    Text="Get Feed" IsEnabled="{Binding IsNotBusy}" 
-                    Command="{Binding GetUpcomingFixturesCommand}"/>
                 <ListView x:Name="_listView"
                       ItemSelected="_ItemSelected"
                       SelectedItem="{Binding SelectedFixture}"

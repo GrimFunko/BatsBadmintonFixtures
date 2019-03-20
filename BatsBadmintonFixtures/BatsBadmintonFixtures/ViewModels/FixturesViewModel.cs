@@ -24,6 +24,8 @@ namespace BatsBadmintonFixtures.ViewModels
         public ICommand GetUpcomingFixturesCommand { get; }
         public ICommand RefreshFeedCommand { get; }
 
+        public event EventHandler<EventArgs> PageOpenEvent;
+
         private object _selectedFixture;
 
         public object SelectedFixture
@@ -47,12 +49,30 @@ namespace BatsBadmintonFixtures.ViewModels
             Title = "Upcoming Fixtures";
             CacheItemName = "Fixture";
             GroupedUpcomingFixtures = new ObservableRangeCollection<GroupedFixtures>();
+            PageOpenEvent += FixturesViewModel_PageOpenEvent;
+
             if (CacheAvailable())
                 DisplayCache();
+            else
+                PageOpenEvent?.Invoke(this, EventArgs.Empty);
 
             GetUpcomingFixturesCommand = new Command(async () => await GetUpcomingFixtures(false));
             RefreshFeedCommand = new Command(async () => await GetUpcomingFixtures(true));
 
+            Application.Current.MainPage.Disappearing += MainPage_Disappearing;
+
+        }
+
+        // Clear custom events listeners
+        private void MainPage_Disappearing(object sender, EventArgs e)
+        {
+            PageOpenEvent -= FixturesViewModel_PageOpenEvent;
+        }
+
+        
+        private async void FixturesViewModel_PageOpenEvent(object sender, EventArgs e)
+        {
+            await GetUpcomingFixtures(false);
         }
 
         async Task GetUpcomingFixtures(bool refresh)

@@ -24,9 +24,10 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             // grab (fixture)item.id, and fixture details of said fixture
             SetProperties(fixture);
+            _fixture = fixture as Fixture;
             Title = Date;
             
-            OpenEditCommand = new Command(async () => await OpenEditPage());
+            //OpenEditCommand = new Command(async () => await OpenEditPage());
         }
 
         #region Properties
@@ -61,6 +62,8 @@ namespace BatsBadmintonFixtures.ViewModels
         }
         public bool IsAwayMatch { get { return !IsHomeMatch; } }
 
+        private Fixture _fixture { get; set; }
+
         public bool FullTeam { get; set; }
 
         private string _fixtureId;
@@ -73,8 +76,8 @@ namespace BatsBadmintonFixtures.ViewModels
         private string _league;
         public string League
         {
-            get { return _league; }
-            set { _league = value; }
+            get { return _fixture.League; }
+            //set { _league = value; }
         }
 
         private string _batsTeam;
@@ -120,7 +123,7 @@ namespace BatsBadmintonFixtures.ViewModels
             var fix = fixture as Fixture;
 
             FixtureId = fix.ID;
-            League = fix.League;
+            //League = fix.League;
             BatsTeam = fix.BatsTeam;
             TeamVs = fix.TeamVs;
             Venue = fix.Venue;
@@ -131,10 +134,7 @@ namespace BatsBadmintonFixtures.ViewModels
             IsBusy = false;
         }
 
-        public async Task OpenEditPage()
-        {
-
-        }
+      
     }
 }
 // TODO Open up edit page for fixture changes
