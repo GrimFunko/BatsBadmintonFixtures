@@ -23,7 +23,7 @@ namespace BatsBadmintonFixtures.ViewModels
             PageOpenEvent += EditFixtureViewModel_PageOpenEvent;
 
             _fixture = fixture as Fixture;
-            SelectedTeam = _fixture.BatsTeam;
+            SelectedTeam = _fixture.BatsTeam.FullName;
 
             if (Cache.Contains("Team"))
                 AddTeamsToCollection(Team.FromJson((string)Cache.Get("Team")));

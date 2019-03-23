@@ -82,12 +82,12 @@ namespace BatsBadmintonFixtures.ViewModels
                     { 
                         success = true;
 
-                        CurrentUser.AccessLevel = (AccessLevels)Enum.Parse(typeof(AccessLevels), response.AccessLevel);
-                        CurrentUser.UserId = response.UserId;
-                        CurrentUser.Username = Username;
-                       
-                        Cache.Save("UserAccessLevel", CurrentUser.AccessLevel);
-                        Cache.Save("CurrentUserId", CurrentUser.UserId);
+                        AppCurrent.User = Factory.CreateUser((AccessLevels)Enum.Parse(typeof(AccessLevels), response.AccessLevel));
+                        AppCurrent.User.UserId = response.UserId;
+                        AppCurrent.User.Username = Username;
+
+                        Cache.Save("CurrentUser", AppCurrent.User);
+                        Cache.Save("CurrentUserAccessLevel", response.AccessLevel);
                         Cache.Save("ApiKey", response.ApiKey);  
 
                         Utilities.ApiClient.DefaultRequestHeaders.Clear();

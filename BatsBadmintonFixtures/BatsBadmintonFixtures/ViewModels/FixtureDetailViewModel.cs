@@ -23,7 +23,6 @@ namespace BatsBadmintonFixtures.ViewModels
         public FixtureDetailViewModel(object fixture)
         {
             // grab (fixture)item.id, and fixture details of said fixture
-            SetProperties(fixture);
             _fixture = fixture as Fixture;
             Title = Date;
             
@@ -35,7 +34,7 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             get
             {
-                if (CurrentUser.AccessLevel >= AccessLevels.captain)
+                if (AppCurrent.User is Captain)
                     return true;
                 return false;
             }
@@ -45,7 +44,7 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             get
             {
-                if (CurrentUser.AccessLevel >= AccessLevels.player)
+                if (AppCurrent.User is Player)
                     return true;
                 return false;
             }
@@ -64,75 +63,44 @@ namespace BatsBadmintonFixtures.ViewModels
 
         private Fixture _fixture { get; set; }
 
-        public bool FullTeam { get; set; }
+        public bool FullTeam { get {return _fixture.BatsTeam.FullTeam; } }
 
-        private string _fixtureId;
         public string FixtureId
         {
-            get { return _fixtureId; }
-            set { _fixtureId = value; }
+            get { return _fixture.FixtureId; }
         }
 
-        private string _league;
-        public string League
-        {
-            get { return _fixture.League; }
-            //set { _league = value; }
-        }
+        public string League { get { return _fixture.BatsTeam.League; } }
 
-        private string _batsTeam;
         public string BatsTeam
         {
-            get { return _batsTeam; }
-            set { _batsTeam = value; }
+            get { return _fixture.BatsTeam.TeamName; }
         }
 
-        private string _teamVs;
+
+
         public string TeamVs
         {
-            get { return _teamVs; }
-            set { _teamVs = value; }
+            get { return _fixture.TeamVs; }
         }
 
-        private string _venue;
         public string Venue
         {
-            get { return _venue; }
-            set { _venue = value; }
+            get { return _fixture.Venue; }
         }
 
-        private string _date;
         public string Date
         {
-            get { return _date; }
-            set { _date = value; }
+            get { return _fixture.Date; }
         }
 
-        private string _time;
         public string Time
         {
-            get { return _time; }
-            set { _time = value; }
+            get { return _fixture.Time; }
         }
         #endregion
 
-        void SetProperties(object fixture)
-        {
-            IsBusy = true;
 
-            var fix = fixture as Fixture;
-
-            FixtureId = fix.ID;
-            //League = fix.League;
-            BatsTeam = fix.BatsTeam;
-            TeamVs = fix.TeamVs;
-            Venue = fix.Venue;
-            Date = fix.FixtureListDateFormat;
-            Time = fix.Time;
-            FullTeam = fix.FullTeam;
-
-            IsBusy = false;
-        }
 
       
     }

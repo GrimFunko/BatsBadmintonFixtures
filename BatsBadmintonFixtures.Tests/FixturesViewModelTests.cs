@@ -22,9 +22,9 @@ namespace BatsBadmintonFixtures.Tests
         Fixture[] fixtures =
         {
             new Fixture{
-                ID = "aaaa-aaaa",
+                FixtureId = "aaaa-aaaa",
                 League = "Brighton Division 3",
-                BatsTeam = "Men's Combination",
+                BatsTeam = new Team{ TeamName = "Men's Combination"},
                 TeamVs = "Chanctonbury",
                 Venue = "Home",
                 Date = "2019-01-16",
@@ -32,9 +32,9 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = "abbb-bbbb",
+                FixtureId = "abbb-bbbb",
                 League = "Brighton Division 2",
-                BatsTeam = "Men's Combination",
+                BatsTeam = new Team{ TeamName = "Men's Combination"},
                 TeamVs = "Chanctonbury",
                 Venue = "Home",
                 Date = "2019-02-20",
@@ -42,9 +42,9 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = "abbb-bbbc",
+                FixtureId = "abbb-bbbc",
                 League = "Brighton Division 3",
-                BatsTeam = "Men's Combination",
+                BatsTeam = new Team{ TeamName = "Men's Combination"},
                 TeamVs = "Chanctonbury",
                 Venue = "Home",
                 Date = "2019-02-20",
@@ -52,9 +52,9 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = "abbb-bbcc",
+                FixtureId = "abbb-bbcc",
                 League = "Brighton Division 3",
-                BatsTeam = "Men's Combination",
+                BatsTeam = new Team{ TeamName = "Men's Combination"},
                 TeamVs = "Chanctonbury",
                 Venue = "Home",
                 Date = "2019-03-23",
@@ -62,9 +62,9 @@ namespace BatsBadmintonFixtures.Tests
             },
             new Fixture
             {
-                ID = "abbb-bccc",
+                FixtureId = "abbb-bccc",
                 League = "Brighton Division 1",
-                BatsTeam = "Mixed Doubles",
+                BatsTeam = new Team{ TeamName = "Men's Combination"},
                 TeamVs = "Chanctonbury",
                 Venue = "Home",
                 Date = "2019-03-25",
@@ -172,9 +172,9 @@ namespace BatsBadmintonFixtures.Tests
             {
                 new Fixture
                 {
-                    ID = "abbb-bbcc",
+                    FixtureId = "abbb-bbcc",
                     League = "Brighton Division 3",
-                    BatsTeam = "Men's Combination",
+                    BatsTeam = new Team{ TeamName = "Men's Combination"},
                     TeamVs = "Chanctonbury",
                     Venue = "Home",
                     Date = "2019-03-23",
@@ -182,9 +182,9 @@ namespace BatsBadmintonFixtures.Tests
                 },
                 new Fixture
                 {
-                    ID = "abbb-bccc",
+                    FixtureId = "abbb-bccc",
                     League = "Brighton Division 1",
-                    BatsTeam = "Mixed Doubles",
+                    BatsTeam = new Team{ TeamName = "Men's Combination"},
                     TeamVs = "Chanctonbury",
                     Venue = "Home",
                     Date = "2019-03-25",

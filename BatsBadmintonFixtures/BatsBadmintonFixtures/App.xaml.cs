@@ -21,8 +21,8 @@ namespace BatsBadmintonFixtures
                 MainPage = new HomePage();
                 if(Cache.Contains("ApiKey"))
                     Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", (string)Cache.Get("ApiKey"));
-                if (Cache.Contains("UserAccessLevel"))
-                    CurrentUser.AccessLevel = (AccessLevels)Cache.Get("UserAccessLevel");
+                if (Cache.Contains("CurrentUser"))
+                    AppCurrent.User = Cache.GetUser();
             }
         }
 

@@ -56,9 +56,9 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <Label Text="{Binding FixtureListDateFormat}" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"/>
-                                    <Label Text="{Binding League}" HorizontalTextAlignment="Center"
+                                    <Label Text="{Binding BatsTeam.League}" HorizontalTextAlignment="Center"
                                        Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1"/>
-                                    <Label Text="{Binding BatsTeam}" FontSize="25" HorizontalTextAlignment="Center"
+                                    <Label Text="{Binding BatsTeam.TeamName}" FontSize="25" HorizontalTextAlignment="Center"
                                        TextColor="Black"
                                        Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="2"/>
                                     <Label Text="{Binding Venue}" HorizontalTextAlignment="End" FontAttributes="Bold"

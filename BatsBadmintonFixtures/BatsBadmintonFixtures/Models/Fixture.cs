@@ -9,14 +9,11 @@ namespace BatsBadmintonFixtures.Models
 {
     public partial class Fixture
     {
-        [JsonProperty("id")]
-        public string ID { get; set; }
-
-        [JsonProperty("league")]
-        public string League { get; set; }
+        [JsonProperty("fixture_id")]
+        public string FixtureId { get; set; }
 
         [JsonProperty("bats_team")]
-        public string BatsTeam { get; set; }
+        public Team BatsTeam { get; set; }
 
         [JsonProperty("team_vs")]
         public string TeamVs { get; set; }
@@ -37,12 +34,12 @@ namespace BatsBadmintonFixtures.Models
 
         public string FixtureListDateFormat { get { return FormatDateProp(Date); } }
 
-        public bool FullTeam { get
-            {
-                if (BatsTeam.Contains("Combination") || BatsTeam.Contains("Women"))
-                    return false;
-                return true;
-            } }
+        //public bool FullTeam { get
+        //    {
+        //        if (BatsTeam.Contains("Combination") || BatsTeam.Contains("Women"))
+        //            return false;
+        //        return true;
+        //    } }
 
     }
 

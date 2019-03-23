@@ -15,13 +15,17 @@ namespace BatsBadmintonFixtures.Models
         [JsonProperty("league")]
         public string League { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("team_name")]
+        public string TeamName { get; set; }
 
         [JsonProperty("captain")]
-        public string Captain { get; set; }
+        public Captain Captain { get; set; }
 
-        public string FullName { get { return $"{ Name }, { League }"; } }
+        public string FullName { get { return $"{ TeamName }, { League }"; } }
+
+        public bool FullTeam { get { if (TeamName.Contains("Combination") || TeamName.Contains("Women")) return false;
+                return true;
+            } }
 
     }
 

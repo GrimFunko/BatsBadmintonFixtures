@@ -8,6 +8,9 @@ namespace BatsBadmintonFixtures.Models
 {
     public partial class User
     {
+        [JsonProperty("user_id")]
+        public string UserId { get; set; }
+
         [JsonProperty("username")]
         public string Username { get; set; }
 
@@ -26,7 +29,7 @@ namespace BatsBadmintonFixtures.Models
         [JsonProperty("tel2")]
         public string TelephoneNumber2 { get; set; }
 
-        [JsonProperty("fbLink")]
+        [JsonProperty("fb_link")]
         public string FacebookLink { get; set; }
     }
 
@@ -43,7 +46,7 @@ namespace BatsBadmintonFixtures.Models
     {
         // Registration constructor
         public User(string _username, string _email, string _password, string _cpassword, string _fName, string _surname,
-            string _telephone1, string _telephone2, string _fbLink)
+            string _telephone1 = "", string _telephone2 = "", string _fbLink = "")
         {
             Username = _username;
             Email = _email;

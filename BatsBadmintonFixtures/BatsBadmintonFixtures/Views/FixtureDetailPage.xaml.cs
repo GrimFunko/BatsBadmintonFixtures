@@ -34,7 +34,7 @@ namespace BatsBadmintonFixtures
                 
 
             _fixture = item as Fixture;
-            var FullTeam = _fixture.FullTeam;
+            var FullTeam = _fixture.BatsTeam.FullTeam;
 
             if (FullTeam)
             {

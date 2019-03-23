@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net;
 
 using Newtonsoft.Json;
+using BatsBadmintonFixtures.Models;
 
 namespace BatsBadmintonFixtures.Config
 {
@@ -37,14 +38,33 @@ namespace BatsBadmintonFixtures.Config
         admin = 3
     };
 
-    public static class CurrentUser
+    public static class AppCurrent
     {
-        public static AccessLevels AccessLevel { get; set; }
+        public static User User { get; set; }
 
-        public static string Username { get; set; }
 
-        public static string FirstName { get; set; }
+        
+    }
 
-        public static string UserId { get; set; }
+    public static class Factory
+    {
+        public static User CreateUser(AccessLevels access)
+        {
+            switch (access)
+            {
+                case AccessLevels.unauthorised:
+                    return null;
+                case AccessLevels.guest:
+                    return new User();
+                case AccessLevels.player:
+                    return new Player();
+                case AccessLevels.captain:
+                    return new Captain();
+                case AccessLevels.admin:
+                    return new Admin();
+                default:
+                    return null;
+            }
+        }
     }
 }
