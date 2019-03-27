@@ -9,10 +9,20 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid>
-            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="0.05*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="0.1*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
             </StackLayout>
-            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+            <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" HorizontalOptions="Center" VerticalOptions="Center">
                 <ListView x:Name="_listView"
                       ItemSelected="_ItemSelected"
                       SelectedItem="{Binding SelectedFixture}"
@@ -76,6 +86,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
+            <Button CornerRadius="100" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Column="1" Grid.Row ="1"  Text="+" BackgroundColor="#2aff2a" TextColor="White" FontSize="40" Command="{Binding AddFixtureCommand}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
