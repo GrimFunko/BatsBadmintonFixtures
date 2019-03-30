@@ -30,15 +30,6 @@ namespace BatsBadmintonFixtures.ViewModels
         }
 
         #region Properties
-        public bool CaptainAuthorised
-        {
-            get
-            {
-                if (AppCurrent.User is Captain)
-                    return true;
-                return false;
-            }
-        }
 
         public bool PlayerAuthorised
         {

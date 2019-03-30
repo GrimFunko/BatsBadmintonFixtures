@@ -14,15 +14,13 @@ namespace BatsBadmintonFixtures
             Utilities.InitialiseClient();
 
             bool isLoggedIn = Cache.Contains("IsLoggedIn") ? (bool)Cache.Get("IsLoggedIn") : false;
-            if (!isLoggedIn)
-                MainPage = new LoginPage();
+            if (!isLoggedIn || !Cache.Contains("ApiKey") || !Cache.Contains("CurrentUser"))
+                MainPage = Factory.CreatePage(typeof(LoginPage));
             else
             {
-                MainPage = new HomePage();
-                if(Cache.Contains("ApiKey"))
-                    Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", (string)Cache.Get("ApiKey"));
-                if (Cache.Contains("CurrentUser"))
-                    AppCurrent.User = Cache.GetUser();
+                MainPage = Factory.CreatePage(typeof(HomePage));
+                Utilities.ApiClient.DefaultRequestHeaders.Add("Apikey", (string)Cache.Get("ApiKey"));
+                AppCurrent.User = Cache.GetUser();
             }
         }
 

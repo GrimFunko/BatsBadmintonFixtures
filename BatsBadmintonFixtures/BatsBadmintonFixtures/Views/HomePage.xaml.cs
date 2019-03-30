@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BatsBadmintonFixtures.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace BatsBadmintonFixtures
         {
             InitializeComponent();
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
-            Detail = new NavigationPage(new FixturesPage());
+            Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), true));
             Detail.Title = "Upcoming Fixtures";
         }
 

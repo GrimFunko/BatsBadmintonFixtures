@@ -6,6 +6,7 @@ using System.Net;
 
 using Newtonsoft.Json;
 using BatsBadmintonFixtures.Models;
+using Xamarin.Forms;
 
 namespace BatsBadmintonFixtures.Config
 {
@@ -41,8 +42,6 @@ namespace BatsBadmintonFixtures.Config
     public static class AppCurrent
     {
         public static User User { get; set; }
-
-
         
     }
 
@@ -66,5 +65,22 @@ namespace BatsBadmintonFixtures.Config
                     return null;
             }
         }
+
+        public static Page CreatePage(Type type, bool accessDependent = false)
+        {
+            if( accessDependent )
+                return (Page)Activator.CreateInstance(type, (AccessLevels)Enum.Parse(typeof(AccessLevels), (string)Cache.Get("CurrentUserAccessLevel")));
+            else
+                return (Page)Activator.CreateInstance(type);
+        }
+
+        public static Page CreatePage(Type type, object item, bool accessDependent = false)
+        {
+            if (accessDependent)
+                return (Page)Activator.CreateInstance(type, item, (AccessLevels)Enum.Parse(typeof(AccessLevels), (string)Cache.Get("CurrentUserAccessLevel")));
+            else
+                return (Page)Activator.CreateInstance(type, item);
+        }
+
     }
 }

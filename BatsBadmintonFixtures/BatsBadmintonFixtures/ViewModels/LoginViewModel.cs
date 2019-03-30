@@ -130,9 +130,12 @@ namespace BatsBadmintonFixtures.ViewModels
 
         private async Task RememberDetailsPressed()
         {
-            Remember = true;
+            Remember = !Remember;
 
-            await Application.Current.MainPage.DisplayAlert("Remember login details", "Your details will be stored upon login", "OK");
+            if (Remember)
+                await Application.Current.MainPage.DisplayAlert("Remember login details", "Your details will be stored upon login", "OK");
+            else
+                await Application.Current.MainPage.DisplayAlert("Remember login details", "Your details will NOT be stored upon login", "OK");
         }
 
     }

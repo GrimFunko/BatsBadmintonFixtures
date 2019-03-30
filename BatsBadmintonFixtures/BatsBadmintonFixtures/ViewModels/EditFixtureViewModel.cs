@@ -38,7 +38,7 @@ namespace BatsBadmintonFixtures.ViewModels
         public string SelectedTeam
         {
             get { return _selectedTeam; }
-            set { _selectedTeam = value; }
+            set { SetProperty(ref _selectedTeam, value); }
         }
 
 

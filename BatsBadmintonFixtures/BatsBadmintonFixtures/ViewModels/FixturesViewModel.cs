@@ -26,6 +26,16 @@ namespace BatsBadmintonFixtures.ViewModels
 
         public event EventHandler<EventArgs> PageOpenEvent;
 
+        public bool CaptainAuthorised
+        {
+            get
+            {
+                if (AppCurrent.User is Captain)
+                    return true;
+                return false;
+            }
+        }
+
         private object _selectedFixture;
 
         public object SelectedFixture

@@ -9,6 +9,7 @@ using Xamarin.Forms.Xaml;
 
 using BatsBadmintonFixtures.ViewModels;
 using BatsBadmintonFixtures.Models;
+using BatsBadmintonFixtures.Config;
 
 namespace BatsBadmintonFixtures
 {
@@ -21,15 +22,15 @@ namespace BatsBadmintonFixtures
         private Fixture _fixture { get; set; }
 
         // TODO Build and implement the rest of the fixture details page
-        public FixtureDetailPage (object item)
+        public FixtureDetailPage (object item, AccessLevels access)
 		{
             InitializeComponent ();
             BindingContext = new FixtureDetailViewModel(item);
-            if (EditHack.IsVisible)
+            if (access >= AccessLevels.captain)
             {
                 ToolbarItem edit = new ToolbarItem() { Text = "Edit" };
-                ToolbarItems.Add(edit);
                 edit.Clicked += Edit_Clicked;
+                ToolbarItems.Add(edit);
             }   
                 
 
@@ -63,7 +64,7 @@ namespace BatsBadmintonFixtures
 
         private void Edit_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(new EditFixturePage(_fixture));
+            Navigation.PushModalAsync(Factory.CreatePage(typeof(EditFixturePage), _fixture));
         }
     }
 }

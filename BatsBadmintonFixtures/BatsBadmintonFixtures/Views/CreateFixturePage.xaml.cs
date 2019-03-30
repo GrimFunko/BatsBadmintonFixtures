@@ -1,5 +1,4 @@
-﻿using BatsBadmintonFixtures.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace BatsBadmintonFixtures
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditFixturePage : ContentPage
+	public partial class CreateFixturePage : ContentPage
 	{
-		public EditFixturePage (object fixture)
+		public CreateFixturePage ()
 		{
 			InitializeComponent ();
-
-            BindingContext = new EditFixtureViewModel(fixture);
 		}
-
-        
 	}
 }
