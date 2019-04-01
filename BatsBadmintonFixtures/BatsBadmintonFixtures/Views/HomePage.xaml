@@ -4,9 +4,9 @@
              x:Class="BatsBadmintonFixtures.HomePage"
              xmlns:pages="clr-namespace:BatsBadmintonFixtures"
              Title="Bats Badminton Hub">
-  <MasterDetailPage.Master>
+  <!--<MasterDetailPage.Master>
     <pages:HomePageMaster x:Name="MasterPage" />
-  </MasterDetailPage.Master>
+  </MasterDetailPage.Master>-->
   <!--<MasterDetailPage.Detail>
     <NavigationPage>
       <x:Arguments>

@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using BatsBadmintonFixtures.ViewModels;
 using BatsBadmintonFixtures.Config;
+using MvvmHelpers;
 
 namespace BatsBadmintonFixtures
 {
@@ -15,8 +16,9 @@ namespace BatsBadmintonFixtures
 	public partial class FixturesPage : ContentPage
 	{
         ListView listView;
-		public FixturesPage (AccessLevels access)
+		public FixturesPage (BaseViewModel viewModel, AccessLevels access)
 		{
+            BindingContext = viewModel;
 			InitializeComponent ();
             listView = _listView;
 
@@ -39,7 +41,7 @@ namespace BatsBadmintonFixtures
             var item = listView.SelectedItem;
             if (item != null)
             {
-                Navigation.PushAsync(Factory.CreatePage(typeof(FixtureDetailPage), item, true));
+                Navigation.PushAsync(Factory.CreatePage(typeof(FixtureDetailPage), typeof(FixtureDetailViewModel), item, true));
                 listView.SelectedItem = null;
             }
         }

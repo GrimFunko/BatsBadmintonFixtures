@@ -1,4 +1,5 @@
 ﻿using BatsBadmintonFixtures.Config;
+using BatsBadmintonFixtures.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,15 @@ namespace BatsBadmintonFixtures
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : MasterDetailPage
     {
+        HomePageMaster HPM { get; set; }
+
         public HomePage()
         {
             InitializeComponent();
-            MasterPage.ListView.ItemSelected += ListView_ItemSelected;
-            Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), true));
+            HPM = Factory.CreatePage(typeof(HomePageMaster), typeof(HomePageMasterViewModel)) as HomePageMaster;
+            Master = HPM;
+            HPM.ListView.ItemSelected += ListView_ItemSelected;
+            Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), typeof(FixturesViewModel), null, true));
             Detail.Title = "Upcoming Fixtures";
         }
 
@@ -27,17 +32,19 @@ namespace BatsBadmintonFixtures
             if (item == null)
                 return;
 
-            var page = (Page)Activator.CreateInstance(item.TargetType);
+            //var page = (Page)Activator.CreateInstance(item.TargetType);
             
-            if (Detail.Title != page.Title)
+            
+            if (Detail.Title != item.Title)
             {
+                var page = Factory.CreatePage(item.TargetType, item.ViewModelType, null, true);
                 Detail = new NavigationPage(page);
                 Detail.Title = page.Title;
             }
 
             IsPresented = false;
 
-            MasterPage.ListView.SelectedItem = null;
+            HPM.ListView.SelectedItem = null;
         }
     }
 }

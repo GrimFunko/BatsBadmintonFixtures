@@ -52,7 +52,7 @@ namespace BatsBadmintonFixtures.ViewModels
         }
         public bool IsAwayMatch { get { return !IsHomeMatch; } }
 
-        private Fixture _fixture { get; set; }
+        public Fixture _fixture { get; set; }
 
         public bool FullTeam { get {return _fixture.BatsTeam.FullTeam; } }
 

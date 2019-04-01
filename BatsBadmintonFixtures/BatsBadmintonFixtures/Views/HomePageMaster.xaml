@@ -6,17 +6,13 @@
              x:Class="BatsBadmintonFixtures.HomePageMaster"
              Title="Master">
     <StackLayout>
-        <StackLayout.BindingContext>
+        <!--<StackLayout.BindingContext>
             <viewModel:HomePageMasterViewModel/>
-        </StackLayout.BindingContext>
+        </StackLayout.BindingContext>-->
         <ListView x:Name="MenuItemsListView"
+                  ItemsSource="{Binding MenuItems}"
                   SeparatorVisibility="None"
                   HasUnevenRows="true">
-            <ListView.ItemsSource>
-                <x:Array Type="{x:Type local:HomePageMenuItem}">
-                    <local:HomePageMenuItem Title="Upcoming Fixtures" TargetType="{x:Type local:FixturesPage}" />
-                </x:Array>
-            </ListView.ItemsSource>
             <ListView.Header>
                 <Grid BackgroundColor="Black">
                     <Grid.ColumnDefinitions>

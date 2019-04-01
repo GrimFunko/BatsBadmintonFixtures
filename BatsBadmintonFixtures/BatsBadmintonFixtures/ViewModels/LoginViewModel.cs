@@ -29,7 +29,7 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             Title = "Bat Hub Login";
             LoginCommand = new Command(async () => await CheckLoginAttempt());
-            RegisterCommand = new Command(() => Application.Current.MainPage = new RegistrationPage());
+            RegisterCommand = new Command(() => Application.Current.MainPage = Factory.CreatePage(typeof(RegistrationPage), typeof(RegistrationViewModel)));
             RememberCommand = new Command(async () => await RememberDetailsPressed());
 
             if(Cache.Contains("LoginDetails"))

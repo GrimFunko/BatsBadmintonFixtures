@@ -7,6 +7,7 @@ using System.Net;
 using Newtonsoft.Json;
 using BatsBadmintonFixtures.Models;
 using Xamarin.Forms;
+using MvvmHelpers;
 
 namespace BatsBadmintonFixtures.Config
 {
@@ -66,21 +67,35 @@ namespace BatsBadmintonFixtures.Config
             }
         }
 
-        public static Page CreatePage(Type type, bool accessDependent = false)
+        /// <summary>
+        /// Creates a Page and passes in a ViewModel through its constructor. Also allows for extra information to be bound to.
+        /// </summary>
+        /// <param name="viewType">This is the class type of the View.</param>
+        /// <param name="viewModel">This is the class type of the corresponding ViewModel.</param>
+        /// <param name="item">This allows extra data to be passed into the ViewModel e.g. when selecting a list object.</param>
+        /// <param name="accessDependant">Represents whether a Page has user access level dependant features.</param>
+        /// <returns></returns>
+        public static Page CreatePage(Type viewType, Type viewModel = null, object item = null, bool accessDependant = false)
         {
-            if( accessDependent )
-                return (Page)Activator.CreateInstance(type, (AccessLevels)Enum.Parse(typeof(AccessLevels), (string)Cache.Get("CurrentUserAccessLevel")));
-            else
-                return (Page)Activator.CreateInstance(type);
+            // ViewModel == null should only occur in the case of HomePage
+            if (viewModel == null)
+                return (Page)Activator.CreateInstance(viewType);
+
+            // Creates a ViewModel based on the type passed in, and whether there is extra data
+            var vm = (item == null) ? CreateViewModel(viewModel) : CreateViewModel(viewModel, item);
+
+            // Creates the page with corresponding view model and adds the current user access level if needed
+            return accessDependant ? (Page)Activator.CreateInstance(viewType, vm,(AccessLevels)Enum.Parse(typeof(AccessLevels), (string)Cache.Get("CurrentUserAccessLevel"))) :
+                    (Page)Activator.CreateInstance(viewType, vm);
+            
         }
 
-        public static Page CreatePage(Type type, object item, bool accessDependent = false)
+        public static BaseViewModel CreateViewModel(Type viewModel, object item = null)
         {
-            if (accessDependent)
-                return (Page)Activator.CreateInstance(type, item, (AccessLevels)Enum.Parse(typeof(AccessLevels), (string)Cache.Get("CurrentUserAccessLevel")));
-            else
-                return (Page)Activator.CreateInstance(type, item);
+            return (item == null) ? (BaseViewModel)Activator.CreateInstance(viewModel) : (BaseViewModel)Activator.CreateInstance(viewModel, item);
         }
+
+
 
     }
 }

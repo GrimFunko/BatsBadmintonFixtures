@@ -10,34 +10,30 @@ using Xamarin.Forms.Xaml;
 using BatsBadmintonFixtures.ViewModels;
 using BatsBadmintonFixtures.Models;
 using BatsBadmintonFixtures.Config;
+using MvvmHelpers;
 
 namespace BatsBadmintonFixtures
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FixtureDetailPage : ContentPage
 	{
-        //private object _selectedItem;
-        //public object SelectedItem { get { return _selectedItem; } set {_selectedItem = value; } }
+        private FixtureDetailViewModel fdvm;
 
-        private Fixture _fixture { get; set; }
-
-        // TODO Build and implement the rest of the fixture details page
-        public FixtureDetailPage (object item, AccessLevels access)
+        public FixtureDetailPage (BaseViewModel viewModel, AccessLevels access)
 		{
             InitializeComponent ();
-            BindingContext = new FixtureDetailViewModel(item);
+            BindingContext = viewModel;
+
             if (access >= AccessLevels.captain)
             {
                 ToolbarItem edit = new ToolbarItem() { Text = "Edit" };
                 edit.Clicked += Edit_Clicked;
                 ToolbarItems.Add(edit);
-            }   
-                
+            }
 
-            _fixture = item as Fixture;
-            var FullTeam = _fixture.BatsTeam.FullTeam;
+            fdvm = BindingContext as FixtureDetailViewModel;
 
-            if (FullTeam)
+            if (fdvm.FullTeam)
             {
                 CPairLabel.IsVisible = true;
                 CPos1.IsVisible = true;
@@ -64,7 +60,7 @@ namespace BatsBadmintonFixtures
 
         private void Edit_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(Factory.CreatePage(typeof(EditFixturePage), _fixture));
+            Navigation.PushModalAsync(Factory.CreatePage(typeof(EditFixturePage), typeof(EditFixtureViewModel), fdvm._fixture));
         }
     }
 }

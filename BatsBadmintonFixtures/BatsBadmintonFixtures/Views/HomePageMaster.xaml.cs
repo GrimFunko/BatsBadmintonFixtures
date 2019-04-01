@@ -11,20 +11,18 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using BatsBadmintonFixtures.ViewModels;
+using MvvmHelpers;
 
 namespace BatsBadmintonFixtures
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePageMaster : ContentPage
     {
-        public ListView ListView;
-
-        public HomePageMaster()
+        public HomePageMaster(BaseViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = new HomePageMasterViewModel();
-            ListView = MenuItemsListView;
+            BindingContext = viewModel;            
         }
 
 

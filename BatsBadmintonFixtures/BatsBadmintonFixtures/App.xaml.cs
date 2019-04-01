@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using BatsBadmintonFixtures.Config;
+using BatsBadmintonFixtures.ViewModels;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace BatsBadmintonFixtures
@@ -15,7 +16,7 @@ namespace BatsBadmintonFixtures
 
             bool isLoggedIn = Cache.Contains("IsLoggedIn") ? (bool)Cache.Get("IsLoggedIn") : false;
             if (!isLoggedIn || !Cache.Contains("ApiKey") || !Cache.Contains("CurrentUser"))
-                MainPage = Factory.CreatePage(typeof(LoginPage));
+                MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel));
             else
             {
                 MainPage = Factory.CreatePage(typeof(HomePage));

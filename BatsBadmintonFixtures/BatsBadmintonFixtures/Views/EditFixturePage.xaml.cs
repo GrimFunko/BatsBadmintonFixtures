@@ -1,4 +1,5 @@
 ﻿using BatsBadmintonFixtures.ViewModels;
+using MvvmHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace BatsBadmintonFixtures
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditFixturePage : ContentPage
 	{
-		public EditFixturePage (object fixture)
+		public EditFixturePage (BaseViewModel viewModel)
 		{
 			InitializeComponent ();
 
-            BindingContext = new EditFixtureViewModel(fixture);
+            BindingContext = viewModel;
 		}
 
         

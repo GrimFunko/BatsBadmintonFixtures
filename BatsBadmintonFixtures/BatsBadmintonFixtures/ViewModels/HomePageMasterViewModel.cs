@@ -24,6 +24,13 @@ namespace BatsBadmintonFixtures.ViewModels
         public HomePageMasterViewModel()
         {
             LogoutCommand = new Command(() => Logout());
+            MenuItems = new ObservableRangeCollection<HomePageMenuItem>();
+            PopulateMenuItems();
+        }
+
+        private void PopulateMenuItems()
+        {
+            MenuItems.Add(new HomePageMenuItem { Title = "Upcoming Fixtures", TargetType = typeof(FixturesPage), ViewModelType = typeof(FixturesViewModel) });
         }
 
         // TODO Clear cache on logout

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvvmHelpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,10 @@ namespace BatsBadmintonFixtures
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RegistrationPage : ContentPage
 	{
-		public RegistrationPage ()
+		public RegistrationPage (BaseViewModel viewModel)
 		{
 			InitializeComponent ();
+            BindingContext = viewModel;
             formPage1.IsVisible = true;
             formPage2.IsVisible = false;
             tel2.IsVisible = false;

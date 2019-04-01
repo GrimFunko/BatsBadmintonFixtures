@@ -29,7 +29,7 @@ namespace BatsBadmintonFixtures.ViewModels
             Title = "Bats registration";      
             // send registration details command
             SubmitCommand = new Command(async () => await SubmitRegistrationDetails());
-            CancelCommand = new Command(() => Application.Current.MainPage = new LoginPage());
+            CancelCommand = new Command(() => Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel)));
         }
 
 
@@ -142,7 +142,7 @@ namespace BatsBadmintonFixtures.ViewModels
             }
 
             if (success)
-                Application.Current.MainPage = new LoginPage();
+                Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel));
         }
 
 
