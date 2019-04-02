@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvvmHelpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,10 @@ namespace BatsBadmintonFixtures
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CreateFixturePage : ContentPage
 	{
-		public CreateFixturePage ()
+		public CreateFixturePage (BaseViewModel viewModel)
 		{
 			InitializeComponent ();
+            BindingContext = viewModel;
 		}
 	}
 }

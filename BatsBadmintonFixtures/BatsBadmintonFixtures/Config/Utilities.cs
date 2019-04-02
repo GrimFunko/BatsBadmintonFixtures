@@ -31,6 +31,9 @@ namespace BatsBadmintonFixtures.Config
         }
     }
 
+    /// <summary>
+    /// Enum depicting the roles within the application.
+    /// </summary>
     public enum AccessLevels
     {
         unauthorised = -1,
@@ -90,6 +93,12 @@ namespace BatsBadmintonFixtures.Config
             
         }
 
+        /// <summary>
+        /// Creates a ViewModel and allows for a data object to be passed into its constructor.
+        /// </summary>
+        /// <param name="viewModel">This is the class type of the target ViewModel.</param>
+        /// <param name="item">This is an optional object for passing data into the ViewModels constructor.</param>
+        /// <returns></returns>
         public static BaseViewModel CreateViewModel(Type viewModel, object item = null)
         {
             return (item == null) ? (BaseViewModel)Activator.CreateInstance(viewModel) : (BaseViewModel)Activator.CreateInstance(viewModel, item);

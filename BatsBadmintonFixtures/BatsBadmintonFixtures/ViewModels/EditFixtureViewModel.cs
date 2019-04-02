@@ -17,7 +17,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
         public event EventHandler<EventArgs> PageOpenEvent;
 
-        public EditFixtureViewModel(object fixture)
+        public EditFixtureViewModel(object fixture = null)
         {
             Teams = new ObservableRangeCollection<Team>();
             PageOpenEvent += EditFixtureViewModel_PageOpenEvent;
@@ -25,8 +25,8 @@ namespace BatsBadmintonFixtures.ViewModels
             _fixture = fixture as Fixture;
             SelectedTeam = _fixture.BatsTeam.FullName;
 
-            if (Cache.Contains("Team"))
-                AddTeamsToCollection(Team.FromJson((string)Cache.Get("Team")));
+            if (Cache.Contains("Teams"))
+                AddTeamsToCollection((string)Cache.Get("Teams"));
             else
                 PageOpenEvent?.Invoke(this, EventArgs.Empty);
         }
@@ -47,9 +47,10 @@ namespace BatsBadmintonFixtures.ViewModels
             await GetTeams();
         }
 
-        public void AddTeamsToCollection(Team[] teams)
+        public void AddTeamsToCollection(string teamsJson)
         {
-            Teams.ReplaceRange(teams);
+            var teamsArray = Team.FromJson(teamsJson);
+            Teams.ReplaceRange(teamsArray);
         }
 
         public async Task GetTeams()
@@ -62,8 +63,8 @@ namespace BatsBadmintonFixtures.ViewModels
                 using (var response = await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/teams/"))
                 {
                     var teams = await response.Content.ReadAsStringAsync();
-                    Cache.Save("Team", teams);
-                    AddTeamsToCollection(Team.FromJson(teams));
+                    Cache.Save("Teams", teams);
+                    AddTeamsToCollection(teams);
                 }               
             }
             catch(Exception ex)

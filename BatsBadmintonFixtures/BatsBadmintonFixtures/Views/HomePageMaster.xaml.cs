@@ -18,11 +18,15 @@ namespace BatsBadmintonFixtures
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePageMaster : ContentPage
     {
+
+        public ListView MasterListView { get; set; }
+
         public HomePageMaster(BaseViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = viewModel;            
+            BindingContext = viewModel;
+            MasterListView = MenuItemsListView;
         }
 
 

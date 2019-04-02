@@ -38,7 +38,7 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             Cache.RemoveAll();
             Cache.Save("IsLoggedIn", false);
-            Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage));
+            Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace BatsBadmintonFixtures
             InitializeComponent();
             HPM = Factory.CreatePage(typeof(HomePageMaster), typeof(HomePageMasterViewModel)) as HomePageMaster;
             Master = HPM;
-            HPM.ListView.ItemSelected += ListView_ItemSelected;
+            HPM.MasterListView.ItemSelected += ListView_ItemSelected;
             Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), typeof(FixturesViewModel), null, true));
             Detail.Title = "Upcoming Fixtures";
         }
@@ -44,7 +44,7 @@ namespace BatsBadmintonFixtures
 
             IsPresented = false;
 
-            HPM.ListView.SelectedItem = null;
+            HPM.MasterListView.SelectedItem = null;
         }
     }
 }

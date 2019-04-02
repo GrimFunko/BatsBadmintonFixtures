@@ -32,7 +32,7 @@ namespace BatsBadmintonFixtures
 
         private void AddFixture_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(Factory.CreatePage(typeof(CreateFixturePage)));
+            Navigation.PushModalAsync(Factory.CreatePage(typeof(CreateFixturePage), typeof(CreateFixtureViewModel)));
         }
 
         public void _ItemSelected(object sender, SelectedItemChangedEventArgs e)
