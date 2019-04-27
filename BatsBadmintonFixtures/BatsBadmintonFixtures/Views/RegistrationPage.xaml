@@ -28,30 +28,86 @@
                 <Label Text="6-24 characters (a-z, 0-9)" FontSize="Micro" VerticalTextAlignment="End"/>
             </StackLayout>
             <Entry x:Name="usernameField" 
-                   Placeholder="e.g. LoveShuttles69" Text="{Binding Username}" 
-                   FontSize="Small" />
+                   Placeholder="e.g. LoveShuttles69" Text="{Binding Username.Value}" 
+                   FontSize="Small">
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateUsernameCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding Username.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Password" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
                 <Label Text="6-54 characters (a-z, 0-9, specials)" FontSize="Micro" VerticalTextAlignment="End"/>
             </StackLayout>
             <Entry x:Name="passwordField" 
-                   Placeholder="choose a password" IsPassword="True" Text="{Binding Password}" 
-                   FontSize="Small"/>
+                   Placeholder="choose a password" IsPassword="True" Text="{Binding Password.Value}" 
+                   FontSize="Small">
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidatePasswordCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding Password.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Confirm password" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
             </StackLayout>
             <Entry x:Name="confPasswordField" 
-                   Placeholder="retype your password" IsPassword="True" Text="{Binding ConfirmPassword}" 
-                   FontSize="Small"/>
+                   Placeholder="retype your password" IsPassword="True" Text="{Binding ConfirmPassword.Value}" 
+                   FontSize="Small">
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateConfirmPasswordCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding ConfirmPassword.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Email" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
             </StackLayout>
             <Entry x:Name="emailField" 
-                   Placeholder="e.g. johnsmith@email.org" Text="{Binding Email}" 
-                   FontSize="Small" Keyboard="Email"/>
+                   Placeholder="e.g. johnsmith@email.org" Text="{Binding Email.Value}" 
+                   FontSize="Small" Keyboard="Email">
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateEmailCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding Email.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Button Text="Cancel" Command="{Binding CancelCommand}"/>
                 <Button Text="Next" x:Name="nextButton"/>
@@ -64,30 +120,100 @@
                 <Label Text="*" TextColor="Red"/>
             </StackLayout>
             <Entry x:Name ="firstNameField"
-                   Placeholder="John" Text="{Binding FirstName}" 
-                   FontSize="Small" />
+                   Placeholder="John" Text="{Binding FirstName.Value}" 
+                   FontSize="Small" >
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateFirstNameCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding FirstName.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Surname" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
             </StackLayout>
             <Entry x:Name="surnameField" 
-                   Placeholder="Smith" Text="{Binding Surname}" 
-                   FontSize="Small" />
-         
+                   Placeholder="Smith" Text="{Binding Surname.Value}" 
+                   FontSize="Small" >
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateSurnameCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding Surname.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+
             <Label Text="Contact number(s)" FontSize="Medium"/>
             <Entry x:Name="contactTelField" 
-                   Placeholder="primary contact number e.g. mobile" Text="{Binding Telephone1}"
-                   FontSize="Small" Keyboard="Telephone"/>
+                   Placeholder="primary contact number e.g. mobile" Text="{Binding Telephone1.Value}"
+                   FontSize="Small" Keyboard="Telephone">
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateTel1Command}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding Telephone1.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <Button x:Name="extraNumber" 
                     Text="add another number" 
                     BackgroundColor="Transparent"/>
             <Entry x:Name="tel2" 
-                   Placeholder="extra contact number e.g. work, home" Text="{Binding Telephone2}" 
-                   FontSize="Small" Keyboard="Telephone"/>
+                   Placeholder="extra contact number e.g. work, home" Text="{Binding Telephone2.Value}" 
+                   FontSize="Small" Keyboard="Telephone">
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateTel2Command}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding Telephone2.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <Label Text="Facebook profile link" FontSize="Medium"/>
             <Entry x:Name="facebookField" 
-                   Placeholder="e.g. johnsmith.10" Text="{Binding FBLink}"
-                   FontSize="Small" />
+                   Placeholder="e.g. johnsmith.10" Text="{Binding FBLink.Value}"
+                   FontSize="Small" >
+                <Entry.Behaviors>
+                    <local:EventToCommandBehaviour EventName="Unfocused" Command="{Binding ValidateFBLinkCommand}" />
+                </Entry.Behaviors>
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="Android" Value="{StaticResource ValidatableEntryStyle}"/>
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" Binding="{Binding FBLink.IsValid}" Value="False">
+                        <Setter Property="local:LineColourBehaviour.LineColour" Value="{StaticResource ErrorColour}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Button x:Name="previousButton" 
                         Text="Previous" />

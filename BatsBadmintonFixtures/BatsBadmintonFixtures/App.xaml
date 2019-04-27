@@ -1,8 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BatsBadmintonFixtures.App">
+             x:Class="BatsBadmintonFixtures.App"
+             xmlns:app="clr-namespace:BatsBadmintonFixtures">
     <Application.Resources>
-
+        <ResourceDictionary>
+            <Color x:Key="ErrorColour">#F52342</Color>
+            
+            <Style x:Key="ValidatableEntryStyle" TargetType="Entry">
+                <Setter Property="app:LineColourBehaviour.ApplyLineColour" Value="True" />
+                <Setter Property="app:LineColourBehaviour.LineColour" Value="Black" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

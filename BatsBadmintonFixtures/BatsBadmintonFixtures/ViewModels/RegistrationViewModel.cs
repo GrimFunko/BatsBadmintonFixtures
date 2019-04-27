@@ -16,85 +16,238 @@ using Newtonsoft.Json;
 using BatsBadmintonFixtures.Config;
 using BatsBadmintonFixtures.Models;
 using System.IO;
+using BatsBadmintonFixtures.ValidationRules;
 
 namespace BatsBadmintonFixtures.ViewModels
 {
-    class RegistrationViewModel : BaseViewModel, IDataErrorInfo
+    class RegistrationViewModel : BaseViewModel
     {
+        // Page Control Commands
         public ICommand CancelCommand { get; }
         public ICommand SubmitCommand { get; }
+
+        // Validation Commands
+        public ICommand ValidateUsernameCommand { get; set; }
+        public ICommand ValidatePasswordCommand { get; set; }
+        public ICommand ValidateConfirmPasswordCommand { get; set; }
+        public ICommand ValidateEmailCommand { get; set; }
+        public ICommand ValidateFirstNameCommand { get; set; }
+        public ICommand ValidateSurnameCommand { get; set; }
+        public ICommand ValidateTel1Command { get; set; }
+        public ICommand ValidateTel2Command { get; set; }
+        public ICommand ValidateFBLinkCommand { get; set; }
+
+        public delegate bool Validations();
+        Validations validations;
 
         public RegistrationViewModel()
         {
             Title = "Bats registration";      
-            // send registration details command
+            
             SubmitCommand = new Command(async () => await SubmitRegistrationDetails());
             CancelCommand = new Command(() => Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel)));
+
+            ValidateUsernameCommand = new Command(() => ValidateUsername());
+            ValidatePasswordCommand = new Command(() => ValidatePassword());
+            ValidateConfirmPasswordCommand = new Command(() => ValidateConfirmPassword());
+            ValidateEmailCommand = new Command(() => ValidateEmail());
+            ValidateFirstNameCommand = new Command(() => ValidateFirstName());
+            ValidateSurnameCommand = new Command(() => ValidateSurname());
+            ValidateTel1Command = new Command(() => ValidateTel1());
+            ValidateTel2Command = new Command(() => ValidateTel2());
+            ValidateFBLinkCommand = new Command(() => ValidateFBLink());
+
+            // Initialising ValidatableObject s
+            _username = new ValidatableObject<string>();
+            _password = new ValidatableObject<string>();
+            _confirmPassword = new ValidatableObject<string>();
+            _email = new ValidatableObject<string>();
+            _firstName = new ValidatableObject<string>();
+            _surname = new ValidatableObject<string>();
+            _telephone1 = new ValidatableObject<string>();
+            _telephone2 = new ValidatableObject<string>();
+            _fbLink = new ValidatableObject<string>();
+
+            AddValidationRules();
+            AddValidationMethods();
         }
 
-
-        #region FormProperties
-        private string _username = "";
-        public string Username
+        // Properties
+        #region Props
+        private ValidatableObject<string> _username;
+        public ValidatableObject<string> Username
         {
             get { return _username; }
-            set { _username = value; }
+            set { SetProperty(ref _username, value); }
         }
 
-        private string _password = "";
-        public string Password
+        private ValidatableObject<string> _password;
+        public ValidatableObject<string> Password
         {
             get { return _password; }
-            set { _password = value; }
+            set { SetProperty(ref _password,value); }
         }
 
-        private string _confirmPassword = "";
-        public string ConfirmPassword
+        private ValidatableObject<string> _confirmPassword;
+        public ValidatableObject<string> ConfirmPassword
         {
             get { return _confirmPassword; }
-            set { _confirmPassword = value; }
+            set { SetProperty(ref _confirmPassword, value); }
         }
 
-        private string _email = "";
-        public string Email
+        private ValidatableObject<string> _email;
+        public ValidatableObject<string> Email
         {
             get { return _email; }
-            set { _email = value; }
+            set { SetProperty(ref _email, value); }
         }
 
-        private string _firstName = "";
-        public string FirstName
+        private ValidatableObject<string> _firstName;
+        public ValidatableObject<string> FirstName
         {
             get { return _firstName; }
-            set { _firstName = value; }
+            set { SetProperty(ref _firstName, value); }
         }
 
-        private string _surname = "";
-        public string Surname
+        private ValidatableObject<string> _surname;
+        public ValidatableObject<string> Surname
         {
             get { return _surname; }
-            set { _surname = value; }
+            set { SetProperty(ref _surname, value); }
         }
 
-        private string _telephone1 = "";
-        public string Telephone1
+        private ValidatableObject<string> _telephone1;
+        public ValidatableObject<string> Telephone1
         {
             get { return _telephone1; }
-            set { _telephone1 = value; }
+            set { SetProperty(ref _telephone1, value); }
         }
 
-        private string _telephone2 = "";
-        public string Telephone2
+        private ValidatableObject<string> _telephone2;
+        public ValidatableObject<string> Telephone2
         {
             get { return _telephone2; }
-            set { _telephone2 = value; }
+            set { SetProperty(ref _telephone2, value); }
         }
 
-        private string _fbLink = "";
-        public string FBLink
+        private ValidatableObject<string> _fbLink;
+        public ValidatableObject<string> FBLink
         {
             get { return _fbLink; }
-            set { _fbLink = value; }
+            set { SetProperty(ref _fbLink, value); }
+        }
+
+        #endregion
+
+        // Validation Methods
+        #region Validations
+        
+        /// <summary>
+        /// Add the validation rules to validatable objects
+        /// </summary>
+        private void AddValidationRules()
+        {
+            // Username Validation Rules
+            _username.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Username is required!" });
+            _username.Validations.Add(new LengthRule<string> { ValidationMessage = "Username must be between 6-24 characters.", MinimumLength = 6, MaximumLength = 24 });
+            _username.Validations.Add(new ContainsNoSpecialCharactersRule<string> { ValidationMessage = "Username should not contain special characters." });
+            _username.Validations.Add(new NoSpacesRule<string> { ValidationMessage = "Username must not contain spaces." });
+
+            // Password Validation Rules
+            _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password is required!" });
+            _password.Validations.Add(new LengthRule<string> { ValidationMessage = "Password must be between 6-54 characters.", MinimumLength = 6, MaximumLength = 54 });
+            _password.Validations.Add(new NoSpacesRule<string> { ValidationMessage = "Password must not contain spaces." });
+
+            // Confirm Password Rules
+            _confirmPassword.Validations.Add(new MatchValuesRule<string> { ValidationMessage = "Passwords do not match!" });
+
+            // Email Validation Rules
+            _email.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Email is required!" });
+            _email.Validations.Add(new EmailRule<string> { ValidationMessage = "Must be a valid email." });
+
+            // ContactTel Validation Rules
+            //tel1
+            _telephone1.Validations.Add(new PhoneNumberRule<string> { ValidationMessage = "Not a valid phone number." });
+            //tel2
+            _telephone2.Validations.Add(new PhoneNumberRule<string> { ValidationMessage = "Not a valid phone number." });
+            
+
+        }
+
+        private void AddValidationMethods()
+        {
+            validations += ValidateUsername;
+            validations += ValidatePassword;
+            validations += ValidateConfirmPassword;
+            validations += ValidateEmail;
+            validations += ValidateFirstName;
+            validations += ValidateSurname;
+            validations += ValidateTel1;
+            validations += ValidateTel2;
+            validations += ValidateFBLink;
+        }
+
+
+        private bool ValidateEntries()
+        {
+            //bool valid = _username.IsValid && _password.IsValid && _confirmPassword.IsValid && _email.IsValid
+            //    && _firstName.IsValid && _surname.IsValid && _telephone1.IsValid && _telephone2.IsValid && _fbLink.IsValid;
+
+            return ValidateUsername() && ValidatePassword() && ValidateConfirmPassword() && ValidateEmail() &&
+                ValidateFirstName() && ValidateSurname() && ValidateTel1() && ValidateTel2() && ValidateFBLink();
+        }
+
+        private bool ValidateUsername()
+        {
+            return _username.Validate();
+        }
+
+        private bool ValidatePassword()
+        {
+            return _password.Validate();
+        }
+
+        private bool ValidateConfirmPassword()
+        {
+            if (_confirmPassword.Validations.Count == 0)
+                return true;
+
+            // Updates MatchValuesRule.OtherValue to reflect current value of Password
+            var vr = _confirmPassword.Validations[0] as MatchValuesRule<string>;
+            vr.OtherValue = Password.Value;
+            _confirmPassword.Validations[0] = vr;
+
+            return _confirmPassword.Validate();
+        }
+
+        private bool ValidateEmail()
+        {
+            return _email.Validate();
+        }
+
+        private bool ValidateFirstName()
+        {
+            return _firstName.Validate();
+        }
+
+        private bool ValidateSurname()
+        {
+            return _surname.Validate();
+        }
+
+        private bool ValidateTel1()
+        {
+            return _telephone1.Validate();
+        }
+
+        private bool ValidateTel2()
+        {
+            return _telephone2.Validate();
+        }
+
+        private bool ValidateFBLink()
+        {
+            return _fbLink.Validate();
         }
 
         #endregion
@@ -108,9 +261,18 @@ namespace BatsBadmintonFixtures.ViewModels
 
             bool success = false;
 
+            if (!ValidateEntries())
+            {
+                IsBusy = false;
+                return;
+            }
+                
+
             try
             {
-                User newUser = new User(Username,Email,Password,ConfirmPassword,FirstName,Surname,Telephone1,Telephone2,FBLink);
+                User newUser = new User(Username.Value,Email.Value,Password.Value,ConfirmPassword.Value,
+                    FirstName.Value,Surname.Value,Telephone1.Value,Telephone2.Value,FBLink.Value);
+
                 var post = Utilities.GetJsonString(newUser);
 
                 var strcon = new StringContent(post, Encoding.UTF8, "application/json");
@@ -145,10 +307,6 @@ namespace BatsBadmintonFixtures.ViewModels
                 Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel));
         }
 
-
-        public string Error => throw new NotImplementedException();
-
-        public string this[string columnName] => throw new NotImplementedException();
 
     }
 }
