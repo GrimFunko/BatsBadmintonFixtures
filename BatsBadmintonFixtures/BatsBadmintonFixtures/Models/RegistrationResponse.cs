@@ -8,15 +8,15 @@ using Newtonsoft.Json.Converters;
 
 namespace BatsBadmintonFixtures.Models
 {
-    public partial class RegistrationResponse
+    public partial class ServerResponseMessage
     {
         [JsonProperty("message")]
         public string Message { get; set; }
     }
 
-    public partial class RegistrationResponse
+    public partial class ServerResponseMessage
     {
-        public static RegistrationResponse FromJson(string json) => JsonConvert.DeserializeObject<RegistrationResponse>(json);
+        public static ServerResponseMessage FromJson(string json) => JsonConvert.DeserializeObject<ServerResponseMessage>(json);
     }
 }
 

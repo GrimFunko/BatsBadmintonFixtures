@@ -44,6 +44,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding Username.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding Username.IsValid, Converter={StaticResource InverseBoolConverter}}" 
+                   Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Password" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
@@ -66,6 +69,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding Password.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                   Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Confirm password" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
@@ -87,6 +93,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding ConfirmPassword.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding ConfirmPassword.IsValid, Converter={StaticResource InverseBoolConverter}}" 
+                   Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Email" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
@@ -108,6 +117,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding Email.IsValid, Converter={StaticResource InverseBoolConverter}}" 
+                   Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Button Text="Cancel" Command="{Binding CancelCommand}"/>
                 <Button Text="Next" x:Name="nextButton"/>
@@ -136,6 +148,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding FirstName.IsValid, Converter={StaticResource InverseBoolConverter}}" 
+                   Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                 <Label Text="Surname" FontSize="Medium"/>
                 <Label Text="*" TextColor="Red"/>
@@ -157,7 +172,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
-
+            <Label Text="{Binding Surname.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding Surname.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                   Style="{StaticResource ErrorMessage}" />
             <Label Text="Contact number(s)" FontSize="Medium"/>
             <Entry x:Name="contactTelField" 
                    Placeholder="primary contact number e.g. mobile" Text="{Binding Telephone1.Value}"
@@ -176,6 +193,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding Telephone1.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding Telephone1.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                   Style="{StaticResource ErrorMessage}" />
             <Button x:Name="extraNumber" 
                     Text="add another number" 
                     BackgroundColor="Transparent"/>
@@ -196,6 +216,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding Telephone2.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding Telephone2.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                   Style="{StaticResource ErrorMessage}" />
             <Label Text="Facebook profile link" FontSize="Medium"/>
             <Entry x:Name="facebookField" 
                    Placeholder="e.g. johnsmith.10" Text="{Binding FBLink.Value}"
@@ -214,6 +237,9 @@
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            <Label Text="{Binding FBLink.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   IsVisible="{Binding FBLink.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                   Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Button x:Name="previousButton" 
                         Text="Previous" />

@@ -37,9 +37,6 @@ namespace BatsBadmintonFixtures.ViewModels
         public ICommand ValidateTel2Command { get; set; }
         public ICommand ValidateFBLinkCommand { get; set; }
 
-        public delegate bool Validations();
-        Validations validations;
-
         public RegistrationViewModel()
         {
             Title = "Bats registration";      
@@ -69,7 +66,6 @@ namespace BatsBadmintonFixtures.ViewModels
             _fbLink = new ValidatableObject<string>();
 
             AddValidationRules();
-            AddValidationMethods();
         }
 
         // Properties
@@ -174,25 +170,8 @@ namespace BatsBadmintonFixtures.ViewModels
 
         }
 
-        private void AddValidationMethods()
-        {
-            validations += ValidateUsername;
-            validations += ValidatePassword;
-            validations += ValidateConfirmPassword;
-            validations += ValidateEmail;
-            validations += ValidateFirstName;
-            validations += ValidateSurname;
-            validations += ValidateTel1;
-            validations += ValidateTel2;
-            validations += ValidateFBLink;
-        }
-
-
         private bool ValidateEntries()
         {
-            //bool valid = _username.IsValid && _password.IsValid && _confirmPassword.IsValid && _email.IsValid
-            //    && _firstName.IsValid && _surname.IsValid && _telephone1.IsValid && _telephone2.IsValid && _fbLink.IsValid;
-
             return ValidateUsername() && ValidatePassword() && ValidateConfirmPassword() && ValidateEmail() &&
                 ValidateFirstName() && ValidateSurname() && ValidateTel1() && ValidateTel2() && ValidateFBLink();
         }
@@ -282,14 +261,19 @@ namespace BatsBadmintonFixtures.ViewModels
                 {
                     if (response.IsSuccessStatusCode)
                     {
+                        // Open new successful submition page
                         string json = await response.Content.ReadAsStringAsync();
-                        var resp = RegistrationResponse.FromJson(json);
+                        var resp = ServerResponseMessage.FromJson(json);
 
                         await Application.Current.MainPage.DisplayAlert("Submitted", resp.Message, "OK");
                         success = true;
                     }
                     else // Generalised server response model to show "message"
-                        await Application.Current.MainPage.DisplayAlert("Error!",(int)response.StatusCode + " " + response.ReasonPhrase, "OK");
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        var resp = ServerResponseMessage.FromJson(json);
+                        await Application.Current.MainPage.DisplayAlert($"Error! {(int)response.StatusCode} {response.ReasonPhrase}.", resp.Message.TrimStart(' '), "OK");
+                    }
                 }
 
             }

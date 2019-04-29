@@ -5,11 +5,20 @@
              xmlns:app="clr-namespace:BatsBadmintonFixtures">
     <Application.Resources>
         <ResourceDictionary>
+            <app:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+            <app:InverseBoolConverter x:Key="InverseBoolConverter" />
+
             <Color x:Key="ErrorColour">#F52342</Color>
             
             <Style x:Key="ValidatableEntryStyle" TargetType="Entry">
                 <Setter Property="app:LineColourBehaviour.ApplyLineColour" Value="True" />
                 <Setter Property="app:LineColourBehaviour.LineColour" Value="Black" />
+            </Style>
+            
+            <Style x:Key="ErrorMessage" TargetType="Label">
+                <Setter Property="Margin" Value="0,-10,0,0" />
+                <Setter Property="TextColor" Value="{StaticResource ErrorColour}" />
+                <Setter Property="HorizontalTextAlignment" Value="End" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>
