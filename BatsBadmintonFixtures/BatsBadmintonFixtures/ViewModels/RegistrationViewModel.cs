@@ -146,7 +146,7 @@ namespace BatsBadmintonFixtures.ViewModels
             // Username Validation Rules
             _username.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Username is required!" });
             _username.Validations.Add(new LengthRule<string> { ValidationMessage = "Username must be between 6-24 characters.", MinimumLength = 6, MaximumLength = 24 });
-            _username.Validations.Add(new ContainsNoSpecialCharactersRule<string> { ValidationMessage = "Username should not contain special characters." });
+            _username.Validations.Add(new ContainsNoSpecialCharactersRule<string> { ValidationMessage = "Username cannot contain special characters." });
             _username.Validations.Add(new NoSpacesRule<string> { ValidationMessage = "Username must not contain spaces." });
 
             // Password Validation Rules
@@ -161,12 +161,21 @@ namespace BatsBadmintonFixtures.ViewModels
             _email.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Email is required!" });
             _email.Validations.Add(new EmailRule<string> { ValidationMessage = "Must be a valid email." });
 
+            // FirstName Validation Rules
+            _firstName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "First name is required!" });
+            _firstName.Validations.Add(new LengthRule<string> { ValidationMessage = "First name cannot exceed 40 characters.", MinimumLength = 1, MaximumLength = 40 });
+
+            // Surname Validation Rules
+            _surname.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Surname is required" });
+            _surname.Validations.Add(new LengthRule<string> { ValidationMessage = "Surname cannot exceed 40 characters.", MinimumLength = 1, MaximumLength = 40 });
+
             // ContactTel Validation Rules
             //tel1
             _telephone1.Validations.Add(new PhoneNumberRule<string> { ValidationMessage = "Not a valid phone number." });
             //tel2
             _telephone2.Validations.Add(new PhoneNumberRule<string> { ValidationMessage = "Not a valid phone number." });
             
+            // Facebook Link Validation Rules
 
         }
 
@@ -238,8 +247,6 @@ namespace BatsBadmintonFixtures.ViewModels
 
             IsBusy = true;
 
-            bool success = false;
-
             if (!ValidateEntries())
             {
                 IsBusy = false;
@@ -256,23 +263,19 @@ namespace BatsBadmintonFixtures.ViewModels
 
                 var strcon = new StringContent(post, Encoding.UTF8, "application/json");
                
-                using (var response = await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/user/register",
-                                                                        strcon))
+                using (var response = await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/user/register", strcon))
                 {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var srm = ServerResponseMessage.FromJson(json);
+
                     if (response.IsSuccessStatusCode)
                     {
-                        // Open new successful submition page
-                        string json = await response.Content.ReadAsStringAsync();
-                        var resp = ServerResponseMessage.FromJson(json);
-
-                        await Application.Current.MainPage.DisplayAlert("Submitted", resp.Message, "OK");
-                        success = true;
+                        IsBusy = false;
+                        Application.Current.MainPage = Factory.CreatePage(typeof(RegistrationSuccessPage), typeof(RegistrationSuccessViewModel), srm.Message);
                     }
                     else // Generalised server response model to show "message"
                     {
-                        string json = await response.Content.ReadAsStringAsync();
-                        var resp = ServerResponseMessage.FromJson(json);
-                        await Application.Current.MainPage.DisplayAlert($"Error! {(int)response.StatusCode} {response.ReasonPhrase}.", resp.Message.TrimStart(' '), "OK");
+                        await Application.Current.MainPage.DisplayAlert($"Error! {(int)response.StatusCode} {response.ReasonPhrase}.", srm.Message.TrimStart(' '), "OK");
                     }
                 }
 
@@ -286,9 +289,6 @@ namespace BatsBadmintonFixtures.ViewModels
             {
                 IsBusy = false;
             }
-
-            if (success)
-                Application.Current.MainPage = Factory.CreatePage(typeof(LoginPage), typeof(LoginViewModel));
         }
 
 

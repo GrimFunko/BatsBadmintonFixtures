@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BatsBadmintonFixtures.RegistrationSuccessPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Success!"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand" 
+                FontSize="Large"
+                TextColor="Black" />
+            <Label Text="{Binding SuccessMessage}" 
+                   Margin="10, 30, 10, 0"
+                   HorizontalTextAlignment="Center"/>
+            <Button Text="OK" 
+                    Command="{Binding ReturnToLoginPageCommand}"
+                    HorizontalOptions="Center"
+                    Margin="0,50,0,0"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
