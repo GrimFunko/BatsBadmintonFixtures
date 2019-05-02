@@ -22,7 +22,7 @@ namespace BatsBadmintonFixtures
             HPM = Factory.CreatePage(typeof(HomePageMaster), typeof(HomePageMasterViewModel)) as HomePageMaster;
             Master = HPM;
             HPM.MasterListView.ItemSelected += ListView_ItemSelected;
-            Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), typeof(FixturesViewModel), null, true));
+            Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), typeof(FixturesViewModel), accessDependant: true));
             Detail.Title = "Upcoming Fixtures";
         }
 
@@ -37,7 +37,7 @@ namespace BatsBadmintonFixtures
             
             if (Detail.Title != item.Title)
             {
-                var page = Factory.CreatePage(item.TargetType, item.ViewModelType, null, true);
+                var page = Factory.CreatePage(item.TargetType, item.ViewModelType, accessDependant: true);
                 Detail = new NavigationPage(page);
                 Detail.Title = page.Title;
             }

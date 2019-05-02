@@ -3,10 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BatsBadmintonFixtures.CreateFixturePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Label Text="{Binding Title}" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1" />
+            <StackLayout Grid.Column="1" Grid.Row="2">
+                <Label Text="Bats Team" FontSize="Medium"/>
+                <Picker ItemsSource="{Binding Teams}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding BatsTeam, Mode=TwoWay}" />
+
+                <Label Text="Team Vs" FontSize="Medium"/>
+                <Entry Text="{Binding TeamVs.Value, Mode=TwoWay}"/>
+
+                <Label Text="Date" FontSize="Medium"/>
+                <DatePicker Date="{Binding FixtureDate, Mode=TwoWay}" MinimumDate="{Binding MinimumDate}" />
+
+                <Label Text="Time" FontSize="Medium"/>
+                <TimePicker Time="{Binding FixtureTime, Mode=TwoWay}"/>
+
+                <Label Text="Venue" FontSize="Medium"/>
+                <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>
+
+                <StackLayout Orientation="Horizontal">
+                    <Button HorizontalOptions="Start" Text="Cancel" x:Name="cancelButton"/>
+                    <Button HorizontalOptions="End" Text="Add" Command="{Binding CreateFixtureCommand}" />
+                </StackLayout>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

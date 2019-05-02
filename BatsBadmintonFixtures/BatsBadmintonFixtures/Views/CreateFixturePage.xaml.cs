@@ -17,6 +17,13 @@ namespace BatsBadmintonFixtures
 		{
 			InitializeComponent ();
             BindingContext = viewModel;
+
+            cancelButton.Clicked += CancelButton_Clicked;
 		}
-	}
+
+        private void CancelButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopModalAsync();
+        }
+    }
 }

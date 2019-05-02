@@ -18,8 +18,7 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Label x:Name="Subtitle" 
-               Text="Registration 1 of 2" FontSize="25" TextColor="Black" HorizontalTextAlignment="Center"
-               Grid.Column="1" Grid.Row="1" />
+               Text="Registration 1 of 2" Style="{StaticResource Subtitle}"/>
 
         <StackLayout x:Name="formPage1" IsVisible="{Binding Page1}" Grid.Column="1" Grid.Row="2">
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">

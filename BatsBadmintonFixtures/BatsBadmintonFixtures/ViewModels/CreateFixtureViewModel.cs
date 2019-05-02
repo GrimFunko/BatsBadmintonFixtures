@@ -3,6 +3,7 @@ using BatsBadmintonFixtures.Models;
 using MvvmHelpers;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ namespace BatsBadmintonFixtures.ViewModels
     {
         public CreateFixtureViewModel()
         {
+            Title = "Create Fixture";
             PageOpenEvent += CreateFixtureViewModel_PageOpenEvent;
             CreateFixtureCommand = new Command(async () => await CreateFixture());
 
@@ -25,6 +27,9 @@ namespace BatsBadmintonFixtures.ViewModels
             else
                 PageOpenEvent?.Invoke(this, EventArgs.Empty);
 
+            _teamVs = new ValidatableObject<string>();
+            _fixtureVenue = new ValidatableObject<string>();
+            _minimumDate = DateTime.Now;
             
         }
 
@@ -49,47 +54,54 @@ namespace BatsBadmintonFixtures.ViewModels
             }
         }
 
-        private string _fixtureDate;
-        public string FixtureDate
+        private DateTime _fixtureDate;
+        public DateTime FixtureDate
         {
             get { return _fixtureDate; }
             set
             {
                 _fixtureDate = value;
-                NewFixture.Date = value;
+                NewFixture.Date = value.ToString("yyyy-MM-dd");
             }
         }
 
-        private string _teamVs;
-        public string TeamVs
+        private DateTime _minimumDate;
+
+        public DateTime MinimumDate
+        {
+            get { return _minimumDate; }
+            set { _minimumDate = value; }
+        }
+
+
+        private ValidatableObject<string> _teamVs;
+        public ValidatableObject<string> TeamVs
         {
             get { return _teamVs; }
             set
             {
-                _teamVs = value;
-                NewFixture.TeamVs = value;
+                SetProperty(ref _teamVs, value);
             }
         }
 
-        private string _fixtureTime;
-        public string FixtureTime
+        private TimeSpan _fixtureTime;
+        public TimeSpan FixtureTime
         {
             get { return _fixtureTime; }
             set
             {
                 _fixtureTime = value;
-                NewFixture.Time = value;
+                NewFixture.Time = value.ToString(@"hh\:mm");
             }
         }
 
-        private string _fixtureVenue;
-        public string FixtureVenue
+        private ValidatableObject<string> _fixtureVenue;
+        public ValidatableObject<string> FixtureVenue
         {
             get { return _fixtureVenue; }
             set
             {
-                _fixtureVenue = value;
-                NewFixture.Venue = value;
+                SetProperty(ref _fixtureVenue, value);
             }
         }
 #endregion
@@ -129,8 +141,60 @@ namespace BatsBadmintonFixtures.ViewModels
                 return;
             IsBusy = true;
 
+            if (!ValidEntries())
+            {
+                IsBusy = false;
+                return;
+            }
+            NewFixture.Venue = _fixtureVenue.Value;
+            NewFixture.TeamVs = _teamVs.Value;
+
+            string post = Utilities.GetJsonString(NewFixture);
+            var strcon = new StringContent(post, Encoding.UTF8, "application/json");
+
+            try
+            {
+                using (var response = await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/fixtures/add", strcon))
+                {
+                    string str = await response.Content.ReadAsStringAsync();
+                    var srm = ServerResponseMessage.FromJson(str);
+
+                    if (!response.IsSuccessStatusCode)
+                        await Application.Current.MainPage.DisplayAlert($"Error! {(int)response.StatusCode} {response.ReasonPhrase}.", srm.Message, "OK");
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", srm.Message, "OK.");
+                        ResetForm();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error!", ex.Message, "Ok.");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
             // Double check NewFixture properties are filled, then post to API
             
+        }
+
+        private void ResetForm()
+        {
+            NewFixture = new Fixture();
+            _batsTeam = null;
+            _teamVs.Value = "";
+            _fixtureDate = MinimumDate;
+            _fixtureTime = new TimeSpan(0, 0, 0);
+            _fixtureVenue.Value = "";
+
+        }
+
+        private bool ValidEntries()
+        {
+            return _fixtureVenue.IsValid && _teamVs.IsValid && (NewFixture.Date != null) && (NewFixture.Time != null) && (NewFixture.BatsTeam != null);
         }
 
         private void PopulateTeams(string teamsJson)

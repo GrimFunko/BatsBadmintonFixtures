@@ -20,6 +20,12 @@
                 <Setter Property="TextColor" Value="{StaticResource ErrorColour}" />
                 <Setter Property="HorizontalTextAlignment" Value="End" />
             </Style>
+
+            <Style x:Key="Subtitle" TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
