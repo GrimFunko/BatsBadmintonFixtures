@@ -16,9 +16,11 @@ namespace BatsBadmintonFixtures
 		public CreateFixturePage (BaseViewModel viewModel)
 		{
 			InitializeComponent ();
-            BindingContext = viewModel;
 
+            BindingContext = viewModel;
+            
             cancelButton.Clicked += CancelButton_Clicked;
+
 		}
 
         private void CancelButton_Clicked(object sender, EventArgs e)

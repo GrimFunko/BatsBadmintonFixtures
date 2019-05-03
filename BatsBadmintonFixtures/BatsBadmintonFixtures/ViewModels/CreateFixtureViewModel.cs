@@ -17,7 +17,7 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             Title = "Create Fixture";
             PageOpenEvent += CreateFixtureViewModel_PageOpenEvent;
-            CreateFixtureCommand = new Command(async () => await CreateFixture());
+            CreateFixtureCommand = new Command(async () => await CreateFixtureMock());
 
             NewFixture = new Fixture();
 
@@ -29,7 +29,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
             _teamVs = new ValidatableObject<string>();
             _fixtureVenue = new ValidatableObject<string>();
-            _minimumDate = DateTime.Now;
+            _minimumDate = DateTime.Now.Date;
             
         }
 
@@ -60,7 +60,7 @@ namespace BatsBadmintonFixtures.ViewModels
             get { return _fixtureDate; }
             set
             {
-                _fixtureDate = value;
+                SetProperty(ref _fixtureDate, value);
                 NewFixture.Date = value.ToString("yyyy-MM-dd");
             }
         }
@@ -90,7 +90,7 @@ namespace BatsBadmintonFixtures.ViewModels
             get { return _fixtureTime; }
             set
             {
-                _fixtureTime = value;
+                SetProperty(ref _fixtureTime, value);
                 NewFixture.Time = value.ToString(@"hh\:mm");
             }
         }
@@ -133,6 +133,18 @@ namespace BatsBadmintonFixtures.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private async Task CreateFixtureMock()
+        {
+            if (IsBusy)
+                return;
+            IsBusy = true;
+
+            ResetForm();
+            await Application.Current.MainPage.DisplayAlert("Success!", "Created fixture.", "OK.");
+
+            IsBusy = false;
         }
 
         private async Task CreateFixture()
@@ -181,17 +193,16 @@ namespace BatsBadmintonFixtures.ViewModels
             
         }
 
+        // Clears form entries, leaving only the selected team for ease of use
         private void ResetForm()
         {
             NewFixture = new Fixture();
-            _batsTeam = null;
             _teamVs.Value = "";
-            _fixtureDate = MinimumDate;
-            _fixtureTime = new TimeSpan(0, 0, 0);
+            FixtureDate = MinimumDate;
+            FixtureTime = new TimeSpan(0, 0, 0);
             _fixtureVenue.Value = "";
-
         }
-
+        
         private bool ValidEntries()
         {
             return _fixtureVenue.IsValid && _teamVs.IsValid && (NewFixture.Date != null) && (NewFixture.Time != null) && (NewFixture.BatsTeam != null);

@@ -4,12 +4,33 @@
              x:Class="BatsBadmintonFixtures.EditFixturePage"
              Title="Edit Fixture">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Edit Fixture" FontSize="Large" TextColor="Black"/>
-            <Label Text="Team" FontSize="Small"/>
-            <Picker ItemsSource="{Binding Teams}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding SelectedTeam}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Label Text="Edit Fixture" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1"/>
+            <Button Text="DEL" BackgroundColor="Red" TextColor="White" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" HorizontalOptions="End" Command="{Binding DeleteFixtureCommand}" />
+            <StackLayout Grid.Column="1" Grid.Row="2">
+                <Label Text="Team" FontSize="Medium"/>
+                <Entry IsReadOnly="True" Text="{Binding SelectedTeam.FullNameShort}" TextColor="Gray"/>
+                <Label Text="Team Vs" FontSize="Medium"/>
+                <Entry Text="{Binding TeamVs.Value, Mode=TwoWay}" />
+                <Label Text="Date" FontSize="Medium"/>
+                <DatePicker Date="{Binding FixtureDate, Mode=TwoWay}" MinimumDate="{Binding MinimumDate}"/>
+                <Label Text="Time" FontSize="Medium"/>
+                <TimePicker Time="{Binding FixtureTime, Mode=TwoWay}" />
+                <Label Text="Venue" FontSize="Medium"/>
+                <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}" />
+            </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-            
-        </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

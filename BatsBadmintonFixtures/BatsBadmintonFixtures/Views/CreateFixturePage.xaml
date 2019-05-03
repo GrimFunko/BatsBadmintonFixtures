@@ -18,7 +18,7 @@
             <Label Text="{Binding Title}" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1" />
             <StackLayout Grid.Column="1" Grid.Row="2">
                 <Label Text="Bats Team" FontSize="Medium"/>
-                <Picker ItemsSource="{Binding Teams}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding BatsTeam, Mode=TwoWay}" />
+                <Picker ItemsSource="{Binding Teams}" ItemDisplayBinding="{Binding FullNameShort}" SelectedItem="{Binding BatsTeam, Mode=TwoWay}" />
 
                 <Label Text="Team Vs" FontSize="Medium"/>
                 <Entry Text="{Binding TeamVs.Value, Mode=TwoWay}"/>
@@ -32,7 +32,7 @@
                 <Label Text="Venue" FontSize="Medium"/>
                 <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>
 
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Spacing="20">
                     <Button HorizontalOptions="Start" Text="Cancel" x:Name="cancelButton"/>
                     <Button HorizontalOptions="End" Text="Add" Command="{Binding CreateFixtureCommand}" />
                 </StackLayout>
