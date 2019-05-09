@@ -18,6 +18,7 @@ namespace BatsBadmintonFixtures.ViewModels
             Title = "Create Fixture";
             PageOpenEvent += CreateFixtureViewModel_PageOpenEvent;
             CreateFixtureCommand = new Command(async () => await CreateFixture());
+            CloseWindowCommand = new Command(() => Utilities.Navigation.PopModalAsync());
 
             NewFixture = new Fixture();
 
@@ -36,6 +37,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
         #region Properties
         public ICommand CreateFixtureCommand { get; set; }
+        public ICommand CloseWindowCommand { get; set; }
 
         public ObservableRangeCollection<Team> Teams { get; set; }
 

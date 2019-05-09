@@ -19,7 +19,7 @@ namespace BatsBadmintonFixtures
 
             BindingContext = viewModel;
             
-            cancelButton.Clicked += CancelButton_Clicked;
+            //cancelButton.Clicked += CancelButton_Clicked;
 
 		}
 

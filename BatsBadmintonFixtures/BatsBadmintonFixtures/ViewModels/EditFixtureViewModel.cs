@@ -17,7 +17,7 @@ namespace BatsBadmintonFixtures.ViewModels
     {
         public ICommand UpdateFixtureCommand { get; set; }
         public ICommand DeleteFixtureCommand { get; set; }
-        public ICommand GetNavInfoCommand { get; set; }
+        public ICommand CloseWindowCommand { get; set; }
         
         public event EventHandler<EventArgs> PageOpenEvent;
         public static event EventHandler<EventArgs> FixtureChangedEvent;
@@ -28,7 +28,7 @@ namespace BatsBadmintonFixtures.ViewModels
             PageOpenEvent += EditFixtureViewModel_PageOpenEvent;
             UpdateFixtureCommand = new Command(async () => await UpdateFixture());
             DeleteFixtureCommand = new Command(async () => await DeleteFixture());
-            GetNavInfoCommand = new Command(() => GetNavInfo());
+            CloseWindowCommand = new Command(() => Utilities.Navigation.PopModalAsync());
 
             _selectedFixture = fixture as Fixture;
 
@@ -124,15 +124,6 @@ namespace BatsBadmintonFixtures.ViewModels
             FixtureTime = _selectedFixture.Time;
             _fixtureVenue.Value = _selectedFixture.Venue;
             _teamVs.Value = _selectedFixture.TeamVs;
-        }
-
-        void GetNavInfo()
-        {
-            var str = $"There are {Utilities.Navigation.NavigationStack.Count} pages. ";
-            foreach (Page p in Utilities.Navigation.NavigationStack)
-                str += $"{p.Title}, ";
-
-            Application.Current.MainPage.DisplayAlert("Nav Info", str, "Ok");
         }
 
         private async Task UpdateFixture()

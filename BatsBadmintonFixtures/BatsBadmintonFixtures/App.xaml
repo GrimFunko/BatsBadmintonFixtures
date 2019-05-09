@@ -9,6 +9,13 @@
             <app:InverseBoolConverter x:Key="InverseBoolConverter" />
 
             <Color x:Key="ErrorColour">#F52342</Color>
+            <Color x:Key="White">#FDFFFC</Color>
+            <Color x:Key="Red">#E71D36</Color>
+            <Color x:Key="Green">#2EC4B6</Color>
+            <Color x:Key="Yellow">#FF9F1C</Color>
+            <Color x:Key="Green2">#71B340</Color>
+            <Color x:Key="Purple">#9b1141</Color>
+            <Color x:Key="Pink">#FF0481</Color>
             
             <Style x:Key="ValidatableEntryStyle" TargetType="Entry">
                 <Setter Property="app:LineColourBehaviour.ApplyLineColour" Value="True" />

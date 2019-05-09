@@ -28,7 +28,7 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Column="1"
                           Grid.Row="0"
-                          Text="Bats Badminton Hub"
+                          Text="Bats Badminton Fixtures"
                           Style="{DynamicResource SubtitleStyle}"
                           TextColor="White"/>
                     <Button Grid.Column="1"

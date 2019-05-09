@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:BatsBadmintonFixtures"
              x:Class="BatsBadmintonFixtures.LoginPage"
              Title="{Binding Title}">
-    <Grid>
+    <Grid BackgroundColor="{StaticResource White}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"   />
             <ColumnDefinition Width="*"    />
@@ -13,22 +13,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"  />
             <RowDefinition Height="*"   />
+            <RowDefinition Height="0.2*"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="2*"   />
+            <RowDefinition Height="1.2*"   />
             <RowDefinition Height="20"  />
         </Grid.RowDefinitions>
         <BoxView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3"
                  BackgroundColor="Black" />
         <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" 
-               TextColor="White" Text="Bats Badminton Fixtures" FontSize="30"
+               TextColor="{StaticResource White}" Text="Bats Badminton Fixtures" FontSize="30"
                VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
 
-        <StackLayout Grid.Row="2" Grid.Column="1" Margin="20, 20, 20, 0">
-            <Label Text="Sign in to BatsBadmintonHub" />
+        <StackLayout Grid.Row="3" Grid.Column="1" Margin="20, 20, 20, 0">
+            <Label Text="Login" TextColor="Black" FontSize="Large" />
             <Entry x:Name="UsernameEntry" Placeholder="Username" Text="{Binding Username, Mode=TwoWay}"/>
             <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" Text="{Binding Password, Mode=TwoWay}"/>
-            <Button Text="Remember Me" Command="{Binding RememberCommand}" BackgroundColor="Transparent" TextColor="Gray"/>
-            <Button x:Name="Login" Text="Login" Command="{Binding LoginCommand}"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                <Label Text="Remember" VerticalOptions="Center" />
+                <Switch IsToggled="{Binding Remember, Mode=TwoWay}" />
+            </StackLayout>
+            <Button x:Name="Login" Text="Login" Command="{Binding LoginCommand}" TextColor="{StaticResource Yellow}"/>
             <Button Text="Not a member? Register now." BackgroundColor="Transparent" Command="{Binding RegisterCommand}"/>
             <ActivityIndicator IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>

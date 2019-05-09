@@ -16,6 +16,8 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
             <Label Text="{Binding Title}" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1" />
+            <Button Text="[X]" Command="{Binding CloseWindowCommand}" HorizontalOptions="End" VerticalOptions="Start"
+                    Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" TextColor="Gray" WidthRequest="50" HeightRequest="40" BackgroundColor="Transparent" />
             <StackLayout Grid.Column="1" Grid.Row="2">
                 <Label Text="Bats Team" FontSize="Medium"/>
                 <Picker ItemsSource="{Binding Teams}" ItemDisplayBinding="{Binding FullNameShort}" SelectedItem="{Binding BatsTeam, Mode=TwoWay}" />
@@ -33,7 +35,6 @@
                 <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Spacing="20">
-                    <Button HorizontalOptions="Start" Text="Cancel" x:Name="cancelButton"/>
                     <Button HorizontalOptions="End" Text="Add" Command="{Binding CreateFixtureCommand}" />
                 </StackLayout>
             </StackLayout>

@@ -30,17 +30,22 @@ namespace BatsBadmintonFixtures.ViewModels
             Title = "Bat Hub Login";
             LoginCommand = new Command(async () => await CheckLoginAttempt());
             RegisterCommand = new Command(() => Application.Current.MainPage = Factory.CreatePage(typeof(RegistrationPage), typeof(RegistrationViewModel)));
-            RememberCommand = new Command(async () => await RememberDetailsPressed());
 
             if(Cache.Contains("LoginDetails"))
             {           
                 var loginDeets = Cache.Get("LoginDetails") as Dictionary<string,string>;
                 Username = loginDeets["username"];
                 Password = loginDeets["password"];
+                Remember = true;
             }
         }
 
-        private bool Remember = false;
+        private bool _remember;
+        public bool Remember
+        {
+            get { return _remember; }
+            set { SetProperty(ref _remember, value); }
+        }
 
         private string _username = "";
         public string Username
@@ -65,7 +70,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
             bool success = false;
 
-            if (Remember)
+            if (_remember)
                 SaveLoginDetails();
 
             try
@@ -126,16 +131,6 @@ namespace BatsBadmintonFixtures.ViewModels
 
             Cache.Save("LoginDetails", loginDetails);
 
-        }
-
-        private async Task RememberDetailsPressed()
-        {
-            Remember = !Remember;
-
-            if (Remember)
-                await Application.Current.MainPage.DisplayAlert("Remember login details", "Your details will be stored upon login", "OK");
-            else
-                await Application.Current.MainPage.DisplayAlert("Remember login details", "Your details will NOT be stored upon login", "OK");
         }
 
     }
