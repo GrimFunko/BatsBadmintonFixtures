@@ -60,6 +60,7 @@ namespace BatsBadmintonFixtures.ViewModels
             CacheItemName = "Fixture";
             GroupedUpcomingFixtures = new ObservableRangeCollection<GroupedFixtures>();
             PageOpenEvent += FixturesViewModel_PageOpenEvent;
+            EditFixtureViewModel.FixtureChangedEvent += FixturesViewModel_PageOpenEvent;
 
             if (CacheAvailable())
                 DisplayCache();
@@ -122,7 +123,7 @@ namespace BatsBadmintonFixtures.ViewModels
             IsFeedNeeded = CheckForFeedNeeded();
             IsBusy = false;
         }
-
+        
         public void DisplayCache()
         {
             IsBusy = true;
@@ -141,7 +142,7 @@ namespace BatsBadmintonFixtures.ViewModels
             string date = "";
             foreach (Fixture fixture in fixtures)
             {
-                date = fixture.Date;
+                date = fixture.Date.ToString("yyyy-MM-dd");
                 if (distinctDates.Contains(date))
                     continue;
                 else distinctDates.Add(date);
@@ -173,62 +174,62 @@ namespace BatsBadmintonFixtures.ViewModels
 
             for (int i = 0; i < fixtures.Length; i++)
             {
-                if (fixtures[i].Date.Contains("-01-"))
+                if (fixtures[i].Date.Month == 01)
                 {
                     Jan.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-02-"))
+                if (fixtures[i].Date.Month == 02)
                 {
                     Feb.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-03-"))
+                if (fixtures[i].Date.Month == 03)
                 {
                     Mar.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-04-"))
+                if (fixtures[i].Date.Month == 04)
                 {
                     Apr.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-05-"))
+                if (fixtures[i].Date.Month == 05)
                 {
                     May.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-06-"))
+                if (fixtures[i].Date.Month == 06)
                 {
                     Jun.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-07-"))
+                if (fixtures[i].Date.Month == 07)
                 {
                     Jul.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-08-"))
+                if (fixtures[i].Date.Month == 08)
                 {
                     Aug.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-09-"))
+                if (fixtures[i].Date.Month == 09)
                 {
                     Sep.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-10-"))
+                if (fixtures[i].Date.Month == 10)
                 {
                     Oct.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-11-"))
+                if (fixtures[i].Date.Month == 11)
                 {
                     Nov.Add(fixtures[i]);
                     continue;
                 }
-                if (fixtures[i].Date.Contains("-12-"))
+                if (fixtures[i].Date.Month == 12)
                 {
                     Dec.Add(fixtures[i]);
                     continue;

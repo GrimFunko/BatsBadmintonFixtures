@@ -26,8 +26,18 @@ namespace BatsBadmintonFixtures.Config
                 AllowAutoRedirect = false,
             };
             ApiClient = new HttpClient(clientHandler);
-            ApiClient.BaseAddress = cd.BaseAddress;
-            
+            ApiClient.BaseAddress = cd.BaseAddress;            
+        }
+
+        public static INavigation Navigation { get; set; }
+        public static void ReturnToRoot(bool animated = false)
+        {
+            if (Navigation.ModalStack.Count > 0)
+            {
+                while (Navigation.ModalStack.Count > 0)
+                    Navigation.PopModalAsync(animated);
+            }
+            Navigation.PopToRootAsync(animated);
         }
     }
 

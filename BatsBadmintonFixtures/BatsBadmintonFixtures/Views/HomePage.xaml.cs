@@ -23,6 +23,7 @@ namespace BatsBadmintonFixtures
             Master = HPM;
             HPM.MasterListView.ItemSelected += ListView_ItemSelected;
             Detail = new NavigationPage(Factory.CreatePage(typeof(FixturesPage), typeof(FixturesViewModel), accessDependant: true));
+            Utilities.Navigation = Detail.Navigation;
             Detail.Title = "Upcoming Fixtures";
         }
 
@@ -39,6 +40,7 @@ namespace BatsBadmintonFixtures
             {
                 var page = Factory.CreatePage(item.TargetType, item.ViewModelType, accessDependant: true);
                 Detail = new NavigationPage(page);
+                Utilities.Navigation = Detail.Navigation;
                 Detail.Title = page.Title;
             }
 

@@ -60,7 +60,7 @@ namespace BatsBadmintonFixtures
 
         private void Edit_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(Factory.CreatePage(typeof(EditFixturePage), typeof(EditFixtureViewModel), fdvm._fixture));
+            Navigation.PushModalAsync(Factory.CreatePage(typeof(EditFixturePage), typeof(EditFixtureViewModel), fdvm.SelectedFixture));
         }
     }
 }

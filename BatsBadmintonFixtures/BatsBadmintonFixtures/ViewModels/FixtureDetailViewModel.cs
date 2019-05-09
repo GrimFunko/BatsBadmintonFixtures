@@ -23,8 +23,8 @@ namespace BatsBadmintonFixtures.ViewModels
         public FixtureDetailViewModel(object fixture)
         {
             // grab (fixture)item.id, and fixture details of said fixture
-            _fixture = fixture as Fixture;
-            Title = Date;
+            SelectedFixture = fixture as Fixture;
+            Title = Date.ToString("dd-MM-yyyy");
             
             //OpenEditCommand = new Command(async () => await OpenEditPage());
         }
@@ -52,42 +52,43 @@ namespace BatsBadmintonFixtures.ViewModels
         }
         public bool IsAwayMatch { get { return !IsHomeMatch; } }
 
-        public Fixture _fixture { get; set; }
+        private Fixture _selectedFixture;
+        public Fixture SelectedFixture { get { return _selectedFixture; } set { SetProperty(ref _selectedFixture, value); } }
 
-        public bool FullTeam { get {return _fixture.BatsTeam.FullTeam; } }
+        public bool FullTeam { get {return SelectedFixture.BatsTeam.FullTeam; } }
 
         public string FixtureId
         {
-            get { return _fixture.FixtureId; }
+            get { return SelectedFixture.FixtureId; }
         }
 
-        public string League { get { return _fixture.BatsTeam.League; } }
+        public string League { get { return SelectedFixture.BatsTeam.League; } }
 
         public string BatsTeam
         {
-            get { return _fixture.BatsTeam.TeamName; }
+            get { return SelectedFixture.BatsTeam.TeamName; }
         }
 
 
 
         public string TeamVs
         {
-            get { return _fixture.TeamVs; }
+            get { return SelectedFixture.TeamVs; }
         }
 
         public string Venue
         {
-            get { return _fixture.Venue; }
+            get { return SelectedFixture.Venue; }
         }
 
-        public string Date
+        public DateTime Date
         {
-            get { return _fixture.Date; }
+            get { return SelectedFixture.Date; }
         }
 
-        public string Time
+        public TimeSpan Time
         {
-            get { return _fixture.Time; }
+            get { return SelectedFixture.Time; }
         }
         #endregion
 

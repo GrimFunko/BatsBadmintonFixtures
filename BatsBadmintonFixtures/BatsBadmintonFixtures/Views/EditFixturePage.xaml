@@ -17,7 +17,9 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
             <Label Text="Edit Fixture" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1"/>
-            <Button Text="DEL" BackgroundColor="Red" TextColor="White" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" HorizontalOptions="End" Command="{Binding DeleteFixtureCommand}" />
+            <Button Text="DEL" BackgroundColor="Red" TextColor="White" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="40"
+                     Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"
+                    Command="{Binding DeleteFixtureCommand}" />
             <StackLayout Grid.Column="1" Grid.Row="2">
                 <Label Text="Team" FontSize="Medium"/>
                 <Entry IsReadOnly="True" Text="{Binding SelectedTeam.FullNameShort}" TextColor="Gray"/>
@@ -29,8 +31,10 @@
                 <TimePicker Time="{Binding FixtureTime, Mode=TwoWay}" />
                 <Label Text="Venue" FontSize="Medium"/>
                 <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}" />
+                <Button Text="Nav. info" Command="{Binding GetNavInfoCommand}"/>
+                <Button Text="Save" Command="{Binding UpdateFixtureCommand}" />
             </StackLayout>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Grid.Column="1" Grid.Row="2" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

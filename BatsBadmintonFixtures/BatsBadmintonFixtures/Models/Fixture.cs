@@ -22,17 +22,19 @@ namespace BatsBadmintonFixtures.Models
         public string Venue { get; set; }
 
         [JsonProperty("date")]
-        public string Date { get; set; }
+        [JsonConverter(typeof(DateStringConverter))]
+        public DateTime Date { get; set; }
 
         [JsonProperty("time")]
-        public string Time { get; set; }
+        [JsonConverter(typeof(TimeStringConverter))]
+        public TimeSpan Time { get; set; }
 
         [JsonProperty("message")]
         public string Message { get; set; }
 
         public string FixtureTeams { get { return Venue + " vs " + TeamVs; } }
 
-        public string FixtureListDateFormat { get { return FormatDateProp(Date); } }
+        //public string FixtureListDateFormat { get { return FormatDateProp(Date); } }
 
         //public bool FullTeam { get
         //    {
@@ -48,13 +50,68 @@ namespace BatsBadmintonFixtures.Models
         public static Fixture[] FromJsonArray(string json) => JsonConvert.DeserializeObject<Fixture[]>(json);
 
         public static Fixture FromJson(string json) => JsonConvert.DeserializeObject<Fixture>(json);
-        
-        private string FormatDateProp(string date)
-        {             
-            string[] dateComponents = date.Split(new char[] { '-' });
-            DateTime dt = new DateTime(Convert.ToInt16(dateComponents[0]), Convert.ToInt16(dateComponents[1]), Convert.ToInt16(dateComponents[2]));
-            return $"{dt.DayOfWeek} {dateComponents[2]}/{dateComponents[1]}";
+    }
+
+    internal class DateStringConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(DateTime) || t == typeof(DateTime?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            DateTime dt;
+            if (DateTime.TryParse(value, out dt))
+            {
+                return dt;
+            }
+            throw new Exception("Cannot unmarshal type DateTime");
         }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (DateTime)untypedValue;
+            serializer.Serialize(writer, value.ToString("yyyy-MM-dd"));
+            return;
+        }
+
+        public static readonly DateStringConverter Singleton = new DateStringConverter();
+    }
+
+    internal class TimeStringConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(TimeSpan) || t == typeof(TimeSpan?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            TimeSpan ts;
+            if (TimeSpan.TryParse(value, out ts))
+            {
+                return ts;
+            }
+            throw new Exception("Cannot unmarshal type TimeSpan");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (TimeSpan)untypedValue;
+            serializer.Serialize(writer, value.ToString(@"hh\:mm"));
+            return;
+        }
+
+        public static readonly TimeStringConverter Singleton = new TimeStringConverter();
     }
 
     public class GroupedFixtures : ObservableRangeCollection<Fixture>

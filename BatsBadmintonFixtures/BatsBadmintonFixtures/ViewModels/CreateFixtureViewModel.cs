@@ -17,7 +17,7 @@ namespace BatsBadmintonFixtures.ViewModels
         {
             Title = "Create Fixture";
             PageOpenEvent += CreateFixtureViewModel_PageOpenEvent;
-            CreateFixtureCommand = new Command(async () => await CreateFixtureMock());
+            CreateFixtureCommand = new Command(async () => await CreateFixture());
 
             NewFixture = new Fixture();
 
@@ -61,7 +61,7 @@ namespace BatsBadmintonFixtures.ViewModels
             set
             {
                 SetProperty(ref _fixtureDate, value);
-                NewFixture.Date = value.ToString("yyyy-MM-dd");
+                NewFixture.Date = value;
             }
         }
 
@@ -91,7 +91,7 @@ namespace BatsBadmintonFixtures.ViewModels
             set
             {
                 SetProperty(ref _fixtureTime, value);
-                NewFixture.Time = value.ToString(@"hh\:mm");
+                NewFixture.Time = value;
             }
         }
 

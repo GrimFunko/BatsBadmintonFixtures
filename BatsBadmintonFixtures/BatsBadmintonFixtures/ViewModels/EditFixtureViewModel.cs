@@ -17,15 +17,20 @@ namespace BatsBadmintonFixtures.ViewModels
     {
         public ICommand UpdateFixtureCommand { get; set; }
         public ICommand DeleteFixtureCommand { get; set; }
+        public ICommand GetNavInfoCommand { get; set; }
         
         public event EventHandler<EventArgs> PageOpenEvent;
+        public static event EventHandler<EventArgs> FixtureChangedEvent;
 
-        public EditFixtureViewModel(object fixture = null)
+
+        public EditFixtureViewModel(ref object fixture)
         {
             PageOpenEvent += EditFixtureViewModel_PageOpenEvent;
+            UpdateFixtureCommand = new Command(async () => await UpdateFixture());
             DeleteFixtureCommand = new Command(async () => await DeleteFixture());
+            GetNavInfoCommand = new Command(() => GetNavInfo());
 
-            _fixture = fixture as Fixture;
+            _selectedFixture = fixture as Fixture;
 
             if (!Cache.Contains("Teams"))
                 PageOpenEvent?.Invoke(this, EventArgs.Empty);
@@ -37,11 +42,11 @@ namespace BatsBadmintonFixtures.ViewModels
         }
 
         #region Properties
-        private Fixture _fixture;
-        public Fixture Fixture
+        private Fixture _selectedFixture;
+        public Fixture SelectedFixture
         {
-            get { return _fixture; }
-            set { SetProperty(ref _fixture, value); }
+            get { return _selectedFixture; }
+            set { _selectedFixture = value; }
         }
 
         private Team _selectedTeam;
@@ -58,7 +63,7 @@ namespace BatsBadmintonFixtures.ViewModels
             set
             {
                 SetProperty(ref _fixtureDate, value);
-                Fixture.Date = value.ToString("yyyy-MM-dd");
+                SelectedFixture.Date = value;
             }
         }
 
@@ -78,7 +83,7 @@ namespace BatsBadmintonFixtures.ViewModels
             set
             {
                 SetProperty(ref _teamVs, value);
-                Fixture.TeamVs = value.Value;
+                SelectedFixture.TeamVs = value.Value;
             }
         }
 
@@ -89,7 +94,7 @@ namespace BatsBadmintonFixtures.ViewModels
             set
             {
                 SetProperty(ref _fixtureTime, value);
-                Fixture.Time = value.ToString(@"hh\:mm");
+                SelectedFixture.Time = value;
             }
         }
 
@@ -100,7 +105,7 @@ namespace BatsBadmintonFixtures.ViewModels
             set
             {
                 SetProperty(ref _fixtureVenue, value);
-                Fixture.Venue = value.Value;
+                SelectedFixture.Venue = value.Value;
             }
         }
 
@@ -113,23 +118,87 @@ namespace BatsBadmintonFixtures.ViewModels
 
         private void SetProperties()
         {
-            SelectedTeam = _fixture.BatsTeam;
+            SelectedTeam = _selectedFixture.BatsTeam;
             _minimumDate = DateTime.Now.Date;
-            var comp = _fixture.Date.Split('-');
-            FixtureDate = new DateTime(Convert.ToInt16(comp[0]), Convert.ToInt16(comp[1]),Convert.ToInt16(comp[2]));
-            FixtureTime = TimeSpan.Parse(_fixture.Time);
-            _fixtureVenue.Value = _fixture.Venue;
-            _teamVs.Value = _fixture.TeamVs;
+            FixtureDate = _selectedFixture.Date;
+            FixtureTime = _selectedFixture.Time;
+            _fixtureVenue.Value = _selectedFixture.Venue;
+            _teamVs.Value = _selectedFixture.TeamVs;
         }
 
-        //TODO Need to flesh out the implementation of DeleteFixture, such as returning to fixtures page after deleting, making sure Cache is in sync etc. 
+        void GetNavInfo()
+        {
+            var str = $"There are {Utilities.Navigation.NavigationStack.Count} pages. ";
+            foreach (Page p in Utilities.Navigation.NavigationStack)
+                str += $"{p.Title}, ";
+
+            Application.Current.MainPage.DisplayAlert("Nav Info", str, "Ok");
+        }
+
+        private async Task UpdateFixture()
+        {
+            if (IsBusy)
+                return;
+            IsBusy = true;
+
+            SelectedFixture.Venue = FixtureVenue.Value;
+            SelectedFixture.TeamVs = TeamVs.Value;
+
+            string post = Utilities.GetJsonString(SelectedFixture);
+            var strcon = new StringContent(post, Encoding.UTF8, "application/json");
+
+            bool success = false;
+
+            try
+            {
+                using (var response = await Utilities.ApiClient.PostAsync(Utilities.ApiClient.BaseAddress + "/fixtures/update", strcon))
+                {
+                    string str = await response.Content.ReadAsStringAsync();
+                    var srm = ServerResponseMessage.FromJson(str);
+
+                    if (!response.IsSuccessStatusCode)
+                        await Application.Current.MainPage.DisplayAlert($"Error! {(int)response.StatusCode} {response.ReasonPhrase}.", srm.Message, "OK");
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", srm.Message, "OK.");
+                        success = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error!", ex.Message, "Ok.");
+            }
+            finally
+            {
+                IsBusy = false;
+                if (success)
+                {
+                    FixtureChangedEvent?.Invoke(this, EventArgs.Empty);
+                    Utilities.Navigation.NavigationStack[1].BindingContext = Factory.CreateViewModel(typeof(FixtureDetailViewModel), _selectedFixture);
+                    await Utilities.Navigation.PopModalAsync();
+                }
+            }
+        }
+
+        private async Task UpdateFixtureMock()
+        {
+            SelectedFixture.Venue = FixtureVenue.Value;
+            SelectedFixture.TeamVs = TeamVs.Value;
+            Utilities.Navigation.NavigationStack[1].BindingContext = Factory.CreateViewModel(typeof(FixtureDetailViewModel), _selectedFixture);
+            FixtureChangedEvent?.Invoke(this, EventArgs.Empty);
+
+            await Application.Current.MainPage.DisplayAlert("Updated Successfully!", "The fixture changes have been recorded.", "Ok.");
+            // save to cache
+        }
+
         private async Task DeleteFixture()
         {
             if (IsBusy)
                 return;
             IsBusy = true;
 
-            string post = Utilities.GetJsonString(Fixture);
+            string post = Utilities.GetJsonString(SelectedFixture);
             var strcon = new StringContent(post, Encoding.UTF8, "application/json");
             try
             {
@@ -139,7 +208,12 @@ namespace BatsBadmintonFixtures.ViewModels
                     var srm = ServerResponseMessage.FromJson(str);
 
                     if (resp.IsSuccessStatusCode)
+                    {
+                        IsBusy = false;
                         await Application.Current.MainPage.DisplayAlert("Success!", srm.Message, "Ok.");
+                        FixtureChangedEvent?.Invoke(this, EventArgs.Empty);
+                        Utilities.ReturnToRoot();
+                    }
                     else
                         await Application.Current.MainPage.DisplayAlert($"Error! {(int)resp.StatusCode} {resp.ReasonPhrase}", srm.Message, "Ok.");
                 }
@@ -153,6 +227,13 @@ namespace BatsBadmintonFixtures.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task DeleteFixtureMock()
+        {
+            await Application.Current.MainPage.DisplayAlert("Success!", "Fixture deleted!", "Ok.");
+            FixtureChangedEvent?.Invoke(this, EventArgs.Empty);
+            Utilities.ReturnToRoot();
         }
 
         private async Task GetTeams()
