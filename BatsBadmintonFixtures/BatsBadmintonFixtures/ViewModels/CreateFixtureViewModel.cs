@@ -22,6 +22,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
             NewFixture = new Fixture();
 
+            Venues = new ObservableRangeCollection<string> { "Home", "Away" };
             Teams = new ObservableRangeCollection<Team>();
             if (Cache.Contains("Teams"))
                 PopulateTeams((string)Cache.Get("Teams"));
@@ -107,7 +108,7 @@ namespace BatsBadmintonFixtures.ViewModels
             }
         }
 
-        public string[] Venues = new string[] { "Home", "Away" };
+        public ObservableRangeCollection<string> Venues { get; set; }
 #endregion
 
         private async void CreateFixtureViewModel_PageOpenEvent(object sender, EventArgs e)

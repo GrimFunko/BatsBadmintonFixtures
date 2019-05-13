@@ -23,7 +23,7 @@ namespace BatsBadmintonFixtures.Models
 
         public string FullName { get { return $"{ TeamName }, { League }"; } }
 
-        public string FullNameShort { get { return $"{ TeamName }, { League.Replace("Division","Div.") }"; } }
+        public string FullNameShort { get { return $"{ TeamName.Replace("Combination", "Combi") }, { League.Replace("Division","Div.") }"; } }
 
         public bool FullTeam { get { if (TeamName.Contains("Combination") || TeamName.Contains("Women")) return false;
                 return true;

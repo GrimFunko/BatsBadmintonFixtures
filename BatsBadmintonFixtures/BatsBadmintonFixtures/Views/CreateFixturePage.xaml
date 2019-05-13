@@ -35,9 +35,22 @@
                 <!--<Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>-->
                 <Picker ItemsSource="{Binding Venues}" SelectedItem="{Binding FixtureVenue}" />
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                    <Button HorizontalOptions="End" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}" />
-                </StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Button HorizontalOptions="Start" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}"
+                            Grid.Column="2" />
+
+                </Grid>
+                <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                    <Button HorizontalOptions="Center" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}" />
+                </StackLayout>-->
             </StackLayout>
         </Grid>
     </ContentPage.Content>

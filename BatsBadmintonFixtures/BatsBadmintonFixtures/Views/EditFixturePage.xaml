@@ -30,10 +30,28 @@
                 <TimePicker Time="{Binding FixtureTime, Mode=TwoWay}" />
                 <Label Text="Venue" FontSize="Medium"/>
                 <Picker ItemsSource="{Binding Venues}" SelectedItem="{Binding FixtureVenue, Mode=TwoWay}"/>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <Button Text="Delete" BackgroundColor="{StaticResource Red}" TextColor="White" Command="{Binding DeleteFixtureCommand}" 
+                            Grid.Column="0" HorizontalOptions="End"/>
+                    <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}"
+                            Grid.Column="2" HorizontalOptions="Start"/>
+
+                </Grid>
+
+                <!--<StackLayout Orientation="Horizontal" Spacing="50" HorizontalOptions="Center">
                     <Button Text="Delete" BackgroundColor="{StaticResource Red}" TextColor="White" Command="{Binding DeleteFixtureCommand}" />
                     <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}" />
-                </StackLayout>
+                </StackLayout>-->
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1" Grid.Row="2" />
         </Grid>
