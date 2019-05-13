@@ -19,26 +19,22 @@ namespace BatsBadmintonFixtures.ViewModels
         public ICommand DeleteFixtureCommand { get; set; }
         public ICommand CloseWindowCommand { get; set; }
         
-        public event EventHandler<EventArgs> PageOpenEvent;
         public static event EventHandler<EventArgs> FixtureChangedEvent;
 
 
-        public EditFixtureViewModel(ref object fixture)
+        public EditFixtureViewModel(object fixture)
         {
-            PageOpenEvent += EditFixtureViewModel_PageOpenEvent;
             UpdateFixtureCommand = new Command(async () => await UpdateFixture());
             DeleteFixtureCommand = new Command(async () => await DeleteFixture());
             CloseWindowCommand = new Command(() => Utilities.Navigation.PopModalAsync());
 
             _selectedFixture = fixture as Fixture;
 
-            if (!Cache.Contains("Teams"))
-                PageOpenEvent?.Invoke(this, EventArgs.Empty);
-
-            _fixtureVenue = new ValidatableObject<string>();
             _teamVs = new ValidatableObject<string>();
+            Venues = new ObservableRangeCollection<string> { "Home", "Away" };
 
             SetProperties();
+            
         }
 
         #region Properties
@@ -98,23 +94,21 @@ namespace BatsBadmintonFixtures.ViewModels
             }
         }
 
-        private ValidatableObject<string> _fixtureVenue;
-        public ValidatableObject<string> FixtureVenue
+        private string _fixtureVenue;
+        public string FixtureVenue
         {
             get { return _fixtureVenue; }
             set
             {
                 SetProperty(ref _fixtureVenue, value);
-                SelectedFixture.Venue = value.Value;
+                SelectedFixture.Venue = value;
             }
         }
 
-        #endregion
+        public ObservableRangeCollection<string> Venues { get; set; }
 
-        private async void EditFixtureViewModel_PageOpenEvent(object sender, EventArgs e)
-        {
-            await GetTeams();
-        }
+
+        #endregion
 
         private void SetProperties()
         {
@@ -122,7 +116,7 @@ namespace BatsBadmintonFixtures.ViewModels
             _minimumDate = DateTime.Now.Date;
             FixtureDate = _selectedFixture.Date;
             FixtureTime = _selectedFixture.Time;
-            _fixtureVenue.Value = _selectedFixture.Venue;
+            FixtureVenue = _selectedFixture.Venue;
             _teamVs.Value = _selectedFixture.TeamVs;
         }
 
@@ -132,7 +126,7 @@ namespace BatsBadmintonFixtures.ViewModels
                 return;
             IsBusy = true;
 
-            SelectedFixture.Venue = FixtureVenue.Value;
+            SelectedFixture.Venue = FixtureVenue;
             SelectedFixture.TeamVs = TeamVs.Value;
 
             string post = Utilities.GetJsonString(SelectedFixture);
@@ -174,7 +168,7 @@ namespace BatsBadmintonFixtures.ViewModels
 
         private async Task UpdateFixtureMock()
         {
-            SelectedFixture.Venue = FixtureVenue.Value;
+            SelectedFixture.Venue = FixtureVenue;
             SelectedFixture.TeamVs = TeamVs.Value;
             Utilities.Navigation.NavigationStack[1].BindingContext = Factory.CreateViewModel(typeof(FixtureDetailViewModel), _selectedFixture);
             FixtureChangedEvent?.Invoke(this, EventArgs.Empty);
@@ -188,6 +182,15 @@ namespace BatsBadmintonFixtures.ViewModels
             if (IsBusy)
                 return;
             IsBusy = true;
+
+            var action = await Application.Current.MainPage.DisplayAlert("Confirmation", "Are you sure you want to delete this fixture?", "Yes", "No");
+
+            if (!action)
+            {
+                IsBusy = false;
+                return;
+            }
+               
 
             string post = Utilities.GetJsonString(SelectedFixture);
             var strcon = new StringContent(post, Encoding.UTF8, "application/json");
@@ -227,27 +230,5 @@ namespace BatsBadmintonFixtures.ViewModels
             Utilities.ReturnToRoot();
         }
 
-        private async Task GetTeams()
-        {
-            if (IsBusy) return;
-            IsBusy = true;
-
-            try
-            {
-                using (var response = await Utilities.ApiClient.GetAsync(Utilities.ApiClient.BaseAddress + "/teams/"))
-                {
-                    var teams = await response.Content.ReadAsStringAsync();
-                    Cache.Save("Teams", teams);
-                }               
-            }
-            catch(Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("error", ex.Message, "ok");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
     }
 }

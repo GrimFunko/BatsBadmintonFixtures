@@ -72,6 +72,11 @@ namespace BatsBadmintonFixtures.ViewModels
 
             if (_remember)
                 SaveLoginDetails();
+            else
+            {
+                if (Cache.Contains("LoginDetails"))
+                    Cache.Remove("LoginDetails");
+            }
 
             try
             {

@@ -32,10 +32,11 @@
                 <TimePicker Time="{Binding FixtureTime, Mode=TwoWay}"/>
 
                 <Label Text="Venue" FontSize="Medium"/>
-                <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>
+                <!--<Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>-->
+                <Picker ItemsSource="{Binding Venues}" SelectedItem="{Binding FixtureVenue}" />
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Spacing="20">
-                    <Button HorizontalOptions="End" Text="Add" Command="{Binding CreateFixtureCommand}" />
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                    <Button HorizontalOptions="End" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}" />
                 </StackLayout>
             </StackLayout>
         </Grid>

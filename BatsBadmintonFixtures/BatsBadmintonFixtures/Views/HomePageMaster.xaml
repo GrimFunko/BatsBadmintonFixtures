@@ -31,12 +31,7 @@
                           Text="Bats Badminton Fixtures"
                           Style="{DynamicResource SubtitleStyle}"
                           TextColor="White"/>
-                    <Button Grid.Column="1"
-                            Grid.Row="2"
-                            Text="Sign Out" 
-                            TextColor="#9b1141"
-                            BackgroundColor="White"
-                            Command="{Binding LogoutCommand}"/>
+                    <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="3" Source="BatsLogoIcon512.png" />
                 </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>
@@ -52,5 +47,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button Text="Sign Out" BackgroundColor="Transparent" Command="{Binding LogoutCommand}"/>
     </StackLayout>
 </ContentPage>

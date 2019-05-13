@@ -32,7 +32,7 @@
                 <Label Text="Remember" VerticalOptions="Center" />
                 <Switch IsToggled="{Binding Remember, Mode=TwoWay}" />
             </StackLayout>
-            <Button x:Name="Login" Text="Login" Command="{Binding LoginCommand}" TextColor="{StaticResource Yellow}"/>
+            <Button x:Name="Login" Text="Login" Command="{Binding LoginCommand}" TextColor="{StaticResource White}" BackgroundColor="Black" />
             <Button Text="Not a member? Register now." BackgroundColor="Transparent" Command="{Binding RegisterCommand}"/>
             <ActivityIndicator IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>

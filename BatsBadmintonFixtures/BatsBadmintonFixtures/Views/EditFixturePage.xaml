@@ -29,10 +29,10 @@
                 <Label Text="Time" FontSize="Medium"/>
                 <TimePicker Time="{Binding FixtureTime, Mode=TwoWay}" />
                 <Label Text="Venue" FontSize="Medium"/>
-                <Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}" />
-                <StackLayout Orientation="Horizontal">
-                    <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}" />
+                <Picker ItemsSource="{Binding Venues}" SelectedItem="{Binding FixtureVenue, Mode=TwoWay}"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
                     <Button Text="Delete" BackgroundColor="{StaticResource Red}" TextColor="White" Command="{Binding DeleteFixtureCommand}" />
+                    <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}" />
                 </StackLayout>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1" Grid.Row="2" />

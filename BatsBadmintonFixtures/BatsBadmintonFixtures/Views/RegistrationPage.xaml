@@ -19,6 +19,9 @@
         </Grid.RowDefinitions>
         <Label x:Name="Subtitle" 
                Text="Registration 1 of 2" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1"/>
+        <Button Text="[X]" Command="{Binding CancelCommand}" HorizontalOptions="End" VerticalOptions="Start"
+                    Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" TextColor="Gray" WidthRequest="50" HeightRequest="40" BackgroundColor="Transparent" />
+
 
         <StackLayout x:Name="formPage1" IsVisible="{Binding Page1}" Grid.Column="1" Grid.Row="2">
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
@@ -120,7 +123,7 @@
                    IsVisible="{Binding Email.IsValid, Converter={StaticResource InverseBoolConverter}}" 
                    Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+                <!--<Button Text="Cancel" Command="{Binding CancelCommand}"/>-->
                 <Button Text="Next" x:Name="nextButton"/>
             </StackLayout>
         </StackLayout>
@@ -241,8 +244,8 @@
                    Style="{StaticResource ErrorMessage}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Button x:Name="previousButton" 
-                        Text="Previous" />
-                <Button Text="Submit" Command="{Binding SubmitCommand}" />
+                        Text="Previous" TextColor="{StaticResource White}" BackgroundColor="Black"/>
+                <Button Text="Submit" Command="{Binding SubmitCommand}" BackgroundColor="{StaticResource Green}" TextColor="White" />
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsEnabled="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>

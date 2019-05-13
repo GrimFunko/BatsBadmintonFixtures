@@ -29,7 +29,6 @@ namespace BatsBadmintonFixtures.ViewModels
                 PageOpenEvent?.Invoke(this, EventArgs.Empty);
 
             _teamVs = new ValidatableObject<string>();
-            _fixtureVenue = new ValidatableObject<string>();
             _minimumDate = DateTime.Now.Date;
             
         }
@@ -97,15 +96,18 @@ namespace BatsBadmintonFixtures.ViewModels
             }
         }
 
-        private ValidatableObject<string> _fixtureVenue;
-        public ValidatableObject<string> FixtureVenue
+        private string _fixtureVenue;
+        public string FixtureVenue
         {
             get { return _fixtureVenue; }
             set
             {
                 SetProperty(ref _fixtureVenue, value);
+                NewFixture.Venue = value;
             }
         }
+
+        public string[] Venues = new string[] { "Home", "Away" };
 #endregion
 
         private async void CreateFixtureViewModel_PageOpenEvent(object sender, EventArgs e)
@@ -160,7 +162,7 @@ namespace BatsBadmintonFixtures.ViewModels
                 IsBusy = false;
                 return;
             }
-            NewFixture.Venue = _fixtureVenue.Value;
+            NewFixture.Venue = _fixtureVenue;
             NewFixture.TeamVs = _teamVs.Value;
 
             string post = Utilities.GetJsonString(NewFixture);
@@ -202,12 +204,12 @@ namespace BatsBadmintonFixtures.ViewModels
             _teamVs.Value = "";
             FixtureDate = MinimumDate;
             FixtureTime = new TimeSpan(0, 0, 0);
-            _fixtureVenue.Value = "";
+            _fixtureVenue = Venues[0];
         }
         
         private bool ValidEntries()
         {
-            return _fixtureVenue.IsValid && _teamVs.IsValid && (NewFixture.Date != null) && (NewFixture.Time != null) && (NewFixture.BatsTeam != null);
+            return (NewFixture.Venue != null) && _teamVs.IsValid && (NewFixture.Date != null) && (NewFixture.Time != null) && (NewFixture.BatsTeam != null);
         }
 
         private void PopulateTeams(string teamsJson)
