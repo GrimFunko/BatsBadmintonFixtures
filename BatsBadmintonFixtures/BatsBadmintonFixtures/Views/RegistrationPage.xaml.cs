@@ -18,7 +18,9 @@ namespace BatsBadmintonFixtures
 			InitializeComponent ();
             BindingContext = viewModel;
             formPage1.IsVisible = true;
+            formPage1Buttons.IsVisible = true;
             formPage2.IsVisible = false;
+            formPage2Buttons.IsVisible = false;
             tel2.IsVisible = false;
 
             nextButton.Clicked += NextFormPage;
@@ -38,15 +40,19 @@ namespace BatsBadmintonFixtures
 
         void NextFormPage(object sender, EventArgs e)
         {
-            formPage1.IsVisible = false;
             formPage2.IsVisible = true;
+            formPage2Buttons.IsVisible = true;
+            formPage1.IsVisible = false;
+            formPage1Buttons.IsVisible = false;
             Subtitle.Text = "Registration 2 of 2";
         }
 
         void PreviousFormPage(object sender, EventArgs e)
         {
             formPage1.IsVisible = true;
+            formPage1Buttons.IsVisible = true;
             formPage2.IsVisible = false;
+            formPage2Buttons.IsVisible = false;
             Subtitle.Text = "Registration 1 of 2";
         }
 

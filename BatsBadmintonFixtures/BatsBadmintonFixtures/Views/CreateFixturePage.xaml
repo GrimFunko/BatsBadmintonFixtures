@@ -12,7 +12,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="8*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
             <Label Text="{Binding Title}" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1" />
@@ -35,23 +36,23 @@
                 <!--<Entry Text="{Binding FixtureVenue.Value, Mode=TwoWay}"/>-->
                 <Picker ItemsSource="{Binding Venues}" SelectedItem="{Binding FixtureVenue}" />
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="20" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <Button HorizontalOptions="Start" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}"
-                            Grid.Column="2" />
-
-                </Grid>
                 <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
                     <Button HorizontalOptions="Center" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}" />
                 </StackLayout>-->
             </StackLayout>
+            <Grid Grid.Column="1" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Button HorizontalOptions="Start" BackgroundColor="{StaticResource Green}" Text="Submit" TextColor="{StaticResource White}" Command="{Binding CreateFixtureCommand}"
+                            Grid.Column="2" />
+
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

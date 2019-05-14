@@ -13,7 +13,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="8*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
             <Label Text="Edit Fixture" Style="{StaticResource Subtitle}" Grid.Column="1" Grid.Row="1"/>
@@ -31,29 +32,25 @@
                 <Label Text="Venue" FontSize="Medium"/>
                 <Picker ItemsSource="{Binding Venues}" SelectedItem="{Binding FixtureVenue, Mode=TwoWay}"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="20" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    
-                    <Button Text="Delete" BackgroundColor="{StaticResource Red}" TextColor="White" Command="{Binding DeleteFixtureCommand}" 
-                            Grid.Column="0" HorizontalOptions="End"/>
-                    <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}"
-                            Grid.Column="2" HorizontalOptions="Start"/>
-
-                </Grid>
-
-                <!--<StackLayout Orientation="Horizontal" Spacing="50" HorizontalOptions="Center">
-                    <Button Text="Delete" BackgroundColor="{StaticResource Red}" TextColor="White" Command="{Binding DeleteFixtureCommand}" />
-                    <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}" />
-                </StackLayout>-->
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1" Grid.Row="2" />
+
+            <Grid Grid.Column="1" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Button Text="Delete" BackgroundColor="{StaticResource Red}" TextColor="White" Command="{Binding DeleteFixtureCommand}" 
+                            Grid.Column="0" HorizontalOptions="End"/>
+                <Button Text="Save" BackgroundColor="{StaticResource Green}" TextColor="White" Command="{Binding UpdateFixtureCommand}"
+                            Grid.Column="2" HorizontalOptions="Start"/>
+
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
